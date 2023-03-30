@@ -1,60 +1,33 @@
 package io.mkolodziejczyk92.data.entity;
 
-import jakarta.persistence.Entity;
+import io.mkolodziejczyk92.data.enums.ECommodityType;
+import jakarta.persistence.*;
+import lombok.*;
+
 import java.time.LocalDate;
 
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+@Builder
 @Entity
+@Table(name = "contract")
 public class Contract extends AbstractEntity {
 
     private String number;
-    private String comodityType;
-    private String amount;
-    private String client;
+    private String netAmount;
     private LocalDate signatureDate;
-    private LocalDate implementationDate;
-    private boolean completed;
+    private LocalDate plannedImplementationDate;
 
-    public String getNumber() {
-        return number;
-    }
-    public void setNumber(String number) {
-        this.number = number;
-    }
-    public String getComodityType() {
-        return comodityType;
-    }
-    public void setComodityType(String comodityType) {
-        this.comodityType = comodityType;
-    }
-    public String getAmount() {
-        return amount;
-    }
-    public void setAmount(String amount) {
-        this.amount = amount;
-    }
-    public String getClient() {
-        return client;
-    }
-    public void setClient(String client) {
-        this.client = client;
-    }
-    public LocalDate getSignatureDate() {
-        return signatureDate;
-    }
-    public void setSignatureDate(LocalDate signatureDate) {
-        this.signatureDate = signatureDate;
-    }
-    public LocalDate getImplementationDate() {
-        return implementationDate;
-    }
-    public void setImplementationDate(LocalDate implementationDate) {
-        this.implementationDate = implementationDate;
-    }
-    public boolean isCompleted() {
-        return completed;
-    }
-    public void setCompleted(boolean completed) {
-        this.completed = completed;
-    }
+    @Builder.Default
+    private boolean completed = false;
+
+    @Enumerated(EnumType.STRING)
+    private ECommodityType commodityType;
+    @ManyToOne
+    @JoinColumn(name = "client_id")
+    private Client client;
+
 
 }

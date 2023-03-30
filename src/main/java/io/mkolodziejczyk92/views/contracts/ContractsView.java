@@ -45,7 +45,7 @@ public class ContractsView extends Div implements BeforeEnterObserver {
     private final Grid<Contract> grid = new Grid<>(Contract.class, false);
 
     private TextField number;
-    private TextField comodityType;
+    private TextField commodityType;
     private TextField amount;
     private TextField client;
     private DatePicker signatureDate;
@@ -75,7 +75,7 @@ public class ContractsView extends Div implements BeforeEnterObserver {
 
         // Configure Grid
         grid.addColumn("number").setAutoWidth(true);
-        grid.addColumn("comodityType").setAutoWidth(true);
+        grid.addColumn("commodityType").setAutoWidth(true);
         grid.addColumn("amount").setAutoWidth(true);
         grid.addColumn("client").setAutoWidth(true);
         grid.addColumn("signatureDate").setAutoWidth(true);
@@ -166,13 +166,13 @@ public class ContractsView extends Div implements BeforeEnterObserver {
 
         FormLayout formLayout = new FormLayout();
         number = new TextField("Number");
-        comodityType = new TextField("Comodity Type");
+        commodityType = new TextField("Commodity Type");
         amount = new TextField("Amount");
         client = new TextField("Client");
         signatureDate = new DatePicker("Signature Date");
         implementationDate = new DatePicker("Implementation Date");
         completed = new Checkbox("Completed");
-        formLayout.add(number, comodityType, amount, client, signatureDate, implementationDate, completed);
+        formLayout.add(number, commodityType, amount, client, signatureDate, implementationDate, completed);
 
         editorDiv.add(formLayout);
         createButtonLayout(editorLayoutDiv);

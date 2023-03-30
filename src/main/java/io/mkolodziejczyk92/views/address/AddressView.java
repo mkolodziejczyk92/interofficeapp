@@ -13,8 +13,8 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-import io.mkolodziejczyk92.data.entity.SampleAddress;
-import io.mkolodziejczyk92.data.service.SampleAddressService;
+import io.mkolodziejczyk92.data.entity.Address;
+import io.mkolodziejczyk92.data.service.AddressService;
 import io.mkolodziejczyk92.views.MainLayout;
 import jakarta.annotation.security.PermitAll;
 
@@ -32,9 +32,9 @@ public class AddressView extends Div {
     private Button cancel = new Button("Cancel");
     private Button save = new Button("Save");
 
-    private Binder<SampleAddress> binder = new Binder<>(SampleAddress.class);
+    private Binder<Address> binder = new Binder<>(Address.class);
 
-    public AddressView(SampleAddressService addressService) {
+    public AddressView(AddressService addressService) {
         addClassName("address-view");
 
         add(createTitle());
@@ -77,7 +77,7 @@ public class AddressView extends Div {
     }
 
     private void clearForm() {
-        this.binder.setBean(new SampleAddress());
+        this.binder.setBean(new Address());
     }
 
 }

@@ -1,11 +1,12 @@
 package io.mkolodziejczyk92.data.service;
 
-import io.mkolodziejczyk92.data.entity.Users;
-import java.util.Optional;
+import io.mkolodziejczyk92.data.entity.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class UsersService {
@@ -16,11 +17,11 @@ public class UsersService {
         this.repository = repository;
     }
 
-    public Optional<Users> get(Long id) {
+    public Optional<User> get(Long id) {
         return repository.findById(id);
     }
 
-    public Users update(Users entity) {
+    public User update(User entity) {
         return repository.save(entity);
     }
 
@@ -28,11 +29,11 @@ public class UsersService {
         repository.deleteById(id);
     }
 
-    public Page<Users> list(Pageable pageable) {
+    public Page<User> list(Pageable pageable) {
         return repository.findAll(pageable);
     }
 
-    public Page<Users> list(Pageable pageable, Specification<Users> filter) {
+    public Page<User> list(Pageable pageable, Specification<User> filter) {
         return repository.findAll(filter, pageable);
     }
 

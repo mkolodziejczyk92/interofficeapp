@@ -22,45 +22,46 @@ import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.spring.data.VaadinSpringDataHelpers;
-import io.mkolodziejczyk92.data.entity.Users;
-import io.mkolodziejczyk92.data.service.UsersService;
+import io.mkolodziejczyk92.data.entity.User;
+import io.mkolodziejczyk92.data.service.UserService;
 import io.mkolodziejczyk92.views.MainLayout;
 import jakarta.annotation.security.RolesAllowed;
-import java.util.Optional;
-import java.util.UUID;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.orm.ObjectOptimisticLockingFailureException;
+
+import java.util.Optional;
+import java.util.UUID;
 
 @PageTitle("Users")
 @Route(value = "Users/:usersID?/:action?(edit)", layout = MainLayout.class)
 @RolesAllowed("ADMIN")
-public class UsersView extends Div implements BeforeEnterObserver {
+public class UserView extends Div implements BeforeEnterObserver {
 
     private final String USERS_ID = "usersID";
     private final String USERS_EDIT_ROUTE_TEMPLATE = "Users/%s/edit";
 
-    private final Grid<Users> grid = new Grid<>(Users.class, false);
+    private final Grid<User> grid = new Grid<>(User.class, false);
 
     CollaborationAvatarGroup avatarGroup;
 
-    private TextField userName;
+    private TextField username;
     private TextField firstName;
     private TextField lastName;
     private TextField email;
-    private TextField password;
+    private TextField hashedPassword;
 
     private final Button cancel = new Button("Cancel");
     private final Button save = new Button("Save");
 
-    private final CollaborationBinder<Users> binder;
+    private final CollaborationBinder<User> binder;
 
-    private Users users;
+    private User user;
 
-    private final UsersService usersService;
+    private final UserService userService;
 
-    public UsersView(UsersService usersService) {
-        this.usersService = usersService;
-        addClassNames("users-view");
+    public UserView(UserService userService) {
+        this.userService = userService;
+        addClassNames("user-view");
 
         // UserInfo is used by Collaboration Engine and is used to share details
         // of users to each other to able collaboration. Replace this with
@@ -82,12 +83,11 @@ public class UsersView extends Div implements BeforeEnterObserver {
         add(splitLayout);
 
         // Configure Grid
-        grid.addColumn("userName").setAutoWidth(true);
+        grid.addColumn("username").setAutoWidth(true);
         grid.addColumn("firstName").setAutoWidth(true);
         grid.addColumn("lastName").setAutoWidth(true);
         grid.addColumn("email").setAutoWidth(true);
-        grid.addColumn("password").setAutoWidth(true);
-        grid.setItems(query -> usersService.list(
+        grid.setItems(query -> userService.list(
                 PageRequest.of(query.getPage(), query.getPageSize(), VaadinSpringDataHelpers.toSpringDataSort(query)))
                 .stream());
         grid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
@@ -98,12 +98,12 @@ public class UsersView extends Div implements BeforeEnterObserver {
                 UI.getCurrent().navigate(String.format(USERS_EDIT_ROUTE_TEMPLATE, event.getValue().getId()));
             } else {
                 clearForm();
-                UI.getCurrent().navigate(UsersView.class);
+                UI.getCurrent().navigate(UserView.class);
             }
         });
 
         // Configure Form
-        binder = new CollaborationBinder<>(Users.class, userInfo);
+        binder = new CollaborationBinder<>(User.class, userInfo);
 
         // Bind fields. This is where you'd define e.g. validation rules
 
@@ -116,15 +116,15 @@ public class UsersView extends Div implements BeforeEnterObserver {
 
         save.addClickListener(e -> {
             try {
-                if (this.users == null) {
-                    this.users = new Users();
+                if (this.user == null) {
+                    this.user = new User();
                 }
-                binder.writeBean(this.users);
-                usersService.update(this.users);
+                binder.writeBean(this.user);
+                userService.update(this.user);
                 clearForm();
                 refreshGrid();
                 Notification.show("Data updated");
-                UI.getCurrent().navigate(UsersView.class);
+                UI.getCurrent().navigate(UserView.class);
             } catch (ObjectOptimisticLockingFailureException exception) {
                 Notification n = Notification.show(
                         "Error updating the data. Somebody else has updated the record while you were making changes.");
@@ -140,7 +140,7 @@ public class UsersView extends Div implements BeforeEnterObserver {
     public void beforeEnter(BeforeEnterEvent event) {
         Optional<Long> usersId = event.getRouteParameters().get(USERS_ID).map(Long::parseLong);
         if (usersId.isPresent()) {
-            Optional<Users> usersFromBackend = usersService.get(usersId.get());
+            Optional<User> usersFromBackend = userService.get(usersId.get());
             if (usersFromBackend.isPresent()) {
                 populateForm(usersFromBackend.get());
             } else {
@@ -149,7 +149,7 @@ public class UsersView extends Div implements BeforeEnterObserver {
                 // when a row is selected but the data is no longer available,
                 // refresh grid
                 refreshGrid();
-                event.forwardTo(UsersView.class);
+                event.forwardTo(UserView.class);
             }
         }
     }
@@ -163,12 +163,12 @@ public class UsersView extends Div implements BeforeEnterObserver {
         editorLayoutDiv.add(editorDiv);
 
         FormLayout formLayout = new FormLayout();
-        userName = new TextField("User Name");
+        username = new TextField("Username");
         firstName = new TextField("First Name");
         lastName = new TextField("Last Name");
         email = new TextField("Email");
-        password = new TextField("Password");
-        formLayout.add(userName, firstName, lastName, email, password);
+        hashedPassword = new TextField("Password");
+        formLayout.add(username, firstName, lastName, email, hashedPassword);
 
         editorDiv.add(avatarGroup, formLayout);
         createButtonLayout(editorLayoutDiv);
@@ -201,16 +201,16 @@ public class UsersView extends Div implements BeforeEnterObserver {
         populateForm(null);
     }
 
-    private void populateForm(Users value) {
-        this.users = value;
+    private void populateForm(User value) {
+        this.user = value;
         String topic = null;
-        if (this.users != null && this.users.getId() != null) {
-            topic = "users/" + this.users.getId();
+        if (this.user != null && this.user.getId() != null) {
+            topic = "users/" + this.user.getId();
             avatarGroup.getStyle().set("visibility", "visible");
         } else {
             avatarGroup.getStyle().set("visibility", "hidden");
         }
-        binder.setTopic(topic, () -> this.users);
+        binder.setTopic(topic, () -> this.user);
         avatarGroup.setTopic(topic);
 
     }

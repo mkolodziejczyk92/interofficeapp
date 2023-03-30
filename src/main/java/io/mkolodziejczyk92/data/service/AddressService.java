@@ -1,6 +1,6 @@
 package io.mkolodziejczyk92.data.service;
 
-import io.mkolodziejczyk92.data.entity.SampleAddress;
+import io.mkolodziejczyk92.data.entity.Address;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -8,19 +8,19 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 @Service
-public class SampleAddressService {
+public class AddressService {
 
-    private final SampleAddressRepository repository;
+    private final AddressRepository repository;
 
-    public SampleAddressService(SampleAddressRepository repository) {
+    public AddressService(AddressRepository repository) {
         this.repository = repository;
     }
 
-    public Optional<SampleAddress> get(Long id) {
+    public Optional<Address> get(Long id) {
         return repository.findById(id);
     }
 
-    public SampleAddress update(SampleAddress entity) {
+    public Address update(Address entity) {
         return repository.save(entity);
     }
 
@@ -28,11 +28,11 @@ public class SampleAddressService {
         repository.deleteById(id);
     }
 
-    public Page<SampleAddress> list(Pageable pageable) {
+    public Page<Address> list(Pageable pageable) {
         return repository.findAll(pageable);
     }
 
-    public Page<SampleAddress> list(Pageable pageable, Specification<SampleAddress> filter) {
+    public Page<Address> list(Pageable pageable, Specification<Address> filter) {
         return repository.findAll(filter, pageable);
     }
 

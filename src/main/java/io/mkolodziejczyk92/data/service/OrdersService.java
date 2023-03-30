@@ -1,6 +1,6 @@
 package io.mkolodziejczyk92.data.service;
 
-import io.mkolodziejczyk92.data.entity.Orders;
+import io.mkolodziejczyk92.data.entity.Order;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,11 +16,11 @@ public class OrdersService {
         this.repository = repository;
     }
 
-    public Optional<Orders> get(Long id) {
+    public Optional<Order> get(Long id) {
         return repository.findById(id);
     }
 
-    public Orders update(Orders entity) {
+    public Order update(Order entity) {
         return repository.save(entity);
     }
 
@@ -28,11 +28,11 @@ public class OrdersService {
         repository.deleteById(id);
     }
 
-    public Page<Orders> list(Pageable pageable) {
+    public Page<Order> list(Pageable pageable) {
         return repository.findAll(pageable);
     }
 
-    public Page<Orders> list(Pageable pageable, Specification<Orders> filter) {
+    public Page<Order> list(Pageable pageable, Specification<Order> filter) {
         return repository.findAll(filter, pageable);
     }
 

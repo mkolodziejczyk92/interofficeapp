@@ -90,9 +90,9 @@ public class ClientsView extends Div implements BeforeEnterObserver {
         grid.addColumn("lastName").setAutoWidth(true);
         grid.addColumn("phoneNumber").setAutoWidth(true);
         grid.addColumn("email").setAutoWidth(true);
-        grid.addColumn("address").setAutoWidth(true);
-        grid.addColumn("orders").setAutoWidth(true);
-        grid.addColumn("contracts").setAutoWidth(true);
+//        grid.addColumn("address").setAutoWidth(true);
+//        grid.addColumn("orders").setAutoWidth(true);
+//        grid.addColumn("contracts").setAutoWidth(true);
         grid.setItems(query -> clientService.list(
                 PageRequest.of(query.getPage(), query.getPageSize(), VaadinSpringDataHelpers.toSpringDataSort(query)))
                 .stream());

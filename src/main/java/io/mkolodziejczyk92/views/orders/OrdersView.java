@@ -3,6 +3,7 @@ package io.mkolodziejczyk92.views.orders;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
+import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
@@ -20,7 +21,9 @@ import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.spring.data.VaadinSpringDataHelpers;
-import io.mkolodziejczyk92.data.entity.Orders;
+import io.mkolodziejczyk92.data.entity.Order;
+import io.mkolodziejczyk92.data.enums.ECommodityType;
+import io.mkolodziejczyk92.data.enums.EOrderStatus;
 import io.mkolodziejczyk92.data.service.OrdersService;
 import io.mkolodziejczyk92.views.MainLayout;
 import jakarta.annotation.security.PermitAll;
@@ -36,13 +39,13 @@ public class OrdersView extends Div implements BeforeEnterObserver {
     private final String ORDERS_ID = "ordersID";
     private final String ORDERS_EDIT_ROUTE_TEMPLATE = "Orders/%s/edit";
 
-    private final Grid<Orders> grid = new Grid<>(Orders.class, false);
+    private final Grid<Order> grid = new Grid<>(Order.class, false);
 
-    private TextField comodityType;
-    private TextField amount;
+    private ComboBox<ECommodityType> commodityType;
+    private TextField netAmount;
     private TextField client;
     private TextField contractNumber;
-    private TextField status;
+    private ComboBox<EOrderStatus> status;
     private TextField supplier;
     private TextField supplierOrderNumber;
     private TextField comment;
@@ -50,9 +53,9 @@ public class OrdersView extends Div implements BeforeEnterObserver {
     private final Button cancel = new Button("Cancel");
     private final Button save = new Button("Save");
 
-    private final BeanValidationBinder<Orders> binder;
+    private final BeanValidationBinder<Order> binder;
 
-    private Orders orders;
+    private Order order;
 
     private final OrdersService ordersService;
 
@@ -69,8 +72,8 @@ public class OrdersView extends Div implements BeforeEnterObserver {
         add(splitLayout);
 
         // Configure Grid
-        grid.addColumn("comodityType").setAutoWidth(true);
-        grid.addColumn("amount").setAutoWidth(true);
+        grid.addColumn("commodityType").setAutoWidth(true);
+        grid.addColumn("netAmount").setAutoWidth(true);
         grid.addColumn("client").setAutoWidth(true);
         grid.addColumn("contractNumber").setAutoWidth(true);
         grid.addColumn("status").setAutoWidth(true);
@@ -93,10 +96,12 @@ public class OrdersView extends Div implements BeforeEnterObserver {
         });
 
         // Configure Form
-        binder = new BeanValidationBinder<>(Orders.class);
+        binder = new BeanValidationBinder<>(Order.class);
 
         // Bind fields. This is where you'd define e.g. validation rules
-
+        binder.forField(supplier)
+                .bind(p -> p.getSupplier().getNameOfCompany(),
+                (p, v) -> p.getSupplier().setNameOfCompany(v));
         binder.bindInstanceFields(this);
 
         cancel.addClickListener(e -> {
@@ -106,11 +111,11 @@ public class OrdersView extends Div implements BeforeEnterObserver {
 
         save.addClickListener(e -> {
             try {
-                if (this.orders == null) {
-                    this.orders = new Orders();
+                if (this.order == null) {
+                    this.order = new Order();
                 }
-                binder.writeBean(this.orders);
-                ordersService.update(this.orders);
+                binder.writeBean(this.order);
+                ordersService.update(this.order);
                 clearForm();
                 refreshGrid();
                 Notification.show("Data updated");
@@ -130,7 +135,7 @@ public class OrdersView extends Div implements BeforeEnterObserver {
     public void beforeEnter(BeforeEnterEvent event) {
         Optional<Long> ordersId = event.getRouteParameters().get(ORDERS_ID).map(Long::parseLong);
         if (ordersId.isPresent()) {
-            Optional<Orders> ordersFromBackend = ordersService.get(ordersId.get());
+            Optional<Order> ordersFromBackend = ordersService.get(ordersId.get());
             if (ordersFromBackend.isPresent()) {
                 populateForm(ordersFromBackend.get());
             } else {
@@ -153,15 +158,19 @@ public class OrdersView extends Div implements BeforeEnterObserver {
         editorLayoutDiv.add(editorDiv);
 
         FormLayout formLayout = new FormLayout();
-        comodityType = new TextField("Comodity Type");
-        amount = new TextField("Amount");
+        commodityType = new ComboBox<>("Commodity Type");
+        commodityType.setItemLabelGenerator(s->s.name());
+        commodityType.setItems(ECommodityType.values());
+        netAmount = new TextField("netAmount");
         client = new TextField("Client");
         contractNumber = new TextField("Contract Number");
-        status = new TextField("Status");
+        status = new ComboBox<>("Status");
+        status.setItemLabelGenerator(s->s.name());
+        status.setItems(EOrderStatus.values());
         supplier = new TextField("Supplier");
         supplierOrderNumber = new TextField("Supplier Order Number");
         comment = new TextField("Comment");
-        formLayout.add(comodityType, amount, client, contractNumber, status, supplier, supplierOrderNumber, comment);
+        formLayout.add(commodityType, netAmount, client, contractNumber, status, supplier, supplierOrderNumber, comment);
 
         editorDiv.add(formLayout);
         createButtonLayout(editorLayoutDiv);
@@ -194,9 +203,9 @@ public class OrdersView extends Div implements BeforeEnterObserver {
         populateForm(null);
     }
 
-    private void populateForm(Orders value) {
-        this.orders = value;
-        binder.readBean(this.orders);
+    private void populateForm(Order value) {
+        this.order = value;
+        binder.readBean(this.order);
 
     }
 }

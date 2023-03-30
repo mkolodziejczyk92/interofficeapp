@@ -2,19 +2,12 @@ package io.mkolodziejczyk92.views;
 
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
-import com.vaadin.flow.component.avatar.Avatar;
 import com.vaadin.flow.component.contextmenu.MenuItem;
-import com.vaadin.flow.component.html.Anchor;
-import com.vaadin.flow.component.html.Div;
-import com.vaadin.flow.component.html.Footer;
-import com.vaadin.flow.component.html.H1;
-import com.vaadin.flow.component.html.H2;
-import com.vaadin.flow.component.html.Header;
+import com.vaadin.flow.component.html.*;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.menubar.MenuBar;
 import com.vaadin.flow.component.orderedlayout.Scroller;
 import com.vaadin.flow.router.PageTitle;
-import com.vaadin.flow.server.StreamResource;
 import com.vaadin.flow.server.auth.AccessAnnotationChecker;
 import com.vaadin.flow.theme.lumo.LumoUtility;
 import io.mkolodziejczyk92.components.appnav.AppNav;
@@ -26,10 +19,10 @@ import io.mkolodziejczyk92.views.clients.ClientsView;
 import io.mkolodziejczyk92.views.contracts.ContractsView;
 import io.mkolodziejczyk92.views.invoice.InvoiceView;
 import io.mkolodziejczyk92.views.orders.OrdersView;
-import io.mkolodziejczyk92.views.users.UsersView;
-import java.io.ByteArrayInputStream;
-import java.util.Optional;
+import io.mkolodziejczyk92.views.users.UserView;
 import org.vaadin.lineawesome.LineAwesomeIcon;
+
+import java.util.Optional;
 
 /**
  * The main view is a top-level placeholder for other views.
@@ -92,8 +85,8 @@ public class MainLayout extends AppLayout {
             nav.addItem(new AppNavItem("Invoice", InvoiceView.class, LineAwesomeIcon.DOLLAR_SIGN_SOLID.create()));
 
         }
-        if (accessChecker.hasAccess(UsersView.class)) {
-            nav.addItem(new AppNavItem("Users", UsersView.class, LineAwesomeIcon.USER_CIRCLE_SOLID.create()));
+        if (accessChecker.hasAccess(UserView.class)) {
+            nav.addItem(new AppNavItem("Users", UserView.class, LineAwesomeIcon.USER_CIRCLE_SOLID.create()));
 
         }
         if (accessChecker.hasAccess(AddressView.class)) {
@@ -111,20 +104,12 @@ public class MainLayout extends AppLayout {
         if (maybeUser.isPresent()) {
             User user = maybeUser.get();
 
-            Avatar avatar = new Avatar(user.getName());
-            StreamResource resource = new StreamResource("profile-pic",
-                    () -> new ByteArrayInputStream(user.getProfilePicture()));
-            avatar.setImageResource(resource);
-            avatar.setThemeName("xsmall");
-            avatar.getElement().setAttribute("tabindex", "-1");
-
             MenuBar userMenu = new MenuBar();
             userMenu.setThemeName("tertiary-inline contrast");
 
             MenuItem userName = userMenu.addItem("");
             Div div = new Div();
-            div.add(avatar);
-            div.add(user.getName());
+            div.add(user.getUsername());
             div.add(new Icon("lumo", "dropdown"));
             div.getElement().getStyle().set("display", "flex");
             div.getElement().getStyle().set("align-items", "center");

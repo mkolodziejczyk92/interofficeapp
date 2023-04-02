@@ -33,10 +33,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.orm.ObjectOptimisticLockingFailureException;
 
 @PageTitle("Invoice")
-@Route(value = "Invoice/:invoiceID?/:action?(edit)", layout = MainLayout.class)
+@Route(value = "invoices", layout = MainLayout.class)
 @PermitAll
 @Uses(Icon.class)
-public class InvoiceView extends Div implements BeforeEnterObserver {
+public class InvoicesView extends Div implements BeforeEnterObserver {
 
     private final String INVOICE_ID = "invoiceID";
     private final String INVOICE_EDIT_ROUTE_TEMPLATE = "Invoice/%s/edit";
@@ -62,7 +62,7 @@ public class InvoiceView extends Div implements BeforeEnterObserver {
 
     private final InvoiceService invoiceService;
 
-    public InvoiceView(InvoiceService invoiceService) {
+    public InvoicesView(InvoiceService invoiceService) {
         this.invoiceService = invoiceService;
         addClassNames("invoice-view");
 
@@ -101,7 +101,7 @@ public class InvoiceView extends Div implements BeforeEnterObserver {
                 UI.getCurrent().navigate(String.format(INVOICE_EDIT_ROUTE_TEMPLATE, event.getValue().getId()));
             } else {
                 clearForm();
-                UI.getCurrent().navigate(InvoiceView.class);
+                UI.getCurrent().navigate(InvoicesView.class);
             }
         });
 
@@ -127,7 +127,7 @@ public class InvoiceView extends Div implements BeforeEnterObserver {
                 clearForm();
                 refreshGrid();
                 Notification.show("Data updated");
-                UI.getCurrent().navigate(InvoiceView.class);
+                UI.getCurrent().navigate(InvoicesView.class);
             } catch (ObjectOptimisticLockingFailureException exception) {
                 Notification n = Notification.show(
                         "Error updating the data. Somebody else has updated the record while you were making changes.");
@@ -152,7 +152,7 @@ public class InvoiceView extends Div implements BeforeEnterObserver {
                 // when a row is selected but the data is no longer available,
                 // refresh grid
                 refreshGrid();
-                event.forwardTo(InvoiceView.class);
+                event.forwardTo(InvoicesView.class);
             }
         }
     }

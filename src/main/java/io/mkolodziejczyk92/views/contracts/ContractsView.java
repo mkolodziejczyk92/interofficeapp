@@ -34,7 +34,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.orm.ObjectOptimisticLockingFailureException;
 
 @PageTitle("Contracts")
-@Route(value = "Contracts/:contractID?/:action?(edit)", layout = MainLayout.class)
+@Route(value = "contracts", layout = MainLayout.class)
 @PermitAll
 @Uses(Icon.class)
 public class ContractsView extends Div implements BeforeEnterObserver {

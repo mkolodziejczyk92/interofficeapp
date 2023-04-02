@@ -21,7 +21,7 @@ import jakarta.annotation.security.PermitAll;
 @PageTitle("Address")
 @Route(value = "address", layout = MainLayout.class)
 @PermitAll
-public class AddressView extends Div {
+public class AddressesView extends Div {
 
     private TextField street = new TextField("Street address");
     private TextField postalCode = new TextField("Postal code");
@@ -34,7 +34,7 @@ public class AddressView extends Div {
 
     private Binder<Address> binder = new Binder<>(Address.class);
 
-    public AddressView(AddressService addressService) {
+    public AddressesView(AddressService addressService) {
         addClassName("address-view");
 
         add(createTitle());

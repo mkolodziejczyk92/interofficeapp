@@ -32,7 +32,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.orm.ObjectOptimisticLockingFailureException;
 
 @PageTitle("Orders")
-@Route(value = "Orders/:ordersID?/:action?(edit)", layout = MainLayout.class)
+@Route(value = "orders", layout = MainLayout.class)
 @PermitAll
 public class OrdersView extends Div implements BeforeEnterObserver {
 

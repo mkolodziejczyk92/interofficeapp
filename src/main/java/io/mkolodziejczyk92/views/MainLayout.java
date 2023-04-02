@@ -54,15 +54,17 @@ public class MainLayout extends AppLayout {
     }
 
     private void addDrawerContent() {
-        Image image = new Image("/images/logo.png", "logo INTERDOM");
+        Image image = new Image("images/r2.png", "logo INTERDOM");
         H1 appName = new H1("interOfficeAPP");
-        appName.addClassNames(LumoUtility.FontSize.LARGE, LumoUtility.Margin.NONE);
-        Header header = new Header(appName);
+        appName.addClassNames(LumoUtility.FontSize.LARGE, LumoUtility.Margin.NONE, "title");
+        image.addClassNames("image");
+        Header header = new Header(image);
         header.add(image);
         Scroller scroller = new Scroller(createNavigation());
-        addToDrawer(header, scroller, createFooter());
-    }
+        addToDrawer(header, appName, scroller, createFooter());
 
+
+    }
     private AppNav createNavigation() {
         // AppNav is not yet an official component.
         // For documentation, visit https://github.com/vaadin/vcf-nav#readme

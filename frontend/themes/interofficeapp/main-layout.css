@@ -11,6 +11,12 @@ vaadin-scroller[slot="drawer"] {
   box-sizing: border-box;
 }
 
-[slot="drawer"]:is(header, footer):is(:empty) {
-  display: none;
+.image{
+  width: 250px;
+  height: 100px;
+}
+
+.title{
+  align-items: center;
+  padding-left: 70px;
 }

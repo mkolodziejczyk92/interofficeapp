@@ -11,6 +11,7 @@ import com.vaadin.flow.server.VaadinService;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
 import io.mkolodziejczyk92.security.AuthenticatedUser;
 
+
 @AnonymousAllowed
 @PageTitle("Login")
 @Route(value = "login")
@@ -25,7 +26,7 @@ public class LoginView extends LoginOverlay implements BeforeEnterObserver {
         LoginI18n i18n = LoginI18n.createDefault();
         i18n.setHeader(new LoginI18n.Header());
         i18n.getHeader().setTitle("interOfficeAPP");
-        i18n.getHeader().setDescription("Login using user/user or admin/admin");
+        i18n.getHeader().setDescription("Login using username and password");
         i18n.setAdditionalInformation(null);
         setI18n(i18n);
 

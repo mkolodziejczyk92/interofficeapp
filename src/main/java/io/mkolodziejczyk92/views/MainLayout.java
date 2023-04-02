@@ -54,12 +54,12 @@ public class MainLayout extends AppLayout {
     }
 
     private void addDrawerContent() {
+        Image image = new Image("/images/logo.png", "logo INTERDOM");
         H1 appName = new H1("interOfficeAPP");
         appName.addClassNames(LumoUtility.FontSize.LARGE, LumoUtility.Margin.NONE);
         Header header = new Header(appName);
-
+        header.add(image);
         Scroller scroller = new Scroller(createNavigation());
-
         addToDrawer(header, scroller, createFooter());
     }
 
@@ -115,7 +115,7 @@ public class MainLayout extends AppLayout {
             div.getElement().getStyle().set("align-items", "center");
             div.getElement().getStyle().set("gap", "var(--lumo-space-s)");
             userName.add(div);
-            userName.getSubMenu().addItem("Sign out", e -> {
+            userName.getSubMenu().addItem("Log out", e -> {
                 authenticatedUser.logout();
             });
 

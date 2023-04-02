@@ -21,7 +21,7 @@ import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.spring.data.VaadinSpringDataHelpers;
-import io.mkolodziejczyk92.data.entity.Order;
+import io.mkolodziejczyk92.data.entity.Purchase;
 import io.mkolodziejczyk92.data.enums.ECommodityType;
 import io.mkolodziejczyk92.data.enums.EOrderStatus;
 import io.mkolodziejczyk92.data.service.OrdersService;
@@ -39,7 +39,7 @@ public class OrdersView extends Div implements BeforeEnterObserver {
     private final String ORDERS_ID = "ordersID";
     private final String ORDERS_EDIT_ROUTE_TEMPLATE = "Orders/%s/edit";
 
-    private final Grid<Order> grid = new Grid<>(Order.class, false);
+    private final Grid<Purchase> grid = new Grid<>(Purchase.class, false);
 
     private ComboBox<ECommodityType> commodityType;
     private TextField netAmount;
@@ -53,9 +53,9 @@ public class OrdersView extends Div implements BeforeEnterObserver {
     private final Button cancel = new Button("Cancel");
     private final Button save = new Button("Save");
 
-    private final BeanValidationBinder<Order> binder;
+    private final BeanValidationBinder<Purchase> binder;
 
-    private Order order;
+    private Purchase purchase;
 
     private final OrdersService ordersService;
 
@@ -96,7 +96,7 @@ public class OrdersView extends Div implements BeforeEnterObserver {
         });
 
         // Configure Form
-        binder = new BeanValidationBinder<>(Order.class);
+        binder = new BeanValidationBinder<>(Purchase.class);
 
         // Bind fields. This is where you'd define e.g. validation rules
         binder.forField(supplier)
@@ -111,11 +111,11 @@ public class OrdersView extends Div implements BeforeEnterObserver {
 
         save.addClickListener(e -> {
             try {
-                if (this.order == null) {
-                    this.order = new Order();
+                if (this.purchase == null) {
+                    this.purchase = new Purchase();
                 }
-                binder.writeBean(this.order);
-                ordersService.update(this.order);
+                binder.writeBean(this.purchase);
+                ordersService.update(this.purchase);
                 clearForm();
                 refreshGrid();
                 Notification.show("Data updated");
@@ -135,7 +135,7 @@ public class OrdersView extends Div implements BeforeEnterObserver {
     public void beforeEnter(BeforeEnterEvent event) {
         Optional<Long> ordersId = event.getRouteParameters().get(ORDERS_ID).map(Long::parseLong);
         if (ordersId.isPresent()) {
-            Optional<Order> ordersFromBackend = ordersService.get(ordersId.get());
+            Optional<Purchase> ordersFromBackend = ordersService.get(ordersId.get());
             if (ordersFromBackend.isPresent()) {
                 populateForm(ordersFromBackend.get());
             } else {
@@ -203,9 +203,9 @@ public class OrdersView extends Div implements BeforeEnterObserver {
         populateForm(null);
     }
 
-    private void populateForm(Order value) {
-        this.order = value;
-        binder.readBean(this.order);
+    private void populateForm(Purchase value) {
+        this.purchase = value;
+        binder.readBean(this.purchase);
 
     }
 }

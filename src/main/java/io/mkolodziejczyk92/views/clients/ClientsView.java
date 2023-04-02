@@ -17,20 +17,17 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.splitlayout.SplitLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.ValidationException;
-import com.vaadin.flow.router.BeforeEnterEvent;
-import com.vaadin.flow.router.BeforeEnterObserver;
-import com.vaadin.flow.router.PageTitle;
-import com.vaadin.flow.router.Route;
-import com.vaadin.flow.router.RouteAlias;
+import com.vaadin.flow.router.*;
 import com.vaadin.flow.spring.data.VaadinSpringDataHelpers;
 import io.mkolodziejczyk92.data.entity.Client;
 import io.mkolodziejczyk92.data.service.ClientService;
 import io.mkolodziejczyk92.views.MainLayout;
 import jakarta.annotation.security.PermitAll;
-import java.util.Optional;
-import java.util.UUID;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.orm.ObjectOptimisticLockingFailureException;
+
+import java.util.Optional;
+import java.util.UUID;
 
 @PageTitle("Clients")
 @Route(value = "clients", layout = MainLayout.class)
@@ -84,6 +81,7 @@ public class ClientsView extends Div implements BeforeEnterObserver {
         createEditorLayout(splitLayout);
 
         add(splitLayout);
+
 
         // Configure Grid
         grid.addColumn("firstName").setAutoWidth(true);

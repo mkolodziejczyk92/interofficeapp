@@ -5,6 +5,8 @@ import io.mkolodziejczyk92.data.enums.EOrderStatus;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.Set;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -12,7 +14,7 @@ import lombok.*;
 @Builder
 @Entity
 @Table(name = "purchase")
-public class Order extends AbstractEntity {
+public class Purchase extends AbstractEntity {
 
 
     private String netAmount;
@@ -22,14 +24,16 @@ public class Order extends AbstractEntity {
     @Enumerated(EnumType.STRING)
     private EOrderStatus status;
 
-    @OneToOne
-    @JoinColumn(name = "supplier_id")
-    private Supplier supplier;
 
     private String supplierOrderNumber;
     private String comment;
 
     @Enumerated(EnumType.STRING)
     private ECommodityType commodityType;
+
+    @ManyToOne
+    @JoinColumn(name = "supplier_id")
+    private Supplier supplier;
+
 
 }

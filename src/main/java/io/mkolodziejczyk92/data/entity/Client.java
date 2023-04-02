@@ -18,13 +18,13 @@ public class Client extends AbstractEntity {
     private String firstName;
     private String lastName;
     private String phoneNumber;
-    private String nip;
-
     @Email
     private String email;
 
     @Enumerated(EnumType.STRING)
     private EClientType clientType;
+
+    private String nip;
 
     @OneToMany(mappedBy = "client")
     private Set<Address> allAddresses;
@@ -34,5 +34,8 @@ public class Client extends AbstractEntity {
 
     @OneToMany(mappedBy = "client")
     private Set<Contract> allContracts;
+
+    @OneToMany(mappedBy = "client")
+    private Set<Purchase> allPurchases;
 
 }

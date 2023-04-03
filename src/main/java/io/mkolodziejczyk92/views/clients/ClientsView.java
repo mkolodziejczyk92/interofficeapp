@@ -1,6 +1,7 @@
 package io.mkolodziejczyk92.views.clients;
 
 import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
@@ -11,14 +12,9 @@ import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
-
 import io.mkolodziejczyk92.data.entity.Client;
 import io.mkolodziejczyk92.views.MainLayout;
 import jakarta.annotation.security.PermitAll;
-
-
-import java.util.Optional;
-import java.util.UUID;
 
 @PageTitle("Clients")
 @Route(value = "clients", layout = MainLayout.class)
@@ -53,7 +49,7 @@ public class ClientsView extends Div {
             filterDataProvider.setFilter(personFilter);
       
         });
-
+        grid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
         VerticalLayout layout = new VerticalLayout(searchField, grid);
         layout.setPadding(false);
         add(layout);

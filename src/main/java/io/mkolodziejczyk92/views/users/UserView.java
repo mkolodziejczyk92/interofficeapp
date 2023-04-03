@@ -5,18 +5,12 @@ import com.vaadin.collaborationengine.CollaborationBinder;
 import com.vaadin.collaborationengine.UserInfo;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.button.ButtonVariant;
-import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.notification.Notification;
-import com.vaadin.flow.component.notification.Notification.Position;
-import com.vaadin.flow.component.notification.NotificationVariant;
-import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
-import com.vaadin.flow.component.splitlayout.SplitLayout;
+import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
-import com.vaadin.flow.data.binder.ValidationException;
 import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.PageTitle;
@@ -27,7 +21,6 @@ import io.mkolodziejczyk92.data.service.UserService;
 import io.mkolodziejczyk92.views.MainLayout;
 import jakarta.annotation.security.RolesAllowed;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.orm.ObjectOptimisticLockingFailureException;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -72,13 +65,13 @@ public class UserView extends Div implements BeforeEnterObserver {
         UserInfo userInfo = new UserInfo(UUID.randomUUID().toString(), "Steve Lange");
 
         // Create UI
-        SplitLayout splitLayout = new SplitLayout();
+        VerticalLayout splitLayout = new VerticalLayout();
 
         avatarGroup = new CollaborationAvatarGroup(userInfo, null);
         avatarGroup.getStyle().set("visibility", "hidden");
 
-        createGridLayout(splitLayout);
-        createEditorLayout(splitLayout);
+        createGridLayout();
+
 
         add(splitLayout);
 
@@ -109,31 +102,6 @@ public class UserView extends Div implements BeforeEnterObserver {
 
         binder.bindInstanceFields(this);
 
-        cancel.addClickListener(e -> {
-            clearForm();
-            refreshGrid();
-        });
-
-        save.addClickListener(e -> {
-            try {
-                if (this.user == null) {
-                    this.user = new User();
-                }
-                binder.writeBean(this.user);
-                userService.update(this.user);
-                clearForm();
-                refreshGrid();
-                Notification.show("Data updated");
-                UI.getCurrent().navigate(UserView.class);
-            } catch (ObjectOptimisticLockingFailureException exception) {
-                Notification n = Notification.show(
-                        "Error updating the data. Somebody else has updated the record while you were making changes.");
-                n.setPosition(Position.MIDDLE);
-                n.addThemeVariants(NotificationVariant.LUMO_ERROR);
-            } catch (ValidationException validationException) {
-                Notification.show("Failed to update the data. Check again that all values are valid");
-            }
-        });
     }
 
     @Override
@@ -154,41 +122,10 @@ public class UserView extends Div implements BeforeEnterObserver {
         }
     }
 
-    private void createEditorLayout(SplitLayout splitLayout) {
-        Div editorLayoutDiv = new Div();
-        editorLayoutDiv.setClassName("editor-layout");
-
-        Div editorDiv = new Div();
-        editorDiv.setClassName("editor");
-        editorLayoutDiv.add(editorDiv);
-
-        FormLayout formLayout = new FormLayout();
-        username = new TextField("Username");
-        firstName = new TextField("First Name");
-        lastName = new TextField("Last Name");
-        email = new TextField("Email");
-        hashedPassword = new TextField("Password");
-        formLayout.add(username, firstName, lastName, email, hashedPassword);
-
-        editorDiv.add(avatarGroup, formLayout);
-        createButtonLayout(editorLayoutDiv);
-
-        splitLayout.addToSecondary(editorLayoutDiv);
-    }
-
-    private void createButtonLayout(Div editorLayoutDiv) {
-        HorizontalLayout buttonLayout = new HorizontalLayout();
-        buttonLayout.setClassName("button-layout");
-        cancel.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
-        save.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-        buttonLayout.add(save, cancel);
-        editorLayoutDiv.add(buttonLayout);
-    }
-
-    private void createGridLayout(SplitLayout splitLayout) {
+    private void createGridLayout() {
         Div wrapper = new Div();
         wrapper.setClassName("grid-wrapper");
-        splitLayout.addToPrimary(wrapper);
+        add(wrapper);
         wrapper.add(grid);
     }
 

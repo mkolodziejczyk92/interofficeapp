@@ -40,7 +40,6 @@ public class AddressesView extends Div {
         add(createTitle());
         add(createFormLayout());
         add(createButtonLayout());
-
         binder.bindInstanceFields(this);
 
         clearForm();

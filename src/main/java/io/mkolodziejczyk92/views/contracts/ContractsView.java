@@ -4,6 +4,7 @@ import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.checkbox.Checkbox;
+import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.dependency.Uses;
 import com.vaadin.flow.component.formlayout.FormLayout;
@@ -25,6 +26,7 @@ import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.spring.data.VaadinSpringDataHelpers;
+import io.mkolodziejczyk92.data.entity.Client;
 import io.mkolodziejczyk92.data.entity.Contract;
 import io.mkolodziejczyk92.data.service.ContractService;
 import io.mkolodziejczyk92.views.MainLayout;
@@ -46,8 +48,8 @@ public class ContractsView extends Div implements BeforeEnterObserver {
 
     private TextField number;
     private TextField commodityType;
-    private TextField amount;
-    private TextField client;
+    private TextField netAmount;
+    private ComboBox<Client> client;
     private DatePicker signatureDate;
     private DatePicker implementationDate;
     private Checkbox completed;
@@ -76,7 +78,7 @@ public class ContractsView extends Div implements BeforeEnterObserver {
         // Configure Grid
         grid.addColumn("number").setAutoWidth(true);
         grid.addColumn("commodityType").setAutoWidth(true);
-        grid.addColumn("amount").setAutoWidth(true);
+        grid.addColumn("netAmount").setAutoWidth(true);
         grid.addColumn("client").setAutoWidth(true);
         grid.addColumn("signatureDate").setAutoWidth(true);
         grid.addColumn("implementationDate").setAutoWidth(true);
@@ -167,12 +169,12 @@ public class ContractsView extends Div implements BeforeEnterObserver {
         FormLayout formLayout = new FormLayout();
         number = new TextField("Number");
         commodityType = new TextField("Commodity Type");
-        amount = new TextField("Amount");
-        client = new TextField("Client");
+        netAmount = new TextField("Net Amount");
+        client = new ComboBox<>("Client");
         signatureDate = new DatePicker("Signature Date");
         implementationDate = new DatePicker("Implementation Date");
         completed = new Checkbox("Completed");
-        formLayout.add(number, commodityType, amount, client, signatureDate, implementationDate, completed);
+        formLayout.add(number, commodityType, netAmount, client, signatureDate, implementationDate, completed);
 
         editorDiv.add(formLayout);
         createButtonLayout(editorLayoutDiv);

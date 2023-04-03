@@ -18,12 +18,14 @@ public class Purchase extends AbstractEntity {
 
 
     private String netAmount;
-    private String client;
     private String contractNumber;
+
+    @ManyToOne
+    @JoinColumn(name = "client_id")
+    private Client client;
 
     @Enumerated(EnumType.STRING)
     private EOrderStatus status;
-
 
     private String supplierOrderNumber;
     private String comment;

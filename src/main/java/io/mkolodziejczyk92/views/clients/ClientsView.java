@@ -1,6 +1,7 @@
 package io.mkolodziejczyk92.views.clients;
 
 import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
@@ -53,7 +54,7 @@ public class ClientsView extends Div {
             filterDataProvider.setFilter(personFilter);
       
         });
-
+        grid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
         VerticalLayout layout = new VerticalLayout(searchField, grid);
         layout.setPadding(false);
         add(layout);

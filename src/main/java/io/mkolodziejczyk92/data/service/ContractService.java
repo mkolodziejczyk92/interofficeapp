@@ -1,6 +1,8 @@
 package io.mkolodziejczyk92.data.service;
 
 import io.mkolodziejczyk92.data.entity.Contract;
+
+import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -22,6 +24,10 @@ public class ContractService {
 
     public Contract update(Contract entity) {
         return repository.save(entity);
+    }
+
+    public List<Contract> contractList(){
+        return repository.findAll();
     }
 
     public void delete(Long id) {

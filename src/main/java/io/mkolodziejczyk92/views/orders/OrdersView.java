@@ -21,6 +21,7 @@ import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.spring.data.VaadinSpringDataHelpers;
+import io.mkolodziejczyk92.data.entity.Client;
 import io.mkolodziejczyk92.data.entity.Purchase;
 import io.mkolodziejczyk92.data.enums.ECommodityType;
 import io.mkolodziejczyk92.data.enums.EOrderStatus;
@@ -43,7 +44,7 @@ public class OrdersView extends Div implements BeforeEnterObserver {
 
     private ComboBox<ECommodityType> commodityType;
     private TextField netAmount;
-    private TextField client;
+    private ComboBox<Client> client;
     private TextField contractNumber;
     private ComboBox<EOrderStatus> status;
     private TextField supplier;
@@ -67,7 +68,7 @@ public class OrdersView extends Div implements BeforeEnterObserver {
         SplitLayout splitLayout = new SplitLayout();
 
         createGridLayout(splitLayout);
-        createEditorLayout(splitLayout);
+//        createEditorLayout(splitLayout);
 
         add(splitLayout);
 
@@ -162,7 +163,7 @@ public class OrdersView extends Div implements BeforeEnterObserver {
         commodityType.setItemLabelGenerator(s->s.name());
         commodityType.setItems(ECommodityType.values());
         netAmount = new TextField("netAmount");
-        client = new TextField("Client");
+        client = new ComboBox<>("Client");
         contractNumber = new TextField("Contract Number");
         status = new ComboBox<>("Status");
         status.setItemLabelGenerator(s->s.name());

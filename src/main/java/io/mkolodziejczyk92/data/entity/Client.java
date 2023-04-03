@@ -38,4 +38,7 @@ public class Client extends AbstractEntity {
     @OneToMany(mappedBy = "client")
     private Set<Purchase> allPurchases;
 
+    public String getFullName() {
+        return firstName + " " + lastName;
+    }
 }

@@ -1,7 +1,10 @@
 package io.mkolodziejczyk92.data.service;
 
 import io.mkolodziejczyk92.data.entity.Client;
+
+import java.util.List;
 import java.util.Optional;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -10,7 +13,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class ClientService {
 
-    private final ClientRepository repository;
+    private static ClientRepository repository;
 
     public ClientService(ClientRepository repository) {
         this.repository = repository;
@@ -40,4 +43,8 @@ public class ClientService {
         return (int) repository.count();
     }
 
+    public static List<Client> listOfClients(){ return repository.findAll();}
+
 }
+
+

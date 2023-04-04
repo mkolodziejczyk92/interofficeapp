@@ -29,7 +29,4 @@ public class Contract extends AbstractEntity {
     @JoinColumn(name = "client_id")
     private Client client;
 
-    public String getClientFullName(){
-        return client.getFullName();
-    }
 }

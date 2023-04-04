@@ -47,7 +47,7 @@ public class ClientsView extends Div {
         searchField.addValueChangeListener(e -> {
             personFilter.setSearchTerm(e.getValue());
             filterDataProvider.setFilter(personFilter);
-      
+
         });
         grid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
         VerticalLayout layout = new VerticalLayout(searchField, grid);

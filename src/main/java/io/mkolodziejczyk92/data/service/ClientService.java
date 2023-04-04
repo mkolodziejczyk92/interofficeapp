@@ -43,7 +43,7 @@ public class ClientService {
         return (int) repository.count();
     }
 
-    public static List<Client> listOfClients(){ return repository.findAll();}
+    public static List<Client> allClients(){ return repository.findAll();}
 
 }
 

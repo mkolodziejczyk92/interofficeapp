@@ -2,6 +2,8 @@ package io.mkolodziejczyk92.views;
 
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.html.Label;
+import com.vaadin.flow.component.icon.Icon;
+import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.component.textfield.TextFieldVariant;
@@ -16,13 +18,14 @@ public class FilterHeader {
     }
 
     @NotNull
-    public static Component getComponent(String labelText, Consumer<String> filterChangeConsumer) {
-        Label label = new Label(labelText);
-        label.getStyle().set("padding-top", "var(--lumo-space-m)")
-                .set("font-size", "var(--lumo-font-size-xs)");
+    public static Component getComponent( Consumer<String> filterChangeConsumer) {
+        Label label = new Label();
+        label.getStyle().set("font-size", "var(--lumo-font-size-xs)");
         TextField textField = new TextField();
         textField.setValueChangeMode(ValueChangeMode.EAGER);
         textField.setClearButtonVisible(true);
+        textField.setPlaceholder("Search");
+        textField.setPrefixComponent(new Icon(VaadinIcon.SEARCH));
         textField.addThemeVariants(TextFieldVariant.LUMO_SMALL);
         textField.setWidthFull();
         textField.getStyle().set("max-width", "100%");

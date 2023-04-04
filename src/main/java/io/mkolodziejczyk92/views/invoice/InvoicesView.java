@@ -3,14 +3,18 @@ package io.mkolodziejczyk92.views.invoice;
 
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.dependency.Uses;
+import com.vaadin.flow.component.grid.ColumnTextAlign;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.grid.HeaderRow;
+import com.vaadin.flow.component.grid.contextmenu.GridContextMenu;
 import com.vaadin.flow.component.grid.dataview.GridListDataView;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.icon.Icon;
+import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import io.mkolodziejczyk92.data.entity.Client;
 import io.mkolodziejczyk92.data.entity.Invoice;
 import io.mkolodziejczyk92.data.service.InvoiceService;
 import io.mkolodziejczyk92.views.MainLayout;
@@ -46,9 +50,29 @@ public class InvoicesView extends Div {
         grid.addColumn(Invoice::getAmount).setAutoWidth(true).setHeader("Amount");
         grid.addColumn(Invoice::getIssueDate).setAutoWidth(true).setHeader("Issue Date");
         grid.addColumn(Invoice::getPaymentTime).setAutoWidth(true).setHeader("Payment Time");
-        grid.addColumn(Invoice::isPaid).setAutoWidth(true).setHeader("Paid");
+        grid.addComponentColumn(invoice -> {
+            Icon icon;
+            if(invoice.isPaid()){
+                icon = VaadinIcon.CHECK_CIRCLE.create();
+                icon.setColor("green");
+            } else {
+                icon = VaadinIcon.CLOSE_CIRCLE.create();
+                icon.setColor("red");
+            } return icon;
+        }).setAutoWidth(true).setHeader("Paid").setTextAlign(ColumnTextAlign.CENTER);
+
         grid.addColumn(Invoice::getType).setAutoWidth(true).setHeader("Type");
         grid.addColumn(Invoice::getPaymentMethod).setAutoWidth(true).setHeader("Payment Method");
+
+
+        GridContextMenu<Invoice> menu = grid.addContextMenu();
+
+        menu.addItem("View", event -> {
+        });
+        menu.addItem("Edit", event -> {
+        });
+        menu.addItem("Delete", event -> {
+        });
 
 
         grid.addThemeVariants(GridVariant.LUMO_NO_BORDER);

@@ -2,6 +2,7 @@ package io.mkolodziejczyk92.views.address;
 
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
+import com.vaadin.flow.component.grid.contextmenu.GridContextMenu;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
@@ -12,6 +13,7 @@ import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import io.mkolodziejczyk92.data.entity.Address;
+import io.mkolodziejczyk92.data.entity.Client;
 import io.mkolodziejczyk92.views.MainLayout;
 import jakarta.annotation.security.PermitAll;
 
@@ -39,6 +41,14 @@ public class AddressesView extends Div {
 
         grid.setItems(filterDataProvider);
 
+        GridContextMenu<Address> menu = grid.addContextMenu();
+
+        menu.addItem("View", event -> {
+        });
+        menu.addItem("Edit", event -> {
+        });
+        menu.addItem("Delete", event -> {
+        });
 
         TextField searchField = new TextField();
         searchField.setWidth("50%");

@@ -2,6 +2,7 @@ package io.mkolodziejczyk92.views.clients;
 
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
+import com.vaadin.flow.component.grid.contextmenu.GridContextMenu;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
@@ -38,6 +39,14 @@ public class ClientsView extends Div {
         grid.addColumn(Client::getEmail, "email").setHeader("Email");
         grid.setItems(filterDataProvider);
 
+        GridContextMenu<Client> menu = grid.addContextMenu();
+
+        menu.addItem("View", event -> {
+        });
+        menu.addItem("Edit", event -> {
+        });
+        menu.addItem("Delete", event -> {
+        });
 
         TextField searchField = new TextField();
         searchField.setWidth("50%");

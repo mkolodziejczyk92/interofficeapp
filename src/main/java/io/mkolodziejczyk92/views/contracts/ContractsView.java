@@ -2,14 +2,18 @@ package io.mkolodziejczyk92.views.contracts;
 
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.dependency.Uses;
+import com.vaadin.flow.component.grid.ColumnTextAlign;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.grid.HeaderRow;
+import com.vaadin.flow.component.grid.contextmenu.GridContextMenu;
 import com.vaadin.flow.component.grid.dataview.GridListDataView;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.icon.Icon;
+import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import io.mkolodziejczyk92.data.entity.Client;
 import io.mkolodziejczyk92.data.entity.Contract;
 import io.mkolodziejczyk92.data.service.ContractService;
 import io.mkolodziejczyk92.views.MainLayout;
@@ -42,14 +46,34 @@ public class ContractsView extends Div {
         grid.addColumn(Contract::getNetAmount).setAutoWidth(true).setHeader("Net Amount");
         grid.addColumn(Contract::getSignatureDate).setAutoWidth(true).setHeader("Signature Date");
         grid.addColumn(Contract::getPlannedImplementationDate).setAutoWidth(true).setHeader("Planned Date");
-        grid.addColumn(Contract::isCompleted).setAutoWidth(true).setHeader("Completed");
+        grid.addComponentColumn(contract -> {
+            Icon icon;
+            if(contract.isCompleted()){
+                icon = VaadinIcon.CHECK_CIRCLE.create();
+                icon.setColor("green");
+            } else {
+                icon = VaadinIcon.CLOSE_CIRCLE.create();
+                icon.setColor("red");
+            } return icon;
+                }).setAutoWidth(true).setHeader("Completed").setTextAlign(ColumnTextAlign.CENTER);
+
         grid.addColumn(Contract::getCommodityType).setAutoWidth(true).setHeader("Commodity Type");
 
         grid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
+
+        GridContextMenu<Contract> menu = grid.addContextMenu();
+
+        menu.addItem("View", event -> {
+        });
+        menu.addItem("Edit", event -> {
+        });
+        menu.addItem("Delete", event -> {
+        });
+
+
         List<Contract> contracts = contractService.contractList();
         GridListDataView<Contract> dataView = grid.setItems(contracts);
         ContractsFilter contractsFilter = new ContractsFilter(dataView);
-
         grid.getHeaderRows().clear();
         HeaderRow headerRow = grid.appendHeaderRow();
 

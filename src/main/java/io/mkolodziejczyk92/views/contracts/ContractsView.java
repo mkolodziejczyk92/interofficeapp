@@ -34,25 +34,16 @@ public class ContractsView extends Div {
         this.contractService = contractService;
 
         Grid.Column<Contract> clientFullNameColumn =
-                grid.addColumn(contract -> contract.getClient().getFullName()).setAutoWidth(true);
+                grid.addColumn(contract -> contract.getClient().getFullName()).setAutoWidth(true).setHeader("Client");
 
         Grid.Column<Contract> contractNumberColumn =
-                grid.addColumn(Contract::getNumber).setAutoWidth(true);
+                grid.addColumn(Contract::getNumber).setAutoWidth(true).setHeader("Contract Number");
 
-        Grid.Column<Contract> netAmountColumn =
-                grid.addColumn(Contract::getNetAmount).setAutoWidth(true);
-
-        Grid.Column<Contract> signatureDateColumn =
-                grid.addColumn(Contract::getSignatureDate).setAutoWidth(true);
-
-        Grid.Column<Contract> plannedImplementationDateColumn =
-                grid.addColumn(Contract::getPlannedImplementationDate).setAutoWidth(true);
-
-        Grid.Column<Contract> completedColumn =
-                grid.addColumn(Contract::isCompleted).setAutoWidth(true);
-
-        Grid.Column<Contract> commodityTypeColumn =
-                grid.addColumn(Contract::getCommodityType).setAutoWidth(true);
+        grid.addColumn(Contract::getNetAmount).setAutoWidth(true).setHeader("Net Amount");
+        grid.addColumn(Contract::getSignatureDate).setAutoWidth(true).setHeader("Signature Date");
+        grid.addColumn(Contract::getPlannedImplementationDate).setAutoWidth(true).setHeader("Planned Date");
+        grid.addColumn(Contract::isCompleted).setAutoWidth(true).setHeader("Completed");
+        grid.addColumn(Contract::getCommodityType).setAutoWidth(true).setHeader("Commodity Type");
 
         grid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
         List<Contract> contracts = contractService.contractList();
@@ -63,23 +54,16 @@ public class ContractsView extends Div {
         HeaderRow headerRow = grid.appendHeaderRow();
 
         headerRow.getCell(clientFullNameColumn).setComponent(
-                createFilterHeader("Client", contractsFilter::setClientFullName));
+                createFilterHeader(contractsFilter::setClientFullName));
         headerRow.getCell(contractNumberColumn).setComponent(
-                createFilterHeader("Contract Number", contractsFilter::setContractNumber));
-        headerRow.getCell(netAmountColumn).setText("Net Amount");
-        headerRow.getCell(completedColumn).setText("Completed");
-        headerRow.getCell(signatureDateColumn).setText("Signature Date");
-        headerRow.getCell(plannedImplementationDateColumn).setText("Planned Date");
-        headerRow.getCell(commodityTypeColumn).setText("Commodity Type");
-
-
+                createFilterHeader(contractsFilter::setContractNumber));
 
         add(grid);
     }
 
-    private static Component createFilterHeader(String labelText,
-                                                Consumer<String> filterChangeConsumer) {
-        return getComponent(labelText, filterChangeConsumer);
+    private static Component createFilterHeader(
+            Consumer<String> filterChangeConsumer) {
+        return getComponent(filterChangeConsumer);
     }
 
     private static class ContractsFilter {
@@ -103,7 +87,6 @@ public class ContractsView extends Div {
             this.clientFullName = clientFullName;
             this.dataView.refreshAll();
         }
-
 
 
         public boolean test(Contract contract) {

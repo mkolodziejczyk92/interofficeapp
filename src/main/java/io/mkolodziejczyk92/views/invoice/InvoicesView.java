@@ -35,34 +35,20 @@ public class InvoicesView extends Div {
         this.invoiceService = invoiceService;
 
         Grid.Column<Invoice> invoiceNumberColumn =
-                grid.addColumn(Invoice::getNumber).setAutoWidth(true);
+                grid.addColumn(Invoice::getNumber).setAutoWidth(true).setHeader("Invoice Number");
 
         Grid.Column<Invoice> clientFullNameColumn =
-                grid.addColumn(invoice -> invoice.getClient().getFullName()).setAutoWidth(true);
+                grid.addColumn(invoice -> invoice.getClient().getFullName()).setAutoWidth(true).setHeader("Client");
 
         Grid.Column<Invoice> contractNumberColumn =
-                grid.addColumn(invoice -> invoice.getContract().getNumber()).setAutoWidth(true);
+                grid.addColumn(invoice -> invoice.getContract().getNumber()).setAutoWidth(true).setHeader("Contract Number");
 
-
-        Grid.Column<Invoice> amountColumn =
-                grid.addColumn(Invoice::getAmount).setAutoWidth(true);
-
-        Grid.Column<Invoice> issueDateColumn =
-                grid.addColumn(Invoice::getIssueDate).setAutoWidth(true);
-
-        Grid.Column<Invoice> paymentTimeColumn =
-        grid.addColumn(Invoice::getPaymentTime).setAutoWidth(true);
-
-        Grid.Column<Invoice> isPaidColumn =
-                grid.addColumn(Invoice::isPaid).setAutoWidth(true);
-
-        Grid.Column<Invoice> invoiceTypeColumn =
-                grid.addColumn(Invoice::getType).setAutoWidth(true);
-
-        Grid.Column<Invoice> paymentMethodColumn =
-                grid.addColumn(Invoice::getPaymentMethod).setAutoWidth(true);
-
-
+        grid.addColumn(Invoice::getAmount).setAutoWidth(true).setHeader("Amount");
+        grid.addColumn(Invoice::getIssueDate).setAutoWidth(true).setHeader("Issue Date");
+        grid.addColumn(Invoice::getPaymentTime).setAutoWidth(true).setHeader("Payment Time");
+        grid.addColumn(Invoice::isPaid).setAutoWidth(true).setHeader("Paid");
+        grid.addColumn(Invoice::getType).setAutoWidth(true).setHeader("Type");
+        grid.addColumn(Invoice::getPaymentMethod).setAutoWidth(true).setHeader("Payment Method");
 
 
         grid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
@@ -75,25 +61,18 @@ public class InvoicesView extends Div {
         HeaderRow headerRow = grid.appendHeaderRow();
 
         headerRow.getCell(invoiceNumberColumn).setComponent(
-                createFilterHeader("Invoice Number", invoicesFilter::setInvoiceNumber));
+                createFilterHeader(invoicesFilter::setInvoiceNumber));
         headerRow.getCell(clientFullNameColumn).setComponent(
-                createFilterHeader("Client", invoicesFilter::setClientFullName));
+                createFilterHeader(invoicesFilter::setClientFullName));
         headerRow.getCell(contractNumberColumn).setComponent(
-                createFilterHeader("Contract Number", invoicesFilter::setContractNumber));
-        headerRow.getCell(amountColumn).setText("Amount");
-        headerRow.getCell(issueDateColumn).setText("Issue Date");
-        headerRow.getCell(paymentTimeColumn).setText("Payment Time");
-        headerRow.getCell(isPaidColumn).setText("Paid");
-        headerRow.getCell(invoiceTypeColumn).setText("Type");
-        headerRow.getCell(paymentMethodColumn).setText("Payment Method");
+                createFilterHeader(invoicesFilter::setContractNumber));
 
 
         add(grid);
     }
 
-    private static Component createFilterHeader(String labelText,
-                                                Consumer<String> filterChangeConsumer) {
-        return getComponent(labelText, filterChangeConsumer);
+    private static Component createFilterHeader(Consumer<String> filterChangeConsumer) {
+        return getComponent(filterChangeConsumer);
     }
 
     private static class InvoicesFilter {
@@ -120,7 +99,7 @@ public class InvoicesView extends Div {
             this.dataView.refreshAll();
         }
 
-        public void setContractNumber(String contractNumber){
+        public void setContractNumber(String contractNumber) {
             this.contractNumber = contractNumber;
             this.dataView.refreshAll();
         }

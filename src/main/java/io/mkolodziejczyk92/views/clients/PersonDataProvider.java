@@ -15,7 +15,7 @@ import java.util.stream.Stream;
 
 public class PersonDataProvider extends AbstractBackEndDataProvider<Client, PersonFilter> {
 
-    final List<Client> DATABASE = new ArrayList<>(ClientService.listOfClients());
+    final List<Client> DATABASE = new ArrayList<>(ClientService.allClients());
 
     @Override
     protected Stream<Client> fetchFromBackEnd(Query<Client, PersonFilter> query) {

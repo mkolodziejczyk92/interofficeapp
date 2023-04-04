@@ -1,6 +1,8 @@
 package io.mkolodziejczyk92.data.service;
 
 import io.mkolodziejczyk92.data.entity.Address;
+
+import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -10,7 +12,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class AddressService {
 
-    private final AddressRepository repository;
+    private static AddressRepository repository;
 
     public AddressService(AddressRepository repository) {
         this.repository = repository;
@@ -39,5 +41,7 @@ public class AddressService {
     public int count() {
         return (int) repository.count();
     }
+
+    public static List<Address> allAddresses(){ return repository.findAll();}
 
 }

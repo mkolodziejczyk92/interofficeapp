@@ -1,82 +1,60 @@
 package io.mkolodziejczyk92.views.address;
 
-import com.vaadin.flow.component.Component;
-import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.button.ButtonVariant;
-import com.vaadin.flow.component.combobox.ComboBox;
-import com.vaadin.flow.component.formlayout.FormLayout;
+import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.html.Div;
-import com.vaadin.flow.component.html.H3;
-import com.vaadin.flow.component.notification.Notification;
-import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
+import com.vaadin.flow.component.icon.Icon;
+import com.vaadin.flow.component.icon.VaadinIcon;
+import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
-import com.vaadin.flow.data.binder.Binder;
+import com.vaadin.flow.data.provider.ConfigurableFilterDataProvider;
+import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import io.mkolodziejczyk92.data.entity.Address;
-import io.mkolodziejczyk92.data.service.AddressService;
 import io.mkolodziejczyk92.views.MainLayout;
 import jakarta.annotation.security.PermitAll;
 
-@PageTitle("Address")
+@PageTitle("Addresses")
 @Route(value = "address", layout = MainLayout.class)
 @PermitAll
 public class AddressesView extends Div {
+    private AddressFilter addressFilter = new AddressFilter();
 
-    private TextField street = new TextField("Street address");
-    private TextField postalCode = new TextField("Postal code");
-    private TextField city = new TextField("City");
-    private ComboBox<String> state = new ComboBox<>("State");
-    private ComboBox<String> country = new ComboBox<>("Country");
+    private AddressDataProvider addressDataProvider = new AddressDataProvider();
 
-    private Button cancel = new Button("Cancel");
-    private Button save = new Button("Save");
+    private ConfigurableFilterDataProvider<Address, Void, AddressFilter> filterDataProvider = addressDataProvider
+            .withConfigurableFilter();
 
-    private Binder<Address> binder = new Binder<>(Address.class);
+    public AddressesView() {
+        Grid<Address> grid = new Grid<>();
+        grid.addColumn(address -> address.getClient().getFullName(), "clientFullName").setHeader("Client");
+        grid.addColumn(Address::getHouseNumber, "houseNumber").setHeader("House number");
+        grid.addColumn(Address::getApartmentNumber, "apartmentNumber").setHeader("apartmentNumber");
+        grid.addColumn(Address::getZipCode, "zipCode").setHeader("Zip code");
+        grid.addColumn(Address::getCity, "city").setHeader("City");
+        grid.addColumn(Address::getVoivodeship, "voivodeship").setHeader("Voivodeship");
+        grid.addColumn(Address::getPlotNumber, "plotNumber").setHeader("Plot number");
+        grid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
 
-    public AddressesView(AddressService addressService) {
-        addClassName("address-view");
+        grid.setItems(filterDataProvider);
 
-        add(createTitle());
-        add(createFormLayout());
-        add(createButtonLayout());
-        binder.bindInstanceFields(this);
 
-        clearForm();
+        TextField searchField = new TextField();
+        searchField.setWidth("50%");
+        searchField.setPlaceholder("Search");
+        searchField.setPrefixComponent(new Icon(VaadinIcon.SEARCH));
+        searchField.setValueChangeMode(ValueChangeMode.EAGER);
+        searchField.addValueChangeListener(e -> {
+            addressFilter.setSearchTerm(e.getValue());
+            filterDataProvider.setFilter(addressFilter);
 
-        cancel.addClickListener(e -> clearForm());
-        save.addClickListener(e -> {
-            addressService.update(binder.getBean());
-            Notification.show(binder.getBean().getClass().getSimpleName() + " stored.");
-            clearForm();
         });
-    }
 
-    private Component createTitle() {
-        return new H3("Address");
-    }
-
-    private Component createFormLayout() {
-        FormLayout formLayout = new FormLayout();
-        formLayout.add(street, 2);
-        postalCode.setAllowedCharPattern("\\d");
-        country.setItems("Country 1", "Country 2", "Country 3");
-        state.setItems("State A", "State B", "State C", "State D");
-        formLayout.add(postalCode, city, state, country);
-        return formLayout;
-    }
-
-    private Component createButtonLayout() {
-        HorizontalLayout buttonLayout = new HorizontalLayout();
-        buttonLayout.addClassName("button-layout");
-        save.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-        buttonLayout.add(save);
-        buttonLayout.add(cancel);
-        return buttonLayout;
-    }
-
-    private void clearForm() {
-        this.binder.setBean(new Address());
+        VerticalLayout layout = new VerticalLayout(searchField, grid);
+        layout.setPadding(false);
+        add(layout);
     }
 
 }
+

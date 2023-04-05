@@ -51,7 +51,7 @@ public class AddressesView extends Div {
         });
 
         TextField searchField = new TextField();
-        searchField.setWidth("50%");
+        searchField.setWidth("30%");
         searchField.setPlaceholder("Search");
         searchField.setPrefixComponent(new Icon(VaadinIcon.SEARCH));
         searchField.setValueChangeMode(ValueChangeMode.EAGER);

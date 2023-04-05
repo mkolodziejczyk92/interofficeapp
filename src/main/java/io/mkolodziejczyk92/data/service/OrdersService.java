@@ -1,6 +1,8 @@
 package io.mkolodziejczyk92.data.service;
 
 import io.mkolodziejczyk92.data.entity.Purchase;
+
+import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -40,4 +42,7 @@ public class OrdersService {
         return (int) repository.count();
     }
 
+    public List<Purchase> purchasesList() {
+        return repository.findAll();
+    }
 }

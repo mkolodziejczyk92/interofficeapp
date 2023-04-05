@@ -88,14 +88,19 @@ public class MainLayout extends AppLayout {
             nav.addItem(new AppNavItem("Invoices", InvoicesView.class, LineAwesomeIcon.DOLLAR_SIGN_SOLID.create()));
 
         }
-        if (accessChecker.hasAccess(UserView.class)) {
-            nav.addItem(new AppNavItem("Users", UserView.class, LineAwesomeIcon.USER_CIRCLE_SOLID.create()));
-
-        }
         if (accessChecker.hasAccess(AddressesView.class)) {
             nav.addItem(new AppNavItem("Addresses", AddressesView.class, LineAwesomeIcon.MAP_MARKER_SOLID.create()));
 
         }
+        if (accessChecker.hasAccess(NewAddressFormView.class)) {
+            nav.addItem(new AppNavItem("New Address", NewAddressFormView.class, LineAwesomeIcon.MAP_MARKER_SOLID.create()));
+
+        }
+        if (accessChecker.hasAccess(UserView.class)) {
+            nav.addItem(new AppNavItem("Users", UserView.class, LineAwesomeIcon.USER_CIRCLE_SOLID.create()));
+
+        }
+
 
         return nav;
     }

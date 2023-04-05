@@ -1,6 +1,8 @@
 package io.mkolodziejczyk92.data.entity;
 
 import io.mkolodziejczyk92.data.enums.EAddressType;
+import io.mkolodziejczyk92.data.enums.ECountry;
+import io.mkolodziejczyk92.data.enums.EVoivodeship;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -19,9 +21,14 @@ public class Address extends AbstractEntity {
     private String apartmentNumber;
     private String zipCode;
     private String city;
-    private String voivodeship;
+    private String municipality;
     private String plotNumber;
-    private String country;
+
+    @Enumerated(EnumType.STRING)
+    private ECountry country;
+
+    @Enumerated(EnumType.STRING)
+    private EVoivodeship voivodeship;
 
     @Enumerated(EnumType.STRING)
     private EAddressType addressType;

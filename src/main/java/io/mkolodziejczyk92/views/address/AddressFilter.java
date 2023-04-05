@@ -41,7 +41,7 @@ public class AddressFilter {
             matchesCity = matches(address.getCity(), searchTerm);
         }
         if (Optional.ofNullable(address.getVoivodeship()).isPresent()) {
-            matchesVoivodeship = matches(address.getVoivodeship(), searchTerm);
+            matchesVoivodeship = matches(String.valueOf(address.getVoivodeship()), searchTerm); // POPRAWIC PARSTOSTRING NA WARTOSC Z ENUMA!!!
         }
         if (Optional.ofNullable(address.getPlotNumber()).isPresent()) {
             matchesPlotNumber = matches(address.getPlotNumber(), searchTerm);

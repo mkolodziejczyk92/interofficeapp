@@ -17,6 +17,6 @@ public class Supplier extends AbstractEntity {
     private String nameOfCompany;
     private String nip;
 
-    @OneToMany(mappedBy = "supplier")
+    @OneToMany(mappedBy = "supplier", fetch = FetchType.EAGER)
     private Set<Purchase> purchases;
 }

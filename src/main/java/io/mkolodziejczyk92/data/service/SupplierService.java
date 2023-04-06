@@ -2,7 +2,11 @@ package io.mkolodziejczyk92.data.service;
 
 
 import io.mkolodziejczyk92.data.entity.Supplier;
+
+import java.util.List;
 import java.util.Optional;
+
+import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -41,4 +45,7 @@ public class SupplierService {
         return (int) repository.count();
     }
 
+    public List<Supplier> supplierList() {
+        return repository.findAll();
+    }
 }

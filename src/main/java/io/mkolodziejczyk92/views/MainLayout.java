@@ -20,6 +20,7 @@ import io.mkolodziejczyk92.views.clients.ClientsView;
 import io.mkolodziejczyk92.views.contracts.ContractsView;
 import io.mkolodziejczyk92.views.invoice.InvoicesView;
 import io.mkolodziejczyk92.views.orders.OrdersView;
+import io.mkolodziejczyk92.views.supplier.SuppliersView;
 import io.mkolodziejczyk92.views.users.UserView;
 import org.vaadin.lineawesome.LineAwesomeIcon;
 
@@ -67,8 +68,7 @@ public class MainLayout extends AppLayout {
 
     }
     private AppNav createNavigation() {
-        // AppNav is not yet an official component.
-        // For documentation, visit https://github.com/vaadin/vcf-nav#readme
+
         AppNav nav = new AppNav();
 
         if (accessChecker.hasAccess(ClientsView.class)) {
@@ -99,6 +99,9 @@ public class MainLayout extends AppLayout {
         if (accessChecker.hasAccess(UserView.class)) {
             nav.addItem(new AppNavItem("Users", UserView.class, LineAwesomeIcon.USER_CIRCLE_SOLID.create()));
 
+        }
+        if(accessChecker.hasAccess(SuppliersView.class)){
+            nav.addItem(new AppNavItem("Suppliers", SuppliersView.class, LineAwesomeIcon.TRUCK_SOLID.create()));
         }
 
 

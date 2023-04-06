@@ -45,9 +45,6 @@ public class OrdersView extends Div {
         grid.addColumn("status").setAutoWidth(true);
         grid.addColumn("supplierOrderNumber").setAutoWidth(true);
         grid.addColumn("comment").setAutoWidth(true);
-        grid.setItems(query -> ordersService.list(
-                PageRequest.of(query.getPage(), query.getPageSize(), VaadinSpringDataHelpers.toSpringDataSort(query)))
-                .stream());
         grid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
 
       add(grid);

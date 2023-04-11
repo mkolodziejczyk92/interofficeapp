@@ -1,11 +1,17 @@
 package io.mkolodziejczyk92.views.address;
 
+import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.UI;
+import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.grid.contextmenu.GridContextMenu;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
+import com.vaadin.flow.component.orderedlayout.FlexComponent;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.provider.ConfigurableFilterDataProvider;
@@ -13,7 +19,6 @@ import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import io.mkolodziejczyk92.data.entity.Address;
-import io.mkolodziejczyk92.data.entity.Client;
 import io.mkolodziejczyk92.views.MainLayout;
 import jakarta.annotation.security.PermitAll;
 
@@ -27,8 +32,13 @@ public class AddressesView extends Div {
 
     private ConfigurableFilterDataProvider<Address, Void, AddressFilter> filterDataProvider = addressDataProvider
             .withConfigurableFilter();
+    Button newAddressButton = new Button("Add new address");
 
     public AddressesView() {
+        newAddressButton
+                .addClickListener(e -> UI.getCurrent().navigate(NewAddressFormView.class));
+
+
         Grid<Address> grid = new Grid<>();
         grid.addColumn(address -> address.getClient().getFullName(), "clientFullName").setHeader("Client");
         grid.addColumn(Address::getHouseNumber, "houseNumber").setHeader("House number");
@@ -50,7 +60,18 @@ public class AddressesView extends Div {
         menu.addItem("Delete", event -> {
         });
 
+        add(createButtonLayout());
+        add(grid);
+    }
+
+    private Component createButtonLayout() {
+        HorizontalLayout buttonLayout = new HorizontalLayout();
+        buttonLayout.addClassName("button-layout");
+        newAddressButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+
+
         TextField searchField = new TextField();
+        searchField.getStyle().set("padding-left", "15px");
         searchField.setWidth("30%");
         searchField.setPlaceholder("Search");
         searchField.setPrefixComponent(new Icon(VaadinIcon.SEARCH));
@@ -61,9 +82,11 @@ public class AddressesView extends Div {
 
         });
 
-        VerticalLayout layout = new VerticalLayout(searchField, grid);
-        layout.setPadding(false);
-        add(layout);
+        buttonLayout.add(searchField, newAddressButton);
+        newAddressButton.getStyle().set("margin-left", "auto");
+        newAddressButton.getStyle().set("padding-right", "15px");
+
+        return buttonLayout;
     }
 
 }

@@ -49,7 +49,8 @@ public class ClientsView extends Div {
         });
 
         TextField searchField = new TextField();
-        searchField.setWidth("50%");
+        searchField.getStyle().set("padding-left", "15px");
+        searchField.setWidth("30%");
         searchField.setPlaceholder("Search");
         searchField.setPrefixComponent(new Icon(VaadinIcon.SEARCH));
         searchField.setValueChangeMode(ValueChangeMode.EAGER);

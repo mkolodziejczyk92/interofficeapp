@@ -1,20 +1,26 @@
 package io.mkolodziejczyk92.views.clients;
 
+import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.UI;
+import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.grid.contextmenu.GridContextMenu;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
-import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.provider.ConfigurableFilterDataProvider;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
+import io.mkolodziejczyk92.data.controllers.ClientViewController;
 import io.mkolodziejczyk92.data.entity.Client;
 import io.mkolodziejczyk92.views.MainLayout;
+import io.mkolodziejczyk92.views.address.NewAddressFormView;
 import jakarta.annotation.security.PermitAll;
 
 @PageTitle("Clients")
@@ -23,7 +29,7 @@ import jakarta.annotation.security.PermitAll;
 @PermitAll
 public class ClientsView extends Div {
 
-
+    private final ClientViewController clientViewController;
     private PersonFilter personFilter = new PersonFilter();
 
     private PersonDataProvider dataProvider = new PersonDataProvider();
@@ -31,13 +37,20 @@ public class ClientsView extends Div {
     private ConfigurableFilterDataProvider<Client, Void, PersonFilter> filterDataProvider = dataProvider
             .withConfigurableFilter();
 
-    public ClientsView() {
+    private Button newClientButton = new Button("Add new client");
+
+    public ClientsView(ClientViewController clientViewController) {
+        this.clientViewController = clientViewController;
+        clientViewController.initView(this);
+
+
         Grid<Client> grid = new Grid<>();
         grid.addColumn(Client::getFullName, "fullName").setHeader("Full Name");
         grid.addColumn(Client::getPhoneNumber, "phoneNumber").setHeader("Phone number");
         grid.addColumn(Client::getNip, "nip").setHeader("NIP");
         grid.addColumn(Client::getEmail, "email").setHeader("Email");
         grid.setItems(filterDataProvider);
+        grid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
 
         GridContextMenu<Client> menu = grid.addContextMenu();
 
@@ -47,6 +60,13 @@ public class ClientsView extends Div {
         });
         menu.addItem("Delete", event -> {
         });
+
+        add(createTopButtonLayout());
+        add(grid);
+    }
+
+    private Component createTopButtonLayout(){
+        HorizontalLayout topButtonLayout = new HorizontalLayout();
 
         TextField searchField = new TextField();
         searchField.getStyle().set("padding-left", "15px");
@@ -59,10 +79,15 @@ public class ClientsView extends Div {
             filterDataProvider.setFilter(personFilter);
 
         });
-        grid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
-        VerticalLayout layout = new VerticalLayout(searchField, grid);
-        layout.setPadding(false);
-        add(layout);
+
+        newClientButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+        newClientButton.getStyle().set("margin-left", "auto");
+
+        newClientButton
+                .addClickListener(e -> UI.getCurrent().navigate(NewClientFormView.class));
+        topButtonLayout.add(searchField, newClientButton);
+        topButtonLayout.getStyle().set("padding-right", "15px");
+        return topButtonLayout;
     }
 
 }

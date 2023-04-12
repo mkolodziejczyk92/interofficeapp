@@ -7,11 +7,13 @@ import io.mkolodziejczyk92.views.address.NewAddressFormView;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 
+import java.util.List;
+
 @Slf4j
 @Controller
 public class AddressNewFormViewController {
 
-    private NewAddressFormView newAddressFormViewl;
+    private NewAddressFormView newAddressFormView;
 
     private AddressService addressService;
     private Binder<Address> binder;
@@ -21,7 +23,7 @@ public class AddressNewFormViewController {
     }
 
     public void initView(NewAddressFormView newAddressFormView, Binder<Address> binder) {
-        this.newAddressFormViewl = newAddressFormView;
+        this.newAddressFormView = newAddressFormView;
         this.binder = binder;
 
     }
@@ -32,5 +34,10 @@ public class AddressNewFormViewController {
 
     public void saveNewAddress(Address address) {
         addressService.saveNewAddress(address);
+    }
+
+    public List<Address> allAddresses() {
+        return addressService.allAddresses();
+
     }
 }

@@ -14,13 +14,12 @@ import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import io.mkolodziejczyk92.data.controllers.AddressNewFormViewController;
+import io.mkolodziejczyk92.data.controllers.ClientViewController;
 import io.mkolodziejczyk92.data.entity.Address;
 import io.mkolodziejczyk92.data.entity.Client;
 import io.mkolodziejczyk92.data.enums.EAddressType;
 import io.mkolodziejczyk92.data.enums.ECountry;
 import io.mkolodziejczyk92.data.enums.EVoivodeship;
-import io.mkolodziejczyk92.data.service.AddressService;
-import io.mkolodziejczyk92.data.service.ClientService;
 import io.mkolodziejczyk92.views.MainLayout;
 import jakarta.annotation.security.PermitAll;
 
@@ -30,6 +29,8 @@ import jakarta.annotation.security.PermitAll;
 public class NewAddressFormView extends Div {
 
     private final AddressNewFormViewController addressNewFormViewController;
+
+    private final ClientViewController clientViewController;
     private TextField street = new TextField("Street");
     private TextField houseNumber = new TextField("House number");
     private TextField apartmentNumber = new TextField("Apartment number");
@@ -52,8 +53,9 @@ public class NewAddressFormView extends Div {
 
     private Binder<Address> binder = new Binder<>(Address.class);
 
-    public NewAddressFormView(AddressNewFormViewController addressNewFormViewController) {
+    public NewAddressFormView(AddressNewFormViewController addressNewFormViewController, ClientViewController clientViewController) {
         this.addressNewFormViewController = addressNewFormViewController;
+        this.clientViewController = clientViewController;
         addressNewFormViewController.initView(this, binder);
 
 
@@ -76,7 +78,7 @@ public class NewAddressFormView extends Div {
                         .getFullName()
                         .toLowerCase()
                         .contains(filterString.toLowerCase());
-        client.setItems(clientFilter, ClientService.allClients()); //SHOULD BE INJECTION BY CONSTRUCTOR
+       client.setItems(clientFilter, clientViewController.allClients());
         client.setItemLabelGenerator(Client::getFullName);
         client.setMinWidth("350px");
         add(client);

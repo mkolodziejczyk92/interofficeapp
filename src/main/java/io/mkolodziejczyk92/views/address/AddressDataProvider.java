@@ -6,19 +6,25 @@ import com.vaadin.flow.data.provider.QuerySortOrder;
 import com.vaadin.flow.data.provider.SortDirection;
 import io.mkolodziejczyk92.data.entity.Address;
 import io.mkolodziejczyk92.data.service.AddressService;
+import io.mkolodziejczyk92.utils.BeanProvider;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Stream;
 
 public class AddressDataProvider extends AbstractBackEndDataProvider<Address, AddressFilter> {
 
-    final List<Address> DATABASE = new ArrayList<>(AddressService.allAddresses());
+
+    private final List<Address> allAddresses;
+
+    public AddressDataProvider() {
+        allAddresses = BeanProvider.getBean(AddressService.class).allAddresses();
+    }
+
 
     @Override
     protected Stream<Address> fetchFromBackEnd(Query<Address, AddressFilter> query) {
-        Stream<Address> stream = DATABASE.stream();
+        Stream<Address> stream = allAddresses.stream();
 
         // Filtering
         if (query.getFilter().isPresent()) {

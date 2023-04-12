@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class AddressService {
 
-    private static AddressRepository repository;
+    private final AddressRepository repository;
 
     public AddressService(AddressRepository repository) {
         this.repository = repository;
@@ -22,7 +22,7 @@ public class AddressService {
         return repository.findById(id);
     }
 
-    public Address update(Address entity) {
+    public Address saveNewAddress(Address entity) {
         return repository.save(entity);
     }
 
@@ -42,6 +42,6 @@ public class AddressService {
         return (int) repository.count();
     }
 
-    public static List<Address> allAddresses(){ return repository.findAll();}
+    public List<Address> allAddresses(){ return repository.findAll();}
 
 }

@@ -1,6 +1,7 @@
 package io.mkolodziejczyk92.views.address;
 
 import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.combobox.ComboBox;
@@ -12,6 +13,7 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import io.mkolodziejczyk92.data.controllers.AddressNewFormViewController;
 import io.mkolodziejczyk92.data.entity.Address;
 import io.mkolodziejczyk92.data.entity.Client;
 import io.mkolodziejczyk92.data.enums.EAddressType;
@@ -27,6 +29,7 @@ import jakarta.annotation.security.PermitAll;
 @PermitAll
 public class NewAddressFormView extends Div {
 
+    private final AddressNewFormViewController addressNewFormViewController;
     private TextField street = new TextField("Street");
     private TextField houseNumber = new TextField("House number");
     private TextField apartmentNumber = new TextField("Apartment number");
@@ -45,10 +48,15 @@ public class NewAddressFormView extends Div {
 
     private Button cancel = new Button("Cancel");
     private Button save = new Button("Save");
+    private Button back = new Button("Back");
 
     private Binder<Address> binder = new Binder<>(Address.class);
 
-    public NewAddressFormView(AddressService addressService) {
+    public NewAddressFormView(AddressNewFormViewController addressNewFormViewController) {
+        this.addressNewFormViewController = addressNewFormViewController;
+        addressNewFormViewController.initView(this, binder);
+
+
         addClassName("address-view");
 
         add(createFormLayout());
@@ -56,14 +64,9 @@ public class NewAddressFormView extends Div {
         add(createButtonLayout());
         binder.bindInstanceFields(this);
 
-        clearForm();
+        addressNewFormViewController.clearForm();
 
-        cancel.addClickListener(e -> clearForm());
-        save.addClickListener(e -> {
-            addressService.update(binder.getBean());
-            Notification.show(binder.getBean().getClass().getSimpleName() + " stored.");
-            clearForm();
-        });
+
     }
 
     private Component createFormLayout() {
@@ -78,16 +81,11 @@ public class NewAddressFormView extends Div {
         client.setMinWidth("350px");
         add(client);
         formLayout.add(street, houseNumber, apartmentNumber, zipCode, city, plotNumber, municipality);
-//        houseNumber.setMaxWidth("150px");
-//        houseNumber.getStyle().set("padding-right", "10px");
-//        apartmentNumber.setMaxWidth("150px");
-//        apartmentNumber.getStyle().set("padding-right", "300px");
-//        zipCode.setMaxWidth("150px");
-//        plotNumber.setMaxWidth("150px");
+
         return formLayout;
     }
 
-    private Component createComboBox(){
+    private Component createComboBox() {
         voivodeship.setItemLabelGenerator(EVoivodeship::getNameOfVoivodeship);
         voivodeship.setItems(EVoivodeship.values());
         add(voivodeship);
@@ -106,13 +104,24 @@ public class NewAddressFormView extends Div {
         HorizontalLayout buttonLayout = new HorizontalLayout();
         buttonLayout.addClassName("button-layout");
         save.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+        cancel.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+        back.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         buttonLayout.add(save);
         buttonLayout.add(cancel);
+        buttonLayout.add(back);
+
+        cancel.addClickListener(e -> addressNewFormViewController.clearForm());
+        save.addClickListener(e -> {
+            addressNewFormViewController.saveNewAddress(binder.getBean());
+            Notification.show(binder.getBean().getClass().getSimpleName() + " stored.");
+            addressNewFormViewController.clearForm();
+        });
+        back.addClickListener(e -> UI.getCurrent().navigate(AddressesView.class));
+
+
+
         return buttonLayout;
     }
 
-    private void clearForm() {
-        this.binder.setBean(new Address());
-    }
 
 }

@@ -33,7 +33,7 @@ public class AddressesView extends Div {
 
     private ConfigurableFilterDataProvider<Address, Void, AddressFilter> filterDataProvider = addressDataProvider
             .withConfigurableFilter();
-    Button newAddressButton = new Button("Add new address");
+    private Button newAddressButton = new Button("Add new address");
 
     public AddressesView(AddressesViewController addressesViewController) {
         this.addressesViewController = addressesViewController;
@@ -83,6 +83,7 @@ public class AddressesView extends Div {
         newAddressButton
                 .addClickListener(e -> UI.getCurrent().navigate(NewAddressFormView.class));
         topButtonLayout.add(searchField, newAddressButton);
+        topButtonLayout.getStyle().set("padding-right", "15px");
 
         return topButtonLayout;
     }

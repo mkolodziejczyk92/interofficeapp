@@ -6,8 +6,8 @@ import com.vaadin.flow.data.provider.QuerySortOrder;
 import com.vaadin.flow.data.provider.SortDirection;
 import io.mkolodziejczyk92.data.entity.Client;
 import io.mkolodziejczyk92.data.service.ClientService;
+import io.mkolodziejczyk92.utils.BeanProvider;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Stream;
@@ -15,11 +15,16 @@ import java.util.stream.Stream;
 
 public class PersonDataProvider extends AbstractBackEndDataProvider<Client, PersonFilter> {
 
-    final List<Client> DATABASE = new ArrayList<>(ClientService.allClients());
+
+    final List<Client> allClients;
+
+    public PersonDataProvider() {
+        allClients = BeanProvider.getBean(ClientService.class).allClients();
+    }
 
     @Override
     protected Stream<Client> fetchFromBackEnd(Query<Client, PersonFilter> query) {
-        Stream<Client> stream = DATABASE.stream();
+        Stream<Client> stream = allClients.stream();
 
         // Filtering
         if (query.getFilter().isPresent()) {

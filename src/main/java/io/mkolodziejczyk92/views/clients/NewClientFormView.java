@@ -45,10 +45,12 @@ public class NewClientFormView  extends Div {
         clientAddNewFormController.initView(this, binder);
         addClassName("new-client-view");
 
-
         add(createComboBox());
         add(createFormLayout());
         add(createButtonLayout());
+        binder.bindInstanceFields(this);
+
+        clientAddNewFormController.clearForm();
     }
 
     private Component createFormLayout() {

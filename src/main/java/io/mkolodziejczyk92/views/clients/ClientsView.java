@@ -17,10 +17,9 @@ import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
-import io.mkolodziejczyk92.data.controllers.ClientViewController;
+import io.mkolodziejczyk92.data.controllers.ClientsViewController;
 import io.mkolodziejczyk92.data.entity.Client;
 import io.mkolodziejczyk92.views.MainLayout;
-import io.mkolodziejczyk92.views.address.NewAddressFormView;
 import jakarta.annotation.security.PermitAll;
 
 @PageTitle("Clients")
@@ -29,19 +28,16 @@ import jakarta.annotation.security.PermitAll;
 @PermitAll
 public class ClientsView extends Div {
 
-    private final ClientViewController clientViewController;
-    private PersonFilter personFilter = new PersonFilter();
-
-    private PersonDataProvider dataProvider = new PersonDataProvider();
-
-    private ConfigurableFilterDataProvider<Client, Void, PersonFilter> filterDataProvider = dataProvider
+    private final ClientsViewController clientsViewController;
+    private ClientFilter clientFilter = new ClientFilter();
+    private ClientDataProvider dataProvider = new ClientDataProvider();
+    private ConfigurableFilterDataProvider<Client, Void, ClientFilter> filterDataProvider = dataProvider
             .withConfigurableFilter();
-
     private Button newClientButton = new Button("Add new client");
 
-    public ClientsView(ClientViewController clientViewController) {
-        this.clientViewController = clientViewController;
-        clientViewController.initView(this);
+    public ClientsView(ClientsViewController clientsViewController) {
+        this.clientsViewController = clientsViewController;
+        clientsViewController.initView(this);
 
 
         Grid<Client> grid = new Grid<>();
@@ -52,8 +48,8 @@ public class ClientsView extends Div {
         grid.setItems(filterDataProvider);
         grid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
 
-        GridContextMenu<Client> menu = grid.addContextMenu();
 
+        GridContextMenu<Client> menu = grid.addContextMenu();
         menu.addItem("View", event -> {
         });
         menu.addItem("Edit", event -> {
@@ -75,18 +71,18 @@ public class ClientsView extends Div {
         searchField.setPrefixComponent(new Icon(VaadinIcon.SEARCH));
         searchField.setValueChangeMode(ValueChangeMode.EAGER);
         searchField.addValueChangeListener(e -> {
-            personFilter.setSearchTerm(e.getValue());
-            filterDataProvider.setFilter(personFilter);
+            clientFilter.setSearchTerm(e.getValue());
+            filterDataProvider.setFilter(clientFilter);
 
         });
 
         newClientButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         newClientButton.getStyle().set("margin-left", "auto");
-
         newClientButton
                 .addClickListener(e -> UI.getCurrent().navigate(NewClientFormView.class));
         topButtonLayout.add(searchField, newClientButton);
         topButtonLayout.getStyle().set("padding-right", "15px");
+
         return topButtonLayout;
     }
 

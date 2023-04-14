@@ -6,7 +6,6 @@ import io.mkolodziejczyk92.data.entity.Supplier;
 import java.util.List;
 import java.util.Optional;
 
-import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -25,7 +24,7 @@ public class SupplierService {
         return repository.findById(id);
     }
 
-    public Supplier update(Supplier entity) {
+    public Supplier saveNewSupplier(Supplier entity) {
         return repository.save(entity);
     }
 

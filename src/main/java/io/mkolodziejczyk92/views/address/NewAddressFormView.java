@@ -13,8 +13,8 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-import io.mkolodziejczyk92.data.controllers.AddressNewFormViewController;
-import io.mkolodziejczyk92.data.controllers.ClientViewController;
+import io.mkolodziejczyk92.data.controllers.AddressFormViewController;
+import io.mkolodziejczyk92.data.controllers.ClientsViewController;
 import io.mkolodziejczyk92.data.entity.Address;
 import io.mkolodziejczyk92.data.entity.Client;
 import io.mkolodziejczyk92.data.enums.EAddressType;
@@ -28,9 +28,9 @@ import jakarta.annotation.security.PermitAll;
 @PermitAll
 public class NewAddressFormView extends Div {
 
-    private final AddressNewFormViewController addressNewFormViewController;
+    private final AddressFormViewController addressFormViewController;
 
-    private final ClientViewController clientViewController;
+    private final ClientsViewController clientsViewController;
     private TextField street = new TextField("Street");
     private TextField houseNumber = new TextField("House number");
     private TextField apartmentNumber = new TextField("Apartment number");
@@ -53,20 +53,19 @@ public class NewAddressFormView extends Div {
 
     private Binder<Address> binder = new Binder<>(Address.class);
 
-    public NewAddressFormView(AddressNewFormViewController addressNewFormViewController, ClientViewController clientViewController) {
-        this.addressNewFormViewController = addressNewFormViewController;
-        this.clientViewController = clientViewController;
-        addressNewFormViewController.initView(this, binder);
-
+    public NewAddressFormView(AddressFormViewController addressFormViewController, ClientsViewController clientsViewController) {
+        this.addressFormViewController = addressFormViewController;
+        this.clientsViewController = clientsViewController;
+        addressFormViewController.initView(this, binder);
 
         addClassName("address-view");
 
         add(createFormLayout());
-        add(createComboBox());
+        createComboBox();
         add(createButtonLayout());
         binder.bindInstanceFields(this);
 
-        addressNewFormViewController.clearForm();
+        addressFormViewController.clearForm();
 
 
     }
@@ -78,7 +77,7 @@ public class NewAddressFormView extends Div {
                         .getFullName()
                         .toLowerCase()
                         .contains(filterString.toLowerCase());
-       client.setItems(clientFilter, clientViewController.allClients());
+        client.setItems(clientFilter, clientsViewController.allClients());
         client.setItemLabelGenerator(Client::getFullName);
         client.setMinWidth("350px");
         add(client);
@@ -87,7 +86,7 @@ public class NewAddressFormView extends Div {
         return formLayout;
     }
 
-    private Component createComboBox() {
+    private void createComboBox() {
         voivodeship.setItemLabelGenerator(EVoivodeship::getNameOfVoivodeship);
         voivodeship.setItems(EVoivodeship.values());
         add(voivodeship);
@@ -99,7 +98,6 @@ public class NewAddressFormView extends Div {
         addressType.setItemLabelGenerator(EAddressType::getType);
         addressType.setItems(EAddressType.values());
         add(addressType);
-        return new FormLayout();
     }
 
     private Component createButtonLayout() {
@@ -112,14 +110,13 @@ public class NewAddressFormView extends Div {
         buttonLayout.add(cancel);
         buttonLayout.add(back);
 
-        cancel.addClickListener(e -> addressNewFormViewController.clearForm());
+        cancel.addClickListener(e -> addressFormViewController.clearForm());
         save.addClickListener(e -> {
-            addressNewFormViewController.saveNewAddress(binder.getBean());
+            addressFormViewController.saveNewAddress(binder.getBean());
             Notification.show(binder.getBean().getClass().getSimpleName() + " stored.");
-            addressNewFormViewController.clearForm();
+            addressFormViewController.clearForm();
         });
         back.addClickListener(e -> UI.getCurrent().navigate(AddressesView.class));
-
 
 
         return buttonLayout;

@@ -21,12 +21,6 @@ public class AddressesViewController {
         this.addressService = addressService;
     }
 
-
-    private void updateAddress(Binder<Address> addressBinder){
-
-    }
-
-
     public void initView(AddressesView addressesView) {
         this.addressesView = addressesView;
     }

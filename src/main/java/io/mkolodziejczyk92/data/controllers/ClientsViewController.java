@@ -3,20 +3,21 @@ package io.mkolodziejczyk92.data.controllers;
 import io.mkolodziejczyk92.data.entity.Client;
 import io.mkolodziejczyk92.data.service.ClientService;
 import io.mkolodziejczyk92.views.clients.ClientsView;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 
 import java.util.List;
 
-
+@Slf4j
 @Controller
-public class ClientViewController {
+public class ClientsViewController {
 
     private ClientsView clientsView;
 
     private final ClientService clientService;
 
 
-    public ClientViewController(ClientService clientService) {
+    public ClientsViewController(ClientService clientService) {
         this.clientService = clientService;
     }
 

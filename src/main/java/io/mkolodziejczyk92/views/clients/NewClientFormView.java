@@ -13,7 +13,7 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-import io.mkolodziejczyk92.data.controllers.ClientAddNewFormController;
+import io.mkolodziejczyk92.data.controllers.ClientFormViewController;
 import io.mkolodziejczyk92.data.entity.Client;
 import io.mkolodziejczyk92.data.enums.EClientType;
 import io.mkolodziejczyk92.views.MainLayout;
@@ -24,31 +24,34 @@ import jakarta.annotation.security.PermitAll;
 @PermitAll
 public class NewClientFormView  extends Div {
 
-    private final ClientAddNewFormController clientAddNewFormController;
+    private final ClientFormViewController clientFormViewController;
 
-    private final TextField firstName = new TextField("First Name");
+    private TextField firstName = new TextField("First Name");
 
-    private final TextField lastName = new TextField("Last Name");
-    private final TextField phoneNumber = new TextField("Phone Number");
-    private final TextField email = new TextField("Email");
-    private final TextField nip = new TextField("NIP");
-    private final  ComboBox<EClientType> clientType = new ComboBox<>("Client Type");
-    private final Button cancel = new Button("Cancel");
-    private final Button save = new Button("Save");
-    private final Button back = new Button("Back");
-    private final Binder<Client> binder = new Binder<>(Client.class);
-
-
-
-    public NewClientFormView(ClientAddNewFormController clientAddNewFormController) {
-        this.clientAddNewFormController = clientAddNewFormController;
-        clientAddNewFormController.initView(this, binder);
-        addClassName("new-client-view");
+    private TextField lastName = new TextField("Last Name");
+    private TextField phoneNumber = new TextField("Phone Number");
+    private TextField email = new TextField("Email");
+    private TextField nip = new TextField("NIP");
+    private ComboBox<EClientType> clientType = new ComboBox<>("Client Type");
+    private Button cancel = new Button("Cancel");
+    private Button save = new Button("Save");
+    private Button back = new Button("Back");
+    private Binder<Client> binder = new Binder<>(Client.class);
 
 
-        add(createComboBox());
+
+    public NewClientFormView(ClientFormViewController clientFormViewController) {
+        this.clientFormViewController = clientFormViewController;
+        clientFormViewController.initView(this, binder);
+
+        addClassName("client-view");
+
+        createComboBox();
         add(createFormLayout());
         add(createButtonLayout());
+        binder.bindInstanceFields(this);
+
+        clientFormViewController.clearForm();
     }
 
     private Component createFormLayout() {
@@ -71,22 +74,22 @@ public class NewClientFormView  extends Div {
         buttonLayout.getStyle().set("padding-left", "30px");
         buttonLayout.getStyle().set("padding-top", "30px");
 
-        cancel.addClickListener(e -> clientAddNewFormController.clearForm());
+        cancel.addClickListener(e -> clientFormViewController.clearForm());
         save.addClickListener(e -> {
-            clientAddNewFormController.saveNewClient(binder.getBean());
+            clientFormViewController.saveNewClient(binder.getBean());
             Notification.show(binder.getBean().getClass().getSimpleName() + " stored.");
-            clientAddNewFormController.clearForm();
+            clientFormViewController.clearForm();
         });
         back.addClickListener(e -> UI.getCurrent().navigate(ClientsView.class));
+
         return buttonLayout;
 
     }
 
-    private Component createComboBox(){
+    private void createComboBox(){
         clientType.setItemLabelGenerator(EClientType::getType);
         clientType.setItems(EClientType.values());
         clientType.getStyle().set("padding-left", "30px");
         add(clientType);
-        return new FormLayout();
     }
 }

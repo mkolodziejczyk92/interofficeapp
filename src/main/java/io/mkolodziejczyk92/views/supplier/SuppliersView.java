@@ -1,20 +1,22 @@
 package io.mkolodziejczyk92.views.supplier;
 
 import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.UI;
+import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.grid.HeaderRow;
 import com.vaadin.flow.component.grid.contextmenu.GridContextMenu;
 import com.vaadin.flow.component.grid.dataview.GridListDataView;
 import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-import io.mkolodziejczyk92.data.entity.Purchase;
+import io.mkolodziejczyk92.data.controllers.SuppliersViewController;
 import io.mkolodziejczyk92.data.entity.Supplier;
-import io.mkolodziejczyk92.data.service.SupplierService;
 import io.mkolodziejczyk92.views.MainLayout;
 import jakarta.annotation.security.PermitAll;
-import jakarta.transaction.Transactional;
 
 import java.util.List;
 import java.util.function.Consumer;
@@ -28,21 +30,22 @@ import static io.mkolodziejczyk92.views.FilterHeader.getComponent;
 public class SuppliersView extends Div {
 
     private final Grid<Supplier> grid = new Grid<>(Supplier.class, false);
-    private final SupplierService supplierService;
 
-    public SuppliersView(SupplierService supplierService) {
-        this.supplierService = supplierService;
+    private Button newSupplierButton = new Button("Add new supplier");
 
+    private final SuppliersViewController suppliersViewController;
+
+    public SuppliersView(SuppliersViewController suppliersViewController) {
+        this.suppliersViewController = suppliersViewController;
+        suppliersViewController.initView(this);
 
         Grid.Column<Supplier> nameOfCompanyColumn
                 = grid.addColumn("nameOfCompany").setHeader("Name of Company").setAutoWidth(true);
         Grid.Column<Supplier> nipColumn =
                 grid.addColumn("nip").setAutoWidth(true);
-        grid.addColumn(supplier ->
-                supplier.getPurchases().stream().map(Purchase::getContractNumber).toList()).setHeader("Purchases").setAutoWidth(true);
 
+        add(createTopButtonLayout());
         add(grid);
-
         grid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
 
         GridContextMenu<Supplier> menu = grid.addContextMenu();
@@ -54,7 +57,7 @@ public class SuppliersView extends Div {
         menu.addItem("Delete", event -> {
         });
 
-        List<Supplier> invoiceList = supplierService.supplierList();
+        List<Supplier> invoiceList = suppliersViewController.allSuppliers();
         GridListDataView<Supplier> dataView = grid.setItems(invoiceList);
         InvoicesFilter invoicesFilter = new InvoicesFilter(dataView);
 
@@ -66,6 +69,19 @@ public class SuppliersView extends Div {
         headerRow.getCell(nipColumn).setComponent(
                 createFilterHeader(invoicesFilter::setNip));
 
+    }
+
+    private Component createTopButtonLayout() {
+        HorizontalLayout topButtonLayout = new HorizontalLayout();
+        topButtonLayout.addClassName("button-layout");
+        topButtonLayout.getStyle().set("padding-right", "15px");
+
+        newSupplierButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+        newSupplierButton.getStyle().set("margin-left", "auto");
+        newSupplierButton.addClickListener(e -> UI.getCurrent().navigate(NewSupplierFormView.class));
+
+        topButtonLayout.add(newSupplierButton);
+        return topButtonLayout;
     }
 
     private static Component createFilterHeader(Consumer<String> filterChangeConsumer) {
@@ -100,7 +116,7 @@ public class SuppliersView extends Div {
 
             boolean matchesClientFullName = matches(supplier.getNameOfCompany(), nameOfCompany);
             boolean matchesContractNumber = matches(supplier.getNip(), nip);
-            return  matchesClientFullName && matchesContractNumber;
+            return matchesClientFullName && matchesContractNumber;
         }
 
         private boolean matches(String value, String searchTerm) {

@@ -22,7 +22,6 @@ public class SuppliersViewController {
 
     public void initView(SuppliersView suppliersView) {
         this.suppliersView = suppliersView;
-
     }
 
     public List<Supplier> allSuppliers() {

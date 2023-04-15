@@ -15,10 +15,11 @@ import com.vaadin.flow.router.Route;
 import io.mkolodziejczyk92.data.controllers.SupplierFormViewController;
 import io.mkolodziejczyk92.data.controllers.SuppliersViewController;
 import io.mkolodziejczyk92.data.entity.Supplier;
+import io.mkolodziejczyk92.views.MainLayout;
 import jakarta.annotation.security.PermitAll;
 
 @PageTitle("New Supplier")
-@Route(value = "new-supplier")
+@Route(value = "new-supplier", layout = MainLayout.class)
 @PermitAll
 public class NewSupplierFormView extends Div {
 

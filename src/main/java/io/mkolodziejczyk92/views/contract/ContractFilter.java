@@ -1,4 +1,4 @@
-package io.mkolodziejczyk92.views.contracts;
+package io.mkolodziejczyk92.views.contract;
 
 import io.mkolodziejczyk92.data.entity.Contract;
 

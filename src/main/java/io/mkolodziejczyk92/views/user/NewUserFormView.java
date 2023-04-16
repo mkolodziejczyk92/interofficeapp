@@ -1,4 +1,4 @@
-package io.mkolodziejczyk92.views.users;
+package io.mkolodziejczyk92.views.user;
 
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.UI;

@@ -42,7 +42,7 @@ public class InvoiceService {
         return (int) repository.count();
     }
 
-    public List<Invoice> invoiceList() {
+    public List<Invoice> allInvoices() {
         return repository.findAll();
     }
 }

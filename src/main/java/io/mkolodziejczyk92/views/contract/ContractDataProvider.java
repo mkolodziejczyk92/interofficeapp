@@ -1,4 +1,4 @@
-package io.mkolodziejczyk92.views.contracts;
+package io.mkolodziejczyk92.views.contract;
 
 import com.vaadin.flow.data.provider.AbstractBackEndDataProvider;
 import com.vaadin.flow.data.provider.Query;

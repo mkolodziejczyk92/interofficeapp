@@ -4,7 +4,7 @@ import com.vaadin.flow.data.binder.Binder;
 import io.mkolodziejczyk92.data.entity.User;
 import io.mkolodziejczyk92.data.enums.ERole;
 import io.mkolodziejczyk92.data.service.UserService;
-import io.mkolodziejczyk92.views.users.NewUserFormView;
+import io.mkolodziejczyk92.views.user.NewUserFormView;
 import org.springframework.stereotype.Controller;
 
 import java.util.HashSet;

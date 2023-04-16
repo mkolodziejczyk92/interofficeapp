@@ -20,7 +20,6 @@ import com.vaadin.flow.router.RouteAlias;
 import io.mkolodziejczyk92.data.controllers.ClientViewController;
 import io.mkolodziejczyk92.data.entity.Client;
 import io.mkolodziejczyk92.views.MainLayout;
-import io.mkolodziejczyk92.views.address.NewAddressFormView;
 import jakarta.annotation.security.PermitAll;
 
 @PageTitle("Clients")
@@ -37,7 +36,7 @@ public class ClientsView extends Div {
     private ConfigurableFilterDataProvider<Client, Void, PersonFilter> filterDataProvider = dataProvider
             .withConfigurableFilter();
 
-    private Button newClientButton = new Button("Add new client");
+    private final Button newClientButton = new Button("Add new client");
 
     public ClientsView(ClientViewController clientViewController) {
         this.clientViewController = clientViewController;

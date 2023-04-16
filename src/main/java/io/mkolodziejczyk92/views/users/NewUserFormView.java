@@ -1,66 +1,79 @@
-package io.mkolodziejczyk92.views.clients;
+package io.mkolodziejczyk92.views.users;
 
 import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.HasText;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
-import com.vaadin.flow.component.combobox.ComboBox;
+import com.vaadin.flow.component.checkbox.CheckboxGroup;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
+import com.vaadin.flow.data.binder.Validator;
+import com.vaadin.flow.data.validator.EmailValidator;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-import io.mkolodziejczyk92.data.controllers.ClientAddNewFormController;
-import io.mkolodziejczyk92.data.entity.Client;
-import io.mkolodziejczyk92.data.enums.EClientType;
+import io.mkolodziejczyk92.data.controllers.UserFormController;
+import io.mkolodziejczyk92.data.entity.User;
+import io.mkolodziejczyk92.data.enums.ERole;
 import io.mkolodziejczyk92.views.MainLayout;
-import jakarta.annotation.security.PermitAll;
+import io.mkolodziejczyk92.views.clients.ClientsView;
+import jakarta.annotation.security.RolesAllowed;
 
-@PageTitle("New Client")
-@Route(value = "new-client", layout = MainLayout.class)
-@PermitAll
-public class NewClientFormView  extends Div {
+@PageTitle("New User")
+@Route(value = "new-user", layout = MainLayout.class)
+@RolesAllowed("ADMIN")
+public class NewUserFormView extends Div {
 
-    private final ClientAddNewFormController clientAddNewFormController;
+    private final UserFormController userAddNewFormController;
+
+    private final TextField userName = new TextField("User Name");
 
     private final TextField firstName = new TextField("First Name");
 
     private final TextField lastName = new TextField("Last Name");
-    private final TextField phoneNumber = new TextField("Phone Number");
+
     private final TextField email = new TextField("Email");
-    private final TextField nip = new TextField("NIP");
-    private final  ComboBox<EClientType> clientType = new ComboBox<>("Client Type");
+
+    private final TextField hashedPassword = new TextField("Password");
+
+    private final CheckboxGroup<ERole> ERoles = new CheckboxGroup<>("Role");
+
     private final Button cancel = new Button("Cancel");
+
     private final Button save = new Button("Save");
+
     private final Button back = new Button("Back");
-    private final Binder<Client> binder = new Binder<>(Client.class);
 
+    private final Binder<User> binder = new Binder<>(User.class);
 
+    public NewUserFormView(UserFormController userAddNewFormController) {
+        this.userAddNewFormController = userAddNewFormController;
+        userAddNewFormController.initView(this, binder);
 
-    public NewClientFormView(ClientAddNewFormController clientAddNewFormController) {
-        this.clientAddNewFormController = clientAddNewFormController;
-        clientAddNewFormController.initView(this, binder);
-        addClassName("new-client-view");
 
         createComboBox();
         add(createFormLayout());
         add(createButtonLayout());
         binder.bindInstanceFields(this);
+        binder.forField(ERoles).bind("ERoles");
+        userAddNewFormController.clearForm();
 
-        clientAddNewFormController.clearForm();
+
     }
 
-    private Component createFormLayout() {
-        FormLayout formLayout = new FormLayout(firstName, lastName, phoneNumber, email, nip);
+    private Component createFormLayout(){
+        FormLayout formLayout = new FormLayout(userName, firstName, lastName, email, hashedPassword);
         formLayout.getStyle().set("padding-left", "30px");
         formLayout.getStyle().set("padding-right", "30px");
         return formLayout;
     }
 
-    private Component createButtonLayout() {
+    private Component createButtonLayout(){
+
         HorizontalLayout buttonLayout = new HorizontalLayout();
         buttonLayout.addClassName("button-layout");
         save.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
@@ -73,21 +86,22 @@ public class NewClientFormView  extends Div {
         buttonLayout.getStyle().set("padding-left", "30px");
         buttonLayout.getStyle().set("padding-top", "30px");
 
-        cancel.addClickListener(e -> clientAddNewFormController.clearForm());
+        cancel.addClickListener(e -> userAddNewFormController.clearForm());
         save.addClickListener(e -> {
-            clientAddNewFormController.saveNewClient(binder.getBean());
+            userAddNewFormController.saveNewUser(binder.getBean());
             Notification.show(binder.getBean().getClass().getSimpleName() + " stored.");
-            clientAddNewFormController.clearForm();
+            userAddNewFormController.clearForm();
         });
         back.addClickListener(e -> UI.getCurrent().navigate(ClientsView.class));
-        return buttonLayout;
 
+        return buttonLayout;
     }
 
-    private void createComboBox(){
-        clientType.setItemLabelGenerator(EClientType::getType);
-        clientType.setItems(EClientType.values());
-        clientType.getStyle().set("padding-left", "30px");
-        add(clientType);
+    private void createComboBox() {
+        ERoles.setItemLabelGenerator(ERole::getType);
+        ERoles.setItems(ERole.ADMIN);
+        ERoles.getStyle().set("padding-left", "30px");
+
+        add(ERoles);
     }
 }

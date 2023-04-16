@@ -1,6 +1,13 @@
 package io.mkolodziejczyk92.data.enums;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+@Getter
+@AllArgsConstructor
 public enum ERole {
-    USER,
-    ADMIN
+    USER("USER"),
+    ADMIN("ADMIN");
+
+    private String type;
 }

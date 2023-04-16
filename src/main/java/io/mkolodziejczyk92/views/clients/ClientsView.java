@@ -20,6 +20,7 @@ import com.vaadin.flow.router.RouteAlias;
 import io.mkolodziejczyk92.data.controllers.ClientsViewController;
 import io.mkolodziejczyk92.data.entity.Client;
 import io.mkolodziejczyk92.views.MainLayout;
+import io.mkolodziejczyk92.views.supplier.NewSupplierFormView;
 import jakarta.annotation.security.PermitAll;
 
 @PageTitle("Clients")
@@ -61,11 +62,12 @@ public class ClientsView extends Div {
         });
 
         add(createTopButtonLayout());
+        add(createSearchLayout());
         add(grid);
     }
 
-    private Component createTopButtonLayout(){
-        HorizontalLayout topButtonLayout = new HorizontalLayout();
+    private Component createSearchLayout(){
+        HorizontalLayout searchLayout = new HorizontalLayout();
 
         TextField searchField = new TextField();
         searchField.getStyle().set("padding-left", "15px");
@@ -79,13 +81,21 @@ public class ClientsView extends Div {
 
         });
 
+
+        searchLayout.add(searchField);
+        searchLayout.getStyle().set("padding-right", "15px");
+        return searchLayout;
+    }
+
+    private Component createTopButtonLayout() {
+        HorizontalLayout topButtonLayout = new HorizontalLayout();
+        topButtonLayout.getStyle().set("padding-right", "15px");
+        topButtonLayout.getStyle().set("border-bottom", "1px solid var(--lumo-contrast-10pct)");
         newClientButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         newClientButton.getStyle().set("margin-left", "auto");
-        newClientButton
-                .addClickListener(e -> UI.getCurrent().navigate(NewClientFormView.class));
-        topButtonLayout.add(searchField, newClientButton);
-        topButtonLayout.getStyle().set("padding-right", "15px");
+        newClientButton.addClickListener(e -> UI.getCurrent().navigate(NewClientFormView.class));
 
+        topButtonLayout.add(newClientButton);
         return topButtonLayout;
     }
 

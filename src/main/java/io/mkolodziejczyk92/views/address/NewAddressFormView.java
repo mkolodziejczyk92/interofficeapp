@@ -58,11 +58,12 @@ public class NewAddressFormView extends Div {
         this.clientsViewController = clientsViewController;
         addressFormViewController.initView(this, binder);
 
-        addClassName("address-view");
 
+        add(createTopButtonLayout());
+        createTopComboBox();
         add(createFormLayout());
-        createComboBox();
-        add(createButtonLayout());
+        createBottomComboBox();
+        add(createBottomButtonLayout());
         binder.bindInstanceFields(this);
 
         addressFormViewController.clearForm();
@@ -72,23 +73,26 @@ public class NewAddressFormView extends Div {
 
     private Component createFormLayout() {
         FormLayout formLayout = new FormLayout();
-        ComboBox.ItemFilter<Client> clientFilter = (clientDb, filterString) ->
-                clientDb
-                        .getFullName()
-                        .toLowerCase()
-                        .contains(filterString.toLowerCase());
-        client.setItems(clientFilter, clientsViewController.allClients());
-        client.setItemLabelGenerator(Client::getFullName);
-        client.setMinWidth("350px");
-        add(client);
+
+        formLayout.getStyle().set("padding-left", "30px");
+        formLayout.getStyle().set("padding-right", "30px");
         formLayout.add(street, houseNumber, apartmentNumber, zipCode, city, plotNumber, municipality);
 
         return formLayout;
     }
 
-    private void createComboBox() {
+    private void createTopComboBox(){
+        client.setItems(clientsViewController.allClients());
+        client.setItemLabelGenerator(Client::getFullName);
+        client.setMinWidth("350px");
+        add(client);
+        client.getStyle().set("padding-left", "30px");
+    }
+
+    private void createBottomComboBox() {
         voivodeship.setItemLabelGenerator(EVoivodeship::getNameOfVoivodeship);
         voivodeship.setItems(EVoivodeship.values());
+        voivodeship.getStyle().set("padding-left", "30px");
         add(voivodeship);
         voivodeship.getStyle().set("padding-right", "10px");
         country.setItemLabelGenerator(ECountry::getCountry);
@@ -100,15 +104,18 @@ public class NewAddressFormView extends Div {
         add(addressType);
     }
 
-    private Component createButtonLayout() {
-        HorizontalLayout buttonLayout = new HorizontalLayout();
-        buttonLayout.addClassName("button-layout");
+
+    private Component createBottomButtonLayout() {
+        HorizontalLayout bottomButtonLayout = new HorizontalLayout();
+        bottomButtonLayout.addClassName("button-layout");
         save.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         cancel.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-        back.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-        buttonLayout.add(save);
-        buttonLayout.add(cancel);
-        buttonLayout.add(back);
+        bottomButtonLayout.getStyle().set("padding-left", "30px");
+        bottomButtonLayout.getStyle().set("padding-top", "30px");
+        bottomButtonLayout.add(save);
+        bottomButtonLayout.add(cancel);
+
+
 
         cancel.addClickListener(e -> addressFormViewController.clearForm());
         save.addClickListener(e -> {
@@ -116,10 +123,21 @@ public class NewAddressFormView extends Div {
             Notification.show(binder.getBean().getClass().getSimpleName() + " stored.");
             addressFormViewController.clearForm();
         });
+
+        return bottomButtonLayout;
+    }
+
+    private Component createTopButtonLayout(){
+        HorizontalLayout topButtonLayout = new HorizontalLayout();
+        topButtonLayout.getStyle().set("padding-right", "15px");
+        topButtonLayout.getStyle().set("border-bottom", "1px solid var(--lumo-contrast-10pct)");
+
+        back.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         back.addClickListener(e -> UI.getCurrent().navigate(AddressesView.class));
+        back.getStyle().set("margin-left", "auto");
 
-
-        return buttonLayout;
+        topButtonLayout.add(back);
+        return topButtonLayout;
     }
 
 

@@ -45,12 +45,11 @@ public class NewClientFormView  extends Div {
         clientFormViewController.initView(this, binder);
 
 
-        addClassName("client-view");
 
+        add(createTopButtonLayout());
         createComboBox();
-
         add(createFormLayout());
-        add(createButtonLayout());
+        add(createBottomButtonLayout());
         binder.bindInstanceFields(this);
 
 
@@ -66,18 +65,16 @@ public class NewClientFormView  extends Div {
         return formLayout;
     }
 
-    private Component createButtonLayout() {
-        HorizontalLayout buttonLayout = new HorizontalLayout();
-        buttonLayout.addClassName("button-layout");
+    private Component createBottomButtonLayout() {
+        HorizontalLayout bottomButtonLayout = new HorizontalLayout();
         save.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         cancel.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-        back.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 
-        buttonLayout.add(save);
-        buttonLayout.add(cancel);
-        buttonLayout.add(back);
-        buttonLayout.getStyle().set("padding-left", "30px");
-        buttonLayout.getStyle().set("padding-top", "30px");
+
+        bottomButtonLayout.add(save);
+        bottomButtonLayout.add(cancel);
+        bottomButtonLayout.getStyle().set("padding-left", "30px");
+        bottomButtonLayout.getStyle().set("padding-top", "30px");
 
         cancel.addClickListener(e -> clientFormViewController.clearForm());
         save.addClickListener(e -> {
@@ -85,10 +82,23 @@ public class NewClientFormView  extends Div {
             Notification.show(binder.getBean().getClass().getSimpleName() + " stored.");
             clientFormViewController.clearForm();
         });
+
+
+        return bottomButtonLayout;
+
+    }
+
+    private Component createTopButtonLayout(){
+        HorizontalLayout topButtonLayout = new HorizontalLayout();
+        topButtonLayout.getStyle().set("padding-right", "15px");
+        topButtonLayout.getStyle().set("border-bottom", "1px solid var(--lumo-contrast-10pct)");
+
+        back.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         back.addClickListener(e -> UI.getCurrent().navigate(ClientsView.class));
+        back.getStyle().set("margin-left", "auto");
 
-        return buttonLayout;
-
+        topButtonLayout.add(back);
+        return topButtonLayout;
     }
 
     private void createComboBox(){

@@ -3,7 +3,7 @@ package io.mkolodziejczyk92.data.controllers;
 import com.vaadin.flow.data.binder.Binder;
 import io.mkolodziejczyk92.data.entity.Client;
 import io.mkolodziejczyk92.data.service.ClientService;
-import io.mkolodziejczyk92.views.clients.NewClientFormView;
+import io.mkolodziejczyk92.views.client.NewClientFormView;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 

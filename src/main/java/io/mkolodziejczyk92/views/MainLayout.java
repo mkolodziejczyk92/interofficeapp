@@ -15,12 +15,12 @@ import io.mkolodziejczyk92.components.appnav.AppNavItem;
 import io.mkolodziejczyk92.data.entity.User;
 import io.mkolodziejczyk92.security.AuthenticatedUser;
 import io.mkolodziejczyk92.views.address.AddressesView;
-import io.mkolodziejczyk92.views.clients.ClientsView;
-import io.mkolodziejczyk92.views.contracts.ContractsView;
+import io.mkolodziejczyk92.views.client.ClientsView;
+import io.mkolodziejczyk92.views.contract.ContractsView;
 import io.mkolodziejczyk92.views.invoice.InvoicesView;
 import io.mkolodziejczyk92.views.purchase.PurchasesView;
 import io.mkolodziejczyk92.views.supplier.SuppliersView;
-import io.mkolodziejczyk92.views.users.UsersView;
+import io.mkolodziejczyk92.views.user.UsersView;
 import org.vaadin.lineawesome.LineAwesomeIcon;
 
 import java.util.Optional;

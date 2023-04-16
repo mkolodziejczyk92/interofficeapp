@@ -1,4 +1,4 @@
-package io.mkolodziejczyk92.views.clients;
+package io.mkolodziejczyk92.views.client;
 
 import io.mkolodziejczyk92.data.entity.Client;
 

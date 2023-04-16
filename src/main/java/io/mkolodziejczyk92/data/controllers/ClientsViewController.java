@@ -2,7 +2,7 @@ package io.mkolodziejczyk92.data.controllers;
 
 import io.mkolodziejczyk92.data.entity.Client;
 import io.mkolodziejczyk92.data.service.ClientService;
-import io.mkolodziejczyk92.views.clients.ClientsView;
+import io.mkolodziejczyk92.views.client.ClientsView;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 

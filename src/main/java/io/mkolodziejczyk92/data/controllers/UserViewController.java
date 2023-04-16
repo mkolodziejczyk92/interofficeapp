@@ -5,7 +5,7 @@ import com.vaadin.flow.data.provider.Query;
 import com.vaadin.flow.spring.data.VaadinSpringDataHelpers;
 import io.mkolodziejczyk92.data.entity.User;
 import io.mkolodziejczyk92.data.service.UsersService;
-import io.mkolodziejczyk92.views.users.UsersView;
+import io.mkolodziejczyk92.views.user.UsersView;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 

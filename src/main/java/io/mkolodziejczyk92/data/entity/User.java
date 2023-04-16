@@ -22,7 +22,7 @@ import java.util.Set;
 @Table(name = "user")
 public class User extends AbstractEntity {
 
-    private String username;
+    private String userName;
     private String firstName;
     private String lastName;
 

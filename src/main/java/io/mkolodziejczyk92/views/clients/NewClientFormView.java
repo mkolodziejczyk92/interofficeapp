@@ -49,7 +49,6 @@ public class NewClientFormView  extends Div {
 
         createComboBox();
 
-
         add(createFormLayout());
         add(createButtonLayout());
         binder.bindInstanceFields(this);

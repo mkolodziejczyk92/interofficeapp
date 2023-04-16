@@ -20,7 +20,7 @@ public class AuthenticatedUser {
 
     public Optional<User> get() {
         return authenticationContext.getAuthenticatedUser(UserDetails.class)
-                .map(userDetails -> userRepository.findByUsername(userDetails.getUsername()));
+                .map(userDetails -> userRepository.findByUserName(userDetails.getUsername()));
     }
 
     public void logout() {

@@ -78,10 +78,7 @@ public class ClientsView extends Div {
         searchField.addValueChangeListener(e -> {
             clientFilter.setSearchTerm(e.getValue());
             filterDataProvider.setFilter(clientFilter);
-
         });
-
-
         searchLayout.add(searchField);
         searchLayout.getStyle().set("padding-right", "15px");
         return searchLayout;
@@ -89,13 +86,12 @@ public class ClientsView extends Div {
 
     private Component createTopButtonLayout() {
         HorizontalLayout topButtonLayout = new HorizontalLayout();
+        topButtonLayout.add(newClientButton);
         topButtonLayout.getStyle().set("padding-right", "15px");
         topButtonLayout.getStyle().set("border-bottom", "1px solid var(--lumo-contrast-10pct)");
         newClientButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         newClientButton.getStyle().set("margin-left", "auto");
         newClientButton.addClickListener(e -> UI.getCurrent().navigate(NewClientFormView.class));
-
-        topButtonLayout.add(newClientButton);
         return topButtonLayout;
     }
 

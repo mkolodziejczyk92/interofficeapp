@@ -72,20 +72,18 @@ public class SuppliersView extends Div {
             supplierFilter.setSearchTerm(e.getValue());
             filterDataProvider.setFilter(supplierFilter);
         });
-
         searchLayout.add(searchField);
         return searchLayout;
     }
 
     private Component createTopButtonLayout() {
         HorizontalLayout topButtonLayout = new HorizontalLayout();
+        topButtonLayout.add(newSupplierButton);
         topButtonLayout.getStyle().set("padding-right", "15px");
         topButtonLayout.getStyle().set("border-bottom", "1px solid var(--lumo-contrast-10pct)");
         newSupplierButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         newSupplierButton.getStyle().set("margin-left", "auto");
         newSupplierButton.addClickListener(e -> UI.getCurrent().navigate(NewSupplierFormView.class));
-
-        topButtonLayout.add(newSupplierButton);
         return topButtonLayout;
     }
 

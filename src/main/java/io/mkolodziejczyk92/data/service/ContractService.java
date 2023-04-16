@@ -26,7 +26,7 @@ public class ContractService {
         return repository.save(entity);
     }
 
-    public List<Contract> contractList(){
+    public List<Contract> allContracts(){
         return repository.findAll();
     }
 

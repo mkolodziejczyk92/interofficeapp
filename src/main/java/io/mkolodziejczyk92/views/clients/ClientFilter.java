@@ -4,7 +4,7 @@ import io.mkolodziejczyk92.data.entity.Client;
 
 import java.util.Optional;
 
-public class PersonFilter {
+public class ClientFilter {
 
     private String searchTerm;
 

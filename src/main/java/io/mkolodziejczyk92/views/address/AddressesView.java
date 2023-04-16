@@ -59,12 +59,13 @@ public class AddressesView extends Div {
         });
 
         add(createTopButtonLayout());
+        add(createSearchLayout());
         add(grid);
     }
 
-    private Component createTopButtonLayout() {
-        HorizontalLayout topButtonLayout = new HorizontalLayout();
-        topButtonLayout.addClassName("button-layout");
+    private Component createSearchLayout(){
+        HorizontalLayout searchLayout = new HorizontalLayout();
+        searchLayout.addClassName("button-layout");
 
         TextField searchField = new TextField();
         searchField.getStyle().set("padding-left", "15px");
@@ -77,13 +78,19 @@ public class AddressesView extends Div {
             filterDataProvider.setFilter(addressFilter);
 
         });
+        searchLayout.add(searchField);
+        return searchLayout;
+    }
+    private Component createTopButtonLayout() {
+        HorizontalLayout topButtonLayout = new HorizontalLayout();
 
         newAddressButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         newAddressButton.getStyle().set("margin-left", "auto");
         newAddressButton
                 .addClickListener(e -> UI.getCurrent().navigate(NewAddressFormView.class));
-        topButtonLayout.add(searchField, newAddressButton);
+        topButtonLayout.add(newAddressButton);
         topButtonLayout.getStyle().set("padding-right", "15px");
+        topButtonLayout.getStyle().set("border-bottom", "1px solid var(--lumo-contrast-10pct)");
 
         return topButtonLayout;
     }

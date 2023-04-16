@@ -4,17 +4,19 @@ import com.vaadin.flow.data.binder.Binder;
 import io.mkolodziejczyk92.data.entity.Client;
 import io.mkolodziejczyk92.data.service.ClientService;
 import io.mkolodziejczyk92.views.clients.NewClientFormView;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 
+@Slf4j
 @Controller
-public class ClientAddNewFormController {
+public class ClientFormViewController {
 
     private NewClientFormView newClientFormView;
 
     private ClientService clientService;
     private Binder<Client> binder;
 
-    public ClientAddNewFormController(ClientService clientService) {
+    public ClientFormViewController(ClientService clientService) {
         this.clientService = clientService;
     }
 

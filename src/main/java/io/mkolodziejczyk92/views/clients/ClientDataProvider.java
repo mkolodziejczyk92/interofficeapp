@@ -13,17 +13,17 @@ import java.util.List;
 import java.util.stream.Stream;
 
 
-public class PersonDataProvider extends AbstractBackEndDataProvider<Client, PersonFilter> {
+public class ClientDataProvider extends AbstractBackEndDataProvider<Client, ClientFilter> {
 
 
     final List<Client> allClients;
 
-    public PersonDataProvider() {
+    public ClientDataProvider() {
         allClients = BeanProvider.getBean(ClientService.class).allClients();
     }
 
     @Override
-    protected Stream<Client> fetchFromBackEnd(Query<Client, PersonFilter> query) {
+    protected Stream<Client> fetchFromBackEnd(Query<Client, ClientFilter> query) {
         Stream<Client> stream = allClients.stream();
 
         // Filtering
@@ -41,7 +41,7 @@ public class PersonDataProvider extends AbstractBackEndDataProvider<Client, Pers
     }
 
     @Override
-    protected int sizeInBackEnd(Query<Client, PersonFilter> query) {
+    protected int sizeInBackEnd(Query<Client, ClientFilter> query) {
         return (int) fetchFromBackEnd(query).count();
     }
 

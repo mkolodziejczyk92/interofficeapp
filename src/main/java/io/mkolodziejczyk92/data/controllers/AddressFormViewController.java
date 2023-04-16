@@ -11,14 +11,14 @@ import java.util.List;
 
 @Slf4j
 @Controller
-public class AddressNewFormViewController {
+public class AddressFormViewController {
 
     private NewAddressFormView newAddressFormView;
 
     private AddressService addressService;
     private Binder<Address> binder;
 
-    public AddressNewFormViewController(AddressService addressService) {
+    public AddressFormViewController(AddressService addressService) {
         this.addressService = addressService;
     }
 

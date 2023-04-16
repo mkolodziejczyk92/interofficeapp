@@ -40,8 +40,9 @@ public class SuppliersView extends Div {
         suppliersViewController.initView(this);
 
         Grid<Supplier> grid = new Grid<>(Supplier.class, false);
-        grid.addColumn(Supplier::getNameOfCompany).setHeader("Name of company").setAutoWidth(true);
-        grid.addColumn(Supplier::getNip).setHeader("NIP").setAutoWidth(true);
+        grid.addColumn(Supplier::getNameOfCompany).setHeader("Name of company");
+        grid.addColumn(Supplier::getNip).setHeader("NIP");
+        grid.getColumns().forEach(supplierColumn -> supplierColumn.setAutoWidth(true));
         grid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
         grid.setItems(filterDataProvider);
 

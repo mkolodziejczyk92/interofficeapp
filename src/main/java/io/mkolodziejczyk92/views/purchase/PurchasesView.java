@@ -37,14 +37,15 @@ public class PurchasesView extends Div {
         purchasesViewController.initView(this);
 
         Grid<Purchase> grid = new Grid<>(Purchase.class, false);
-        grid.addColumn(purchase -> purchase.getClient().getFullName()).setHeader("Client").setAutoWidth(true);
-        grid.addColumn(Purchase::getContractNumber).setHeader("Contract number").setAutoWidth(true);
-        grid.addColumn(purchase -> purchase.getSupplier().getNameOfCompany()).setHeader("Supplier").setAutoWidth(true);
-        grid.addColumn(Purchase::getNetAmount).setHeader("Net amount").setAutoWidth(true);
-        grid.addColumn(Purchase::getCommodityType).setHeader("Commodity type").setAutoWidth(true);
-        grid.addColumn(Purchase::getStatus).setHeader("Status").setAutoWidth(true);
-        grid.addColumn(Purchase::getSupplierPurchaseNumber).setHeader("Supplier purchase number").setAutoWidth(true);
-        grid.addColumn(Purchase::getComment).setHeader("Comment").setAutoWidth(true);
+        grid.addColumn(purchase -> purchase.getClient().getFullName()).setHeader("Client");
+        grid.addColumn(Purchase::getContractNumber).setHeader("Contract number");
+        grid.addColumn(purchase -> purchase.getSupplier().getNameOfCompany()).setHeader("Supplier");
+        grid.addColumn(Purchase::getNetAmount).setHeader("Net amount");
+        grid.addColumn(Purchase::getCommodityType).setHeader("Commodity type");
+        grid.addColumn(Purchase::getStatus).setHeader("Status");
+        grid.addColumn(Purchase::getSupplierPurchaseNumber).setHeader("Supplier purchase number");
+        grid.addColumn(Purchase::getComment).setHeader("Comment");
+        grid.getColumns().forEach(purchaseColumn -> purchaseColumn.setAutoWidth(true));
         grid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
         grid.setItems(filterDataProvider);
 

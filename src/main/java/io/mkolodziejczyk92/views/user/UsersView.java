@@ -4,6 +4,7 @@ import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
+
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.grid.contextmenu.GridContextMenu;
@@ -15,6 +16,7 @@ import io.mkolodziejczyk92.data.controllers.UserViewController;
 import io.mkolodziejczyk92.data.entity.User;
 import io.mkolodziejczyk92.views.MainLayout;
 import jakarta.annotation.security.RolesAllowed;
+import org.vaadin.klaudeta.PaginatedGrid;
 
 @PageTitle("Users")
 @Route(value = "users", layout = MainLayout.class)
@@ -30,12 +32,15 @@ public class UsersView extends Div {
         userViewController.initView(this);
 
         Grid<User> grid = new Grid<>(User.class, false);
-        grid.addColumn(User::getUserName).setHeader("User name").setAutoWidth(true);
-        grid.addColumn(User::getFirstName).setHeader("First name").setAutoWidth(true);
-        grid.addColumn(User::getLastName).setHeader("Last name").setAutoWidth(true);
-        grid.addColumn(User::getEmail).setHeader("Email").setAutoWidth(true);
+        grid.addColumn(User::getUserName).setHeader("User name");
+        grid.addColumn(User::getFirstName).setHeader("First name");
+        grid.addColumn(User::getLastName).setHeader("Last name");
+        grid.addColumn(User::getEmail).setHeader("Email");
+        grid.getColumns().forEach(userColumn -> userColumn.setAutoWidth(true));
         grid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
         grid.setItems(userViewController::allUsersPageableStream);
+
+
 
 
         GridContextMenu<User> menu = grid.addContextMenu();

@@ -33,8 +33,6 @@ public class ClientsView extends Div {
     private ClientDataProvider dataProvider = new ClientDataProvider();
     private ConfigurableFilterDataProvider<Client, Void, ClientFilter> filterDataProvider = dataProvider
             .withConfigurableFilter();
-
-
     private final Button newClientButton = new Button("Add new client");
 
 
@@ -44,11 +42,12 @@ public class ClientsView extends Div {
 
 
         Grid<Client> grid = new Grid<>();
-        grid.addColumn(Client::getFullName).setHeader("Full Name").setAutoWidth(true);
-        grid.addColumn(Client::getPhoneNumber).setHeader("Phone number").setAutoWidth(true);
-        grid.addColumn(Client::getNip).setHeader("NIP").setAutoWidth(true);
-        grid.addColumn(Client::getEmail).setHeader("Email").setAutoWidth(true);
+        grid.addColumn(Client::getFullName).setHeader("Full Name");
+        grid.addColumn(Client::getPhoneNumber).setHeader("Phone number");
+        grid.addColumn(Client::getNip).setHeader("NIP");
+        grid.addColumn(Client::getEmail).setHeader("Email");
         grid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
+        grid.getColumns().forEach(clientColumn -> clientColumn.setAutoWidth(true));
         grid.setItems(filterDataProvider);
 
 

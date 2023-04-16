@@ -43,11 +43,11 @@ public class ContractsView extends Div {
         contractsViewController.initView(this);
 
         Grid<Contract> grid = new Grid<>(Contract.class, false);
-        grid.addColumn(contract -> contract.getClient().getFullName()).setHeader("Client").setAutoWidth(true);
-        grid.addColumn(Contract::getNumber).setHeader("Contract Number").setAutoWidth(true);
-        grid.addColumn(Contract::getNetAmount).setHeader("Net Amount").setAutoWidth(true);
-        grid.addColumn(Contract::getSignatureDate).setHeader("Signature Date").setAutoWidth(true);
-        grid.addColumn(Contract::getPlannedImplementationDate).setHeader("Planned Date").setAutoWidth(true);
+        grid.addColumn(contract -> contract.getClient().getFullName()).setHeader("Client");
+        grid.addColumn(Contract::getNumber).setHeader("Contract Number");
+        grid.addColumn(Contract::getNetAmount).setHeader("Net Amount");
+        grid.addColumn(Contract::getSignatureDate).setHeader("Signature Date");
+        grid.addColumn(Contract::getPlannedImplementationDate).setHeader("Planned Date");
         grid.addComponentColumn(contract -> {
             Icon icon;
             if (contract.isCompleted()) {
@@ -58,8 +58,9 @@ public class ContractsView extends Div {
                 icon.setColor("red");
             }
             return icon;
-        }).setHeader("Completed").setTextAlign(ColumnTextAlign.CENTER).setAutoWidth(true);
-        grid.addColumn(Contract::getCommodityType).setHeader("Commodity Type").setAutoWidth(true);
+        }).setHeader("Completed").setTextAlign(ColumnTextAlign.CENTER);
+        grid.addColumn(Contract::getCommodityType).setHeader("Commodity Type");
+        grid.getColumns().forEach(contractColumn -> contractColumn.setAutoWidth(true));
         grid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
         grid.setItems(filterDataProvider);
 

@@ -39,12 +39,13 @@ public class AddressesView extends Div {
 
         Grid<Address> grid = new Grid<>();
         grid.addColumn(address -> address.getClient().getFullName()).setHeader("Client");
-        grid.addColumn(Address::getHouseNumber).setHeader("House number").setAutoWidth(true);
-        grid.addColumn(Address::getApartmentNumber).setHeader("apartmentNumber").setAutoWidth(true);
-        grid.addColumn(Address::getZipCode).setHeader("Zip code").setAutoWidth(true);
-        grid.addColumn(Address::getCity).setHeader("City").setAutoWidth(true);
-        grid.addColumn(Address::getVoivodeship).setHeader("Voivodeship").setAutoWidth(true);
-        grid.addColumn(Address::getPlotNumber).setHeader("Plot number").setAutoWidth(true);
+        grid.addColumn(Address::getHouseNumber).setHeader("House number");
+        grid.addColumn(Address::getApartmentNumber).setHeader("apartmentNumber");
+        grid.addColumn(Address::getZipCode).setHeader("Zip code");
+        grid.addColumn(Address::getCity).setHeader("City");
+        grid.addColumn(Address::getVoivodeship).setHeader("Voivodeship");
+        grid.addColumn(Address::getPlotNumber).setHeader("Plot number");
+        grid.getColumns().forEach(addressColumn -> addressColumn.setAutoWidth(true));
         grid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
         grid.setItems(filterDataProvider);
 

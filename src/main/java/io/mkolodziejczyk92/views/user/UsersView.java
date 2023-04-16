@@ -4,7 +4,6 @@ import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
-
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.grid.contextmenu.GridContextMenu;
@@ -16,7 +15,6 @@ import io.mkolodziejczyk92.data.controllers.UserViewController;
 import io.mkolodziejczyk92.data.entity.User;
 import io.mkolodziejczyk92.views.MainLayout;
 import jakarta.annotation.security.RolesAllowed;
-import org.vaadin.klaudeta.PaginatedGrid;
 
 @PageTitle("Users")
 @Route(value = "users", layout = MainLayout.class)

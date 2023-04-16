@@ -43,12 +43,12 @@ public class InvoicesView extends Div {
 
 
         Grid<Invoice> grid = new Grid<>(Invoice.class, false);
-        grid.addColumn(Invoice::getNumber).setHeader("Invoice number").setAutoWidth(true);
-        grid.addColumn(invoice -> invoice.getClient().getFullName()).setHeader("Client").setAutoWidth(true);
-        grid.addColumn(invoice -> invoice.getContract().getNumber()).setHeader("Contract number").setAutoWidth(true);
-        grid.addColumn(Invoice::getAmount).setHeader("Amount").setAutoWidth(true);
-        grid.addColumn(Invoice::getIssueDate).setHeader("Issue date").setAutoWidth(true);
-        grid.addColumn(Invoice::getPaymentTime).setHeader("Payment time").setAutoWidth(true);
+        grid.addColumn(Invoice::getNumber).setHeader("Invoice number");
+        grid.addColumn(invoice -> invoice.getClient().getFullName()).setHeader("Client");
+        grid.addColumn(invoice -> invoice.getContract().getNumber()).setHeader("Contract number");
+        grid.addColumn(Invoice::getAmount).setHeader("Amount");
+        grid.addColumn(Invoice::getIssueDate).setHeader("Issue date");
+        grid.addColumn(Invoice::getPaymentTime).setHeader("Payment time");
         grid.addComponentColumn(invoice -> {
             Icon icon;
             if (invoice.isPaid()) {
@@ -60,8 +60,9 @@ public class InvoicesView extends Div {
             }
             return icon;
         }).setAutoWidth(true).setHeader("Paid").setTextAlign(ColumnTextAlign.CENTER);
-        grid.addColumn(Invoice::getType).setHeader("Type").setAutoWidth(true);
-        grid.addColumn(Invoice::getPaymentMethod).setHeader("Payment method").setAutoWidth(true);
+        grid.addColumn(Invoice::getType).setHeader("Type");
+        grid.addColumn(Invoice::getPaymentMethod).setHeader("Payment method");
+        grid.getColumns().forEach(invoiceColumn -> invoiceColumn.setAutoWidth(true));
         grid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
         grid.setItems(filterDataProvider);
 

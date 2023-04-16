@@ -30,12 +30,15 @@ public class UsersView extends Div {
         userViewController.initView(this);
 
         Grid<User> grid = new Grid<>(User.class, false);
-        grid.addColumn(User::getUserName).setHeader("User name").setAutoWidth(true);
-        grid.addColumn(User::getFirstName).setHeader("First name").setAutoWidth(true);
-        grid.addColumn(User::getLastName).setHeader("Last name").setAutoWidth(true);
-        grid.addColumn(User::getEmail).setHeader("Email").setAutoWidth(true);
+        grid.addColumn(User::getUserName).setHeader("User name");
+        grid.addColumn(User::getFirstName).setHeader("First name");
+        grid.addColumn(User::getLastName).setHeader("Last name");
+        grid.addColumn(User::getEmail).setHeader("Email");
+        grid.getColumns().forEach(userColumn -> userColumn.setAutoWidth(true));
         grid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
         grid.setItems(userViewController::allUsersPageableStream);
+
+
 
 
         GridContextMenu<User> menu = grid.addContextMenu();

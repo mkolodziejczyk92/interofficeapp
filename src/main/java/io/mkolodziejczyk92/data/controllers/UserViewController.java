@@ -5,7 +5,7 @@ import com.vaadin.flow.data.provider.Query;
 import com.vaadin.flow.spring.data.VaadinSpringDataHelpers;
 import io.mkolodziejczyk92.data.entity.User;
 import io.mkolodziejczyk92.data.service.UsersService;
-import io.mkolodziejczyk92.views.users.UserView;
+import io.mkolodziejczyk92.views.users.UsersView;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 
@@ -15,7 +15,7 @@ import java.util.stream.Stream;
 @Controller
 public class UserViewController {
 
-    private UserView userView;
+    private UsersView usersView;
 
     private final UsersService userService;
 
@@ -23,8 +23,8 @@ public class UserViewController {
         this.userService = userService;
     }
 
-    public void initView(UserView userView) {
-        this.userView = userView;
+    public void initView(UsersView usersView) {
+        this.usersView = usersView;
     }
 
     public Optional<User> getUserById(Long id){

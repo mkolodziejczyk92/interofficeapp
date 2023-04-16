@@ -28,11 +28,9 @@ public class AddressesView extends Div {
 
     private final AddressesViewController addressesViewController;
     private AddressFilter addressFilter = new AddressFilter();
-
     private AddressDataProvider addressDataProvider = new AddressDataProvider();
-
-    private ConfigurableFilterDataProvider<Address, Void, AddressFilter> filterDataProvider = addressDataProvider
-            .withConfigurableFilter();
+    private ConfigurableFilterDataProvider<Address, Void, AddressFilter> filterDataProvider
+            = addressDataProvider.withConfigurableFilter();
     private Button newAddressButton = new Button("Add new address");
 
     public AddressesView(AddressesViewController addressesViewController) {
@@ -40,13 +38,13 @@ public class AddressesView extends Div {
         addressesViewController.initView(this);
 
         Grid<Address> grid = new Grid<>();
-        grid.addColumn(address -> address.getClient().getFullName(), "clientFullName").setHeader("Client");
-        grid.addColumn(Address::getHouseNumber, "houseNumber").setHeader("House number");
-        grid.addColumn(Address::getApartmentNumber, "apartmentNumber").setHeader("apartmentNumber");
-        grid.addColumn(Address::getZipCode, "zipCode").setHeader("Zip code");
-        grid.addColumn(Address::getCity, "city").setHeader("City");
-        grid.addColumn(Address::getVoivodeship, "voivodeship").setHeader("Voivodeship");
-        grid.addColumn(Address::getPlotNumber, "plotNumber").setHeader("Plot number");
+        grid.addColumn(address -> address.getClient().getFullName()).setHeader("Client");
+        grid.addColumn(Address::getHouseNumber).setHeader("House number").setAutoWidth(true);
+        grid.addColumn(Address::getApartmentNumber).setHeader("apartmentNumber").setAutoWidth(true);
+        grid.addColumn(Address::getZipCode).setHeader("Zip code").setAutoWidth(true);
+        grid.addColumn(Address::getCity).setHeader("City").setAutoWidth(true);
+        grid.addColumn(Address::getVoivodeship).setHeader("Voivodeship").setAutoWidth(true);
+        grid.addColumn(Address::getPlotNumber).setHeader("Plot number").setAutoWidth(true);
         grid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
         grid.setItems(filterDataProvider);
 
@@ -63,7 +61,7 @@ public class AddressesView extends Div {
         add(grid);
     }
 
-    private Component createSearchLayout(){
+    private Component createSearchLayout() {
         HorizontalLayout searchLayout = new HorizontalLayout();
         searchLayout.addClassName("button-layout");
 
@@ -76,25 +74,22 @@ public class AddressesView extends Div {
         searchField.addValueChangeListener(e -> {
             addressFilter.setSearchTerm(e.getValue());
             filterDataProvider.setFilter(addressFilter);
-
         });
         searchLayout.add(searchField);
         return searchLayout;
     }
+
     private Component createTopButtonLayout() {
         HorizontalLayout topButtonLayout = new HorizontalLayout();
-
+        topButtonLayout.add(newAddressButton);
         newAddressButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         newAddressButton.getStyle().set("margin-left", "auto");
         newAddressButton
                 .addClickListener(e -> UI.getCurrent().navigate(NewAddressFormView.class));
-        topButtonLayout.add(newAddressButton);
         topButtonLayout.getStyle().set("padding-right", "15px");
         topButtonLayout.getStyle().set("border-bottom", "1px solid var(--lumo-contrast-10pct)");
-
         return topButtonLayout;
     }
-
 
 
 }

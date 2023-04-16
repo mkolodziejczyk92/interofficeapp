@@ -1,11 +1,9 @@
 package io.mkolodziejczyk92.data.entity;
 
 import io.mkolodziejczyk92.data.enums.ECommodityType;
-import io.mkolodziejczyk92.data.enums.EOrderStatus;
+import io.mkolodziejczyk92.data.enums.EPurchaseStatus;
 import jakarta.persistence.*;
 import lombok.*;
-
-import java.util.Set;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -25,9 +23,9 @@ public class Purchase extends AbstractEntity {
     private Client client;
 
     @Enumerated(EnumType.STRING)
-    private EOrderStatus status;
+    private EPurchaseStatus status;
 
-    private String supplierOrderNumber;
+    private String supplierPurchaseNumber;
     private String comment;
 
     @Enumerated(EnumType.STRING)

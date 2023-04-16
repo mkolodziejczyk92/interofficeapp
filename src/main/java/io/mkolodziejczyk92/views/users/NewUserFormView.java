@@ -97,7 +97,7 @@ public class NewUserFormView extends Div {
         topButtonLayout.getStyle().set("border-bottom", "1px solid var(--lumo-contrast-10pct)");
 
         back.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-        back.addClickListener(e -> UI.getCurrent().navigate(UserView.class));
+        back.addClickListener(e -> UI.getCurrent().navigate(UsersView.class));
         back.getStyle().set("margin-left", "auto");
 
         topButtonLayout.add(back);

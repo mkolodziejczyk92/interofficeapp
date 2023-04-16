@@ -1,20 +1,20 @@
 package io.mkolodziejczyk92.data.service;
 
 import io.mkolodziejczyk92.data.entity.Purchase;
-
-import java.util.List;
-import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Optional;
+
 @Service
-public class OrdersService {
+public class PurchaseService {
 
-    private final OrdersRepository repository;
+    private final PurchaseRepository repository;
 
-    public OrdersService(OrdersRepository repository) {
+    public PurchaseService(PurchaseRepository repository) {
         this.repository = repository;
     }
 
@@ -42,7 +42,7 @@ public class OrdersService {
         return (int) repository.count();
     }
 
-    public List<Purchase> purchasesList() {
+    public List<Purchase> allPurchases() {
         return repository.findAll();
     }
 }

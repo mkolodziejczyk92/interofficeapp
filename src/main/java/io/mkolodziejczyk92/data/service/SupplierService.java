@@ -44,7 +44,7 @@ public class SupplierService {
         return (int) repository.count();
     }
 
-    public List<Supplier> supplierList() {
+    public List<Supplier> allSuppliers() {
         return repository.findAll();
     }
 }

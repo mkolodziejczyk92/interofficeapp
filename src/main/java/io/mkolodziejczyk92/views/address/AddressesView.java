@@ -28,11 +28,9 @@ public class AddressesView extends Div {
 
     private final AddressesViewController addressesViewController;
     private AddressFilter addressFilter = new AddressFilter();
-
     private AddressDataProvider addressDataProvider = new AddressDataProvider();
-
-    private ConfigurableFilterDataProvider<Address, Void, AddressFilter> filterDataProvider = addressDataProvider
-            .withConfigurableFilter();
+    private ConfigurableFilterDataProvider<Address, Void, AddressFilter> filterDataProvider
+            = addressDataProvider.withConfigurableFilter();
     private Button newAddressButton = new Button("Add new address");
 
     public AddressesView(AddressesViewController addressesViewController) {
@@ -83,7 +81,6 @@ public class AddressesView extends Div {
     }
     private Component createTopButtonLayout() {
         HorizontalLayout topButtonLayout = new HorizontalLayout();
-
         newAddressButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         newAddressButton.getStyle().set("margin-left", "auto");
         newAddressButton
@@ -91,7 +88,6 @@ public class AddressesView extends Div {
         topButtonLayout.add(newAddressButton);
         topButtonLayout.getStyle().set("padding-right", "15px");
         topButtonLayout.getStyle().set("border-bottom", "1px solid var(--lumo-contrast-10pct)");
-
         return topButtonLayout;
     }
 

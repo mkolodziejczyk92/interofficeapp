@@ -6,11 +6,14 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
-import com.vaadin.flow.component.grid.HeaderRow;
 import com.vaadin.flow.component.grid.contextmenu.GridContextMenu;
-import com.vaadin.flow.component.grid.dataview.GridListDataView;
 import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.icon.Icon;
+import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
+import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.data.provider.ConfigurableFilterDataProvider;
+import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import io.mkolodziejczyk92.data.controllers.SuppliersViewController;
@@ -18,38 +21,31 @@ import io.mkolodziejczyk92.data.entity.Supplier;
 import io.mkolodziejczyk92.views.MainLayout;
 import jakarta.annotation.security.PermitAll;
 
-import java.util.List;
-import java.util.function.Consumer;
-
-import static io.mkolodziejczyk92.views.FilterHeader.getComponent;
-
 
 @PageTitle("Suppliers")
 @Route(value = "suppliers", layout = MainLayout.class)
 @PermitAll
 public class SuppliersView extends Div {
 
-    private final Grid<Supplier> grid = new Grid<>(Supplier.class, false);
-
+    private final SuppliersViewController suppliersViewController;
+    private SupplierFilter supplierFilter = new SupplierFilter();
+    private SupplierDataProvider supplierDataProvider = new SupplierDataProvider();
+    private ConfigurableFilterDataProvider<Supplier, Void, SupplierFilter> filterDataProvider
+            = supplierDataProvider.withConfigurableFilter();
     private Button newSupplierButton = new Button("Add new supplier");
 
-    private final SuppliersViewController suppliersViewController;
 
     public SuppliersView(SuppliersViewController suppliersViewController) {
         this.suppliersViewController = suppliersViewController;
         suppliersViewController.initView(this);
 
-        Grid.Column<Supplier> nameOfCompanyColumn
-                = grid.addColumn("nameOfCompany").setHeader("Name of Company").setAutoWidth(true);
-        Grid.Column<Supplier> nipColumn =
-                grid.addColumn("nip").setAutoWidth(true);
-
-        add(createTopButtonLayout());
-        add(grid);
+        Grid<Supplier> grid = new Grid<>(Supplier.class, false);
+        grid.addColumn(Supplier::getNameOfCompany,"nameOfCompany").setHeader("Name of company").setAutoWidth(true);
+        grid.addColumn(Supplier::getNip,"nip").setHeader("NIP").setAutoWidth(true);
         grid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
 
-        GridContextMenu<Supplier> menu = grid.addContextMenu();
 
+        GridContextMenu<Supplier> menu = grid.addContextMenu();
         menu.addItem("View", event -> {
         });
         menu.addItem("Edit", event -> {
@@ -57,18 +53,28 @@ public class SuppliersView extends Div {
         menu.addItem("Delete", event -> {
         });
 
-        List<Supplier> invoiceList = suppliersViewController.allSuppliers();
-        GridListDataView<Supplier> dataView = grid.setItems(invoiceList);
-        InvoicesFilter invoicesFilter = new InvoicesFilter(dataView);
+        add(createTopButtonLayout());
+        add(createSearchLayout());
+        add(grid);
+    }
 
-        grid.getHeaderRows().clear();
-        HeaderRow headerRow = grid.appendHeaderRow();
+    private Component createSearchLayout() {
+        HorizontalLayout searchLayout = new HorizontalLayout();
+        searchLayout.addClassName("button-layout");
 
-        headerRow.getCell(nameOfCompanyColumn).setComponent(
-                createFilterHeader(invoicesFilter::setNameOfCompany));
-        headerRow.getCell(nipColumn).setComponent(
-                createFilterHeader(invoicesFilter::setNip));
+        TextField searchField = new TextField();
+        searchField.getStyle().set("padding-left", "15px");
+        searchField.setWidth("30%");
+        searchField.setPlaceholder("Search");
+        searchField.setPrefixComponent(new Icon(VaadinIcon.SEARCH));
+        searchField.setValueChangeMode(ValueChangeMode.EAGER);
+        searchField.addValueChangeListener(e -> {
+            supplierFilter.setSearchTerm(e.getValue());
+            filterDataProvider.setFilter(supplierFilter);
+        });
 
+        searchLayout.add(searchField);
+        return searchLayout;
     }
 
     private Component createTopButtonLayout() {
@@ -83,44 +89,4 @@ public class SuppliersView extends Div {
         return topButtonLayout;
     }
 
-    private static Component createFilterHeader(Consumer<String> filterChangeConsumer) {
-        return getComponent(filterChangeConsumer);
-    }
-
-    private static class InvoicesFilter {
-        private final GridListDataView<Supplier> dataView;
-
-        private String nameOfCompany;
-        private String nip;
-
-
-        public InvoicesFilter(GridListDataView<Supplier> dataView) {
-            this.dataView = dataView;
-            this.dataView.addFilter(this::test);
-        }
-
-        public void setNameOfCompany(String nameOfCompany) {
-            this.nameOfCompany = nameOfCompany;
-            this.dataView.refreshAll();
-        }
-
-
-        public void setNip(String nip) {
-            this.nip = nip;
-            this.dataView.refreshAll();
-        }
-
-
-        public boolean test(Supplier supplier) {
-
-            boolean matchesClientFullName = matches(supplier.getNameOfCompany(), nameOfCompany);
-            boolean matchesContractNumber = matches(supplier.getNip(), nip);
-            return matchesClientFullName && matchesContractNumber;
-        }
-
-        private boolean matches(String value, String searchTerm) {
-            return searchTerm == null || searchTerm.isEmpty()
-                    || value.toLowerCase().contains(searchTerm.toLowerCase());
-        }
-    }
 }

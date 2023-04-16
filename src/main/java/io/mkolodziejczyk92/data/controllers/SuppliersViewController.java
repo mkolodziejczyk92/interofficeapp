@@ -25,7 +25,7 @@ public class SuppliersViewController {
     }
 
     public List<Supplier> allSuppliers() {
-        return supplierService.supplierList();
+        return supplierService.allSuppliers();
     }
 
 }

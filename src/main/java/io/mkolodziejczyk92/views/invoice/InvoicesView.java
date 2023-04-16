@@ -85,7 +85,7 @@ public class InvoicesView extends Div {
         TextField searchField = new TextField();
         searchField.getStyle().set("padding-left", "15px");
         searchField.setWidth("30%");
-        searchField.setPlaceholder("Search by client or contract number");
+        searchField.setPlaceholder("Search by client, contract number or invoice number");
         searchField.setPrefixComponent(new Icon(VaadinIcon.SEARCH));
         searchField.setValueChangeMode(ValueChangeMode.EAGER);
         searchField.addValueChangeListener(e -> {

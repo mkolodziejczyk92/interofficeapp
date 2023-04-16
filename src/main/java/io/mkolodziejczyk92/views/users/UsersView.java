@@ -14,33 +14,31 @@ import com.vaadin.flow.router.Route;
 import io.mkolodziejczyk92.data.controllers.UserViewController;
 import io.mkolodziejczyk92.data.entity.User;
 import io.mkolodziejczyk92.views.MainLayout;
-import io.mkolodziejczyk92.views.users.NewUserFormView;
 import jakarta.annotation.security.RolesAllowed;
 
 @PageTitle("Users")
 @Route(value = "users", layout = MainLayout.class)
 @RolesAllowed("ADMIN")
-public class UserView extends Div {
+public class UsersView extends Div {
 
     private final UserViewController userViewController;
-    private final Grid<User> grid = new Grid<>(User.class, false);
-
     private final Button newUserButton = new Button("Add new user");
 
 
-    public UserView(io.mkolodziejczyk92.data.controllers.UserViewController userViewController) {
+    public UsersView(io.mkolodziejczyk92.data.controllers.UserViewController userViewController) {
         this.userViewController = userViewController;
         userViewController.initView(this);
 
-        grid.addColumn("userName").setAutoWidth(true);
-        grid.addColumn("firstName").setAutoWidth(true);
-        grid.addColumn("lastName").setAutoWidth(true);
-        grid.addColumn("email").setAutoWidth(true);
-        grid.setItems(userViewController::allUsersPageableStream);
+        Grid<User> grid = new Grid<>(User.class, false);
+        grid.addColumn(User::getUserName).setHeader("User name").setAutoWidth(true);
+        grid.addColumn(User::getFirstName).setHeader("First name").setAutoWidth(true);
+        grid.addColumn(User::getLastName).setHeader("Last name").setAutoWidth(true);
+        grid.addColumn(User::getEmail).setHeader("Email").setAutoWidth(true);
         grid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
+        grid.setItems(userViewController::allUsersPageableStream);
+
 
         GridContextMenu<User> menu = grid.addContextMenu();
-
         menu.addItem("View", event -> {
         });
         menu.addItem("Edit", event -> {

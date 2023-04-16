@@ -20,7 +20,6 @@ import com.vaadin.flow.router.RouteAlias;
 import io.mkolodziejczyk92.data.controllers.ClientsViewController;
 import io.mkolodziejczyk92.data.entity.Client;
 import io.mkolodziejczyk92.views.MainLayout;
-import io.mkolodziejczyk92.views.supplier.NewSupplierFormView;
 import jakarta.annotation.security.PermitAll;
 
 @PageTitle("Clients")
@@ -45,12 +44,12 @@ public class ClientsView extends Div {
 
 
         Grid<Client> grid = new Grid<>();
-        grid.addColumn(Client::getFullName, "fullName").setHeader("Full Name");
-        grid.addColumn(Client::getPhoneNumber, "phoneNumber").setHeader("Phone number");
-        grid.addColumn(Client::getNip, "nip").setHeader("NIP");
-        grid.addColumn(Client::getEmail, "email").setHeader("Email");
-        grid.setItems(filterDataProvider);
+        grid.addColumn(Client::getFullName).setHeader("Full Name").setAutoWidth(true);
+        grid.addColumn(Client::getPhoneNumber).setHeader("Phone number").setAutoWidth(true);
+        grid.addColumn(Client::getNip).setHeader("NIP").setAutoWidth(true);
+        grid.addColumn(Client::getEmail).setHeader("Email").setAutoWidth(true);
         grid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
+        grid.setItems(filterDataProvider);
 
 
         GridContextMenu<Client> menu = grid.addContextMenu();
@@ -66,7 +65,7 @@ public class ClientsView extends Div {
         add(grid);
     }
 
-    private Component createSearchLayout(){
+    private Component createSearchLayout() {
         HorizontalLayout searchLayout = new HorizontalLayout();
 
         TextField searchField = new TextField();

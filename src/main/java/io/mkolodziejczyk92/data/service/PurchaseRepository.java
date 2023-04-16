@@ -4,6 +4,6 @@ import io.mkolodziejczyk92.data.entity.Purchase;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
-public interface OrdersRepository extends JpaRepository<Purchase, Long>, JpaSpecificationExecutor<Purchase> {
+public interface PurchaseRepository extends JpaRepository<Purchase, Long>, JpaSpecificationExecutor<Purchase> {
 
 }

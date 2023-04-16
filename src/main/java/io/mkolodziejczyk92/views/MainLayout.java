@@ -18,9 +18,9 @@ import io.mkolodziejczyk92.views.address.AddressesView;
 import io.mkolodziejczyk92.views.clients.ClientsView;
 import io.mkolodziejczyk92.views.contracts.ContractsView;
 import io.mkolodziejczyk92.views.invoice.InvoicesView;
-import io.mkolodziejczyk92.views.orders.OrdersView;
+import io.mkolodziejczyk92.views.purchase.PurchasesView;
 import io.mkolodziejczyk92.views.supplier.SuppliersView;
-import io.mkolodziejczyk92.views.users.UserView;
+import io.mkolodziejczyk92.views.users.UsersView;
 import org.vaadin.lineawesome.LineAwesomeIcon;
 
 import java.util.Optional;
@@ -74,8 +74,8 @@ public class MainLayout extends AppLayout {
             nav.addItem(new AppNavItem("Clients", ClientsView.class, LineAwesomeIcon.USER.create()));
 
         }
-        if (accessChecker.hasAccess(OrdersView.class)) {
-            nav.addItem(new AppNavItem("Orders", OrdersView.class, LineAwesomeIcon.FILE_INVOICE_SOLID.create()));
+        if (accessChecker.hasAccess(PurchasesView.class)) {
+            nav.addItem(new AppNavItem("Purchases", PurchasesView.class, LineAwesomeIcon.FILE_INVOICE_SOLID.create()));
 
         }
         if (accessChecker.hasAccess(ContractsView.class)) {
@@ -91,16 +91,13 @@ public class MainLayout extends AppLayout {
             nav.addItem(new AppNavItem("Addresses", AddressesView.class, LineAwesomeIcon.MAP_MARKER_SOLID.create()));
 
         }
-
-        if (accessChecker.hasAccess(UserView.class)) {
-            nav.addItem(new AppNavItem("Users", UserView.class, LineAwesomeIcon.USER_CIRCLE_SOLID.create()));
-
-        }
         if(accessChecker.hasAccess(SuppliersView.class)){
             nav.addItem(new AppNavItem("Suppliers", SuppliersView.class, LineAwesomeIcon.TRUCK_SOLID.create()));
         }
+        if (accessChecker.hasAccess(UsersView.class)) {
+            nav.addItem(new AppNavItem("Users", UsersView.class, LineAwesomeIcon.USER_CIRCLE_SOLID.create()));
 
-
+        }
         return nav;
     }
 
@@ -125,13 +122,11 @@ public class MainLayout extends AppLayout {
             userName.getSubMenu().addItem("Log out", e -> {
                 authenticatedUser.logout();
             });
-
             layout.add(userMenu);
         } else {
             Anchor loginLink = new Anchor("login", "Sign in");
             layout.add(loginLink);
         }
-
         return layout;
     }
 

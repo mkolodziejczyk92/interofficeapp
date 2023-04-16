@@ -38,13 +38,13 @@ public class AddressesView extends Div {
         addressesViewController.initView(this);
 
         Grid<Address> grid = new Grid<>();
-        grid.addColumn(address -> address.getClient().getFullName(), "clientFullName").setHeader("Client");
-        grid.addColumn(Address::getHouseNumber, "houseNumber").setHeader("House number");
-        grid.addColumn(Address::getApartmentNumber, "apartmentNumber").setHeader("apartmentNumber");
-        grid.addColumn(Address::getZipCode, "zipCode").setHeader("Zip code");
-        grid.addColumn(Address::getCity, "city").setHeader("City");
-        grid.addColumn(Address::getVoivodeship, "voivodeship").setHeader("Voivodeship");
-        grid.addColumn(Address::getPlotNumber, "plotNumber").setHeader("Plot number");
+        grid.addColumn(address -> address.getClient().getFullName()).setHeader("Client");
+        grid.addColumn(Address::getHouseNumber).setHeader("House number").setAutoWidth(true);
+        grid.addColumn(Address::getApartmentNumber).setHeader("apartmentNumber").setAutoWidth(true);
+        grid.addColumn(Address::getZipCode).setHeader("Zip code").setAutoWidth(true);
+        grid.addColumn(Address::getCity).setHeader("City").setAutoWidth(true);
+        grid.addColumn(Address::getVoivodeship).setHeader("Voivodeship").setAutoWidth(true);
+        grid.addColumn(Address::getPlotNumber).setHeader("Plot number").setAutoWidth(true);
         grid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
         grid.setItems(filterDataProvider);
 
@@ -61,7 +61,7 @@ public class AddressesView extends Div {
         add(grid);
     }
 
-    private Component createSearchLayout(){
+    private Component createSearchLayout() {
         HorizontalLayout searchLayout = new HorizontalLayout();
         searchLayout.addClassName("button-layout");
 
@@ -78,6 +78,7 @@ public class AddressesView extends Div {
         searchLayout.add(searchField);
         return searchLayout;
     }
+
     private Component createTopButtonLayout() {
         HorizontalLayout topButtonLayout = new HorizontalLayout();
         topButtonLayout.add(newAddressButton);
@@ -89,7 +90,6 @@ public class AddressesView extends Div {
         topButtonLayout.getStyle().set("border-bottom", "1px solid var(--lumo-contrast-10pct)");
         return topButtonLayout;
     }
-
 
 
 }

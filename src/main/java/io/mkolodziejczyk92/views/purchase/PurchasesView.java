@@ -1,10 +1,8 @@
-package io.mkolodziejczyk92.views.contracts;
+package io.mkolodziejczyk92.views.purchase;
 
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
-import com.vaadin.flow.component.dependency.Uses;
-import com.vaadin.flow.component.grid.ColumnTextAlign;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.grid.contextmenu.GridContextMenu;
@@ -17,53 +15,40 @@ import com.vaadin.flow.data.provider.ConfigurableFilterDataProvider;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-import io.mkolodziejczyk92.data.controllers.ContractsViewController;
-import io.mkolodziejczyk92.data.entity.Contract;
+import io.mkolodziejczyk92.data.controllers.PurchasesViewController;
+import io.mkolodziejczyk92.data.entity.Purchase;
 import io.mkolodziejczyk92.views.MainLayout;
 import jakarta.annotation.security.PermitAll;
 
-@PageTitle("Contracts")
-@Route(value = "contracts", layout = MainLayout.class)
+@PageTitle("Purchases")
+@Route(value = "purchase", layout = MainLayout.class)
 @PermitAll
-@Uses(Icon.class)
-public class ContractsView extends Div {
+public class PurchasesView extends Div {
 
-    private final ContractsViewController contractsViewController;
-
-    private ContractFilter contractFilter = new ContractFilter();
-    private ContractDataProvider contractDataProvider = new ContractDataProvider();
-    private ConfigurableFilterDataProvider<Contract, Void, ContractFilter> filterDataProvider
-            = contractDataProvider.withConfigurableFilter();
-
+    private final PurchasesViewController purchasesViewController;
+    private PurchaseFilter purchaseFilter = new PurchaseFilter();
+    private PurchaseDataProvider purchaseDataProvider = new PurchaseDataProvider();
+    private ConfigurableFilterDataProvider<Purchase, Void, PurchaseFilter> filterDataProvider
+            = purchaseDataProvider.withConfigurableFilter();
     private Button emptyButton = new Button("EMPTY");
 
+    public PurchasesView(PurchasesViewController purchasesViewController) {
+        this.purchasesViewController = purchasesViewController;
+        purchasesViewController.initView(this);
 
-    public ContractsView(ContractsViewController contractsViewController) {
-        this.contractsViewController = contractsViewController;
-        contractsViewController.initView(this);
-
-        Grid<Contract> grid = new Grid<>(Contract.class, false);
-        grid.addColumn(contract -> contract.getClient().getFullName()).setHeader("Client").setAutoWidth(true);
-        grid.addColumn(Contract::getNumber).setHeader("Contract Number").setAutoWidth(true);
-        grid.addColumn(Contract::getNetAmount).setHeader("Net Amount").setAutoWidth(true);
-        grid.addColumn(Contract::getSignatureDate).setHeader("Signature Date").setAutoWidth(true);
-        grid.addColumn(Contract::getPlannedImplementationDate).setHeader("Planned Date").setAutoWidth(true);
-        grid.addComponentColumn(contract -> {
-            Icon icon;
-            if (contract.isCompleted()) {
-                icon = VaadinIcon.CHECK_CIRCLE.create();
-                icon.setColor("green");
-            } else {
-                icon = VaadinIcon.CLOSE_CIRCLE.create();
-                icon.setColor("red");
-            }
-            return icon;
-        }).setHeader("Completed").setTextAlign(ColumnTextAlign.CENTER).setAutoWidth(true);
-        grid.addColumn(Contract::getCommodityType).setHeader("Commodity Type").setAutoWidth(true);
+        Grid<Purchase> grid = new Grid<>(Purchase.class, false);
+        grid.addColumn(purchase -> purchase.getClient().getFullName()).setHeader("Client").setAutoWidth(true);
+        grid.addColumn(Purchase::getContractNumber).setHeader("Contract number").setAutoWidth(true);
+        grid.addColumn(purchase -> purchase.getSupplier().getNameOfCompany()).setHeader("Supplier").setAutoWidth(true);
+        grid.addColumn(Purchase::getNetAmount).setHeader("Net amount").setAutoWidth(true);
+        grid.addColumn(Purchase::getCommodityType).setHeader("Commodity type").setAutoWidth(true);
+        grid.addColumn(Purchase::getStatus).setHeader("Status").setAutoWidth(true);
+        grid.addColumn(Purchase::getSupplierPurchaseNumber).setHeader("Supplier purchase number").setAutoWidth(true);
+        grid.addColumn(Purchase::getComment).setHeader("Comment").setAutoWidth(true);
         grid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
         grid.setItems(filterDataProvider);
 
-        GridContextMenu<Contract> menu = grid.addContextMenu();
+        GridContextMenu<Purchase> menu = grid.addContextMenu();
         menu.addItem("View", event -> {
         });
         menu.addItem("Edit", event -> {
@@ -83,12 +68,12 @@ public class ContractsView extends Div {
         TextField searchField = new TextField();
         searchField.getStyle().set("padding-left", "15px");
         searchField.setWidth("30%");
-        searchField.setPlaceholder("Search by client or contract number");
+        searchField.setPlaceholder("Search by client, contract number, purchase number or supplier");
         searchField.setPrefixComponent(new Icon(VaadinIcon.SEARCH));
         searchField.setValueChangeMode(ValueChangeMode.EAGER);
         searchField.addValueChangeListener(e -> {
-            contractFilter.setSearchTerm(e.getValue());
-            filterDataProvider.setFilter(contractFilter);
+            purchaseFilter.setSearchTerm(e.getValue());
+            filterDataProvider.setFilter(purchaseFilter);
         });
         searchLayout.add(searchField);
         return searchLayout;
@@ -106,4 +91,3 @@ public class ContractsView extends Div {
 
 
 }
-

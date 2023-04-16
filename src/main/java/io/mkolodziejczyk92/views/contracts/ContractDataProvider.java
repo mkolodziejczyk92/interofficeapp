@@ -44,7 +44,7 @@ public class ContractDataProvider extends AbstractBackEndDataProvider<Contract, 
 
     private static Comparator<Contract> sortComparator(List<QuerySortOrder> sortOrders) {
         return sortOrders.stream().map(sortOrder -> {
-            Comparator<Contract> comparator = addressFieldComparator(sortOrder.getSorted());
+            Comparator<Contract> comparator = contractFieldComparator(sortOrder.getSorted());
 
             if (sortOrder.getDirection() == SortDirection.DESCENDING) {
                 comparator = comparator.reversed();
@@ -54,7 +54,7 @@ public class ContractDataProvider extends AbstractBackEndDataProvider<Contract, 
         }).reduce(Comparator::thenComparing).orElse((p1, p2) -> 0);
     }
 
-    private static Comparator<Contract> addressFieldComparator(String sorted) {
+    private static Comparator<Contract> contractFieldComparator(String sorted) {
         if (sorted.equals("clientFullName")) {
             return Comparator.comparing(contract -> contract.getClient().getFullName());
         } else if (sorted.equals("street")) {

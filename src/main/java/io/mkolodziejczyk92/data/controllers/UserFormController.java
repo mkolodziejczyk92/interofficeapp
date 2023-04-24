@@ -33,11 +33,11 @@ public class UserFormController {
     }
 
     public void saveNewUser(User user){
+        user.setHashedPassword(userService.createHashedPassword(user.getHashedPassword()));
         if(user.getERoles().isEmpty()){
             user.setERoles(Set.of(ERole.USER));
         } else{
-            Set<ERole> roles = new HashSet<>(user.getERoles());
-            roles.add(ERole.USER);
+            user.setERoles(Set.of(ERole.USER,ERole.ADMIN));
         }
         userService.save(user);
     }

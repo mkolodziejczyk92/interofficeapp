@@ -4,6 +4,8 @@ import io.mkolodziejczyk92.data.entity.Address;
 
 import java.util.List;
 import java.util.Optional;
+
+import io.mkolodziejczyk92.data.entity.Client;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -43,5 +45,9 @@ public class AddressService {
     }
 
     public List<Address> allAddresses(){ return repository.findAll();}
+
+    public List<Address> clientAddresses(Client client){
+        return repository.findAddressByClient(client);
+    }
 
 }

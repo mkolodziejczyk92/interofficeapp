@@ -17,9 +17,11 @@ import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
+import io.mkolodziejczyk92.data.controllers.ClientAddressesViewController;
 import io.mkolodziejczyk92.data.controllers.ClientsViewController;
 import io.mkolodziejczyk92.data.entity.Client;
 import io.mkolodziejczyk92.views.MainLayout;
+import io.mkolodziejczyk92.views.address.ClientAddressesView;
 import jakarta.annotation.security.PermitAll;
 
 @PageTitle("Clients")
@@ -29,6 +31,8 @@ import jakarta.annotation.security.PermitAll;
 public class ClientsView extends Div {
 
     private final ClientsViewController clientsViewController;
+    private final ClientAddressesViewController clientAddressesViewController;
+
     private ClientFilter clientFilter = new ClientFilter();
     private ClientDataProvider dataProvider = new ClientDataProvider();
     private ConfigurableFilterDataProvider<Client, Void, ClientFilter> filterDataProvider = dataProvider
@@ -36,8 +40,9 @@ public class ClientsView extends Div {
     private final Button newClientButton = new Button("Add new client");
 
 
-    public ClientsView(ClientsViewController clientsViewController) {
+    public ClientsView(ClientsViewController clientsViewController, ClientAddressesViewController clientAddressesViewController) {
         this.clientsViewController = clientsViewController;
+        this.clientAddressesViewController = clientAddressesViewController;
         clientsViewController.initView(this);
 
 
@@ -53,6 +58,12 @@ public class ClientsView extends Div {
 
         GridContextMenu<Client> menu = grid.addContextMenu();
         menu.addItem("View", event -> {
+        });
+        menu.addItem("Contracts", event -> {
+        });
+        menu.addItem("Purchases", event -> {
+        });
+        menu.addItem("Invoices", event -> {
         });
         menu.addItem("Edit", event -> {
         });

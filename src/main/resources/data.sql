@@ -16,7 +16,7 @@ VALUES ('3', 1, 'willywonka@poczta.pl', 'Willy', 'Wonka', '859999567');
 INSERT INTO client (id, version, nip,  email, firstName, lastName, phoneNumber)
 VALUES('4', 1, '7123268588', 'minhar@gmail.pl', 'Mina', 'Harker', '857999567');
 INSERT INTO client (id, version, nip,  email, firstName, lastName, phoneNumber)
-VALUES('5', 1, '7186418588', 'abecadlo@gmail.pl', 'Marcin', 'Najman', '888547321');
+VALUES('5', 1, '7186418588', 'abecadlo@gmail.pl', 'Martin', 'Cummins', '888547321');
 
 
 INSERT INTO client (id, version, nip,  email, firstName, lastName, phoneNumber)

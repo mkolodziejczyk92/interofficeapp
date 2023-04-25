@@ -4,12 +4,15 @@ import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
+import com.vaadin.flow.component.contextmenu.MenuItem;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.grid.contextmenu.GridContextMenu;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
+import com.vaadin.flow.component.menubar.MenuBar;
+import com.vaadin.flow.component.menubar.MenuBarVariant;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.provider.ConfigurableFilterDataProvider;
@@ -30,6 +33,7 @@ import jakarta.annotation.security.PermitAll;
 @PermitAll
 public class ClientsView extends Div {
 
+    private final String CLIENT_VIEW_ROUTE_TEMPLATE = "clients/%s";
     private final ClientsViewController clientsViewController;
     private final ClientAddressesViewController clientAddressesViewController;
 
@@ -51,21 +55,24 @@ public class ClientsView extends Div {
         grid.addColumn(Client::getPhoneNumber).setHeader("Phone number");
         grid.addColumn(Client::getNip).setHeader("NIP");
         grid.addColumn(Client::getEmail).setHeader("Email");
+
         grid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
         grid.getColumns().forEach(clientColumn -> clientColumn.setAutoWidth(true));
         grid.setItems(filterDataProvider);
 
 
+
         GridContextMenu<Client> menu = grid.addContextMenu();
         menu.addItem("View", event -> {
-        });
-        menu.addItem("Contracts", event -> {
-        });
-        menu.addItem("Purchases", event -> {
-        });
-        menu.addItem("Invoices", event -> {
-        });
+view_client_profile
+            if(event.getItem().isPresent()){
+                Client client = event.getItem().get();
+                UI.getCurrent().navigate(String.format(CLIENT_VIEW_ROUTE_TEMPLATE, client.getId()));
+            } else menu.close();
+        }).isVisible();
+
         menu.addItem("Edit", event -> {
+
         });
         menu.addItem("Delete", event -> {
         });
@@ -73,6 +80,8 @@ public class ClientsView extends Div {
         add(createTopButtonLayout());
         add(createSearchLayout());
         add(grid);
+
+
     }
 
     private Component createSearchLayout() {

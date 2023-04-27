@@ -11,8 +11,7 @@ import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
-import com.vaadin.flow.router.PageTitle;
-import com.vaadin.flow.router.Route;
+import com.vaadin.flow.router.*;
 import io.mkolodziejczyk92.data.controllers.AddressFormViewController;
 import io.mkolodziejczyk92.data.controllers.ClientsViewController;
 import io.mkolodziejczyk92.data.entity.Address;
@@ -24,12 +23,11 @@ import io.mkolodziejczyk92.views.MainLayout;
 import jakarta.annotation.security.PermitAll;
 
 @PageTitle("New Address")
-@Route(value = "new-address", layout = MainLayout.class)
+@Route(value = "newAddress", layout = MainLayout.class)
 @PermitAll
-public class NewAddressFormView extends Div {
+public class NewAddressFormView extends Div implements HasUrlParameter<String> {
 
     private final AddressFormViewController addressFormViewController;
-
     private final ClientsViewController clientsViewController;
     private TextField street = new TextField("Street");
     private TextField houseNumber = new TextField("House number");
@@ -53,11 +51,18 @@ public class NewAddressFormView extends Div {
 
     private Binder<Address> binder = new Binder<>(Address.class);
 
-    public NewAddressFormView(AddressFormViewController addressFormViewController, ClientsViewController clientsViewController) {
+    @Override
+    public void setParameter(BeforeEvent event, @WildcardParameter String clientId) {
+        if (!clientId.isEmpty()){
+            client.setValue(clientsViewController.findClientById(Long.valueOf(clientId)));
+        }
+    }
+
+    public NewAddressFormView(AddressFormViewController addressFormViewController,
+                              ClientsViewController clientsViewController) {
         this.addressFormViewController = addressFormViewController;
         this.clientsViewController = clientsViewController;
         addressFormViewController.initView(this, binder);
-
 
         add(createTopButtonLayout());
         createTopComboBox();
@@ -67,21 +72,17 @@ public class NewAddressFormView extends Div {
         binder.bindInstanceFields(this);
 
         addressFormViewController.clearForm();
-
-
     }
 
     private Component createFormLayout() {
         FormLayout formLayout = new FormLayout();
-
         formLayout.getStyle().set("padding-left", "30px");
         formLayout.getStyle().set("padding-right", "30px");
         formLayout.add(street, houseNumber, apartmentNumber, zipCode, city, plotNumber, municipality);
-
         return formLayout;
     }
 
-    private void createTopComboBox(){
+    private void createTopComboBox() {
         client.setItems(clientsViewController.allClients());
         client.setItemLabelGenerator(Client::getFullName);
         client.setMinWidth("350px");
@@ -115,19 +116,16 @@ public class NewAddressFormView extends Div {
         bottomButtonLayout.add(save);
         bottomButtonLayout.add(cancel);
 
-
-
-        cancel.addClickListener(e -> addressFormViewController.clearForm());
-        save.addClickListener(e -> {
+        cancel.addClickListener(event -> addressFormViewController.clearForm());
+        save.addClickListener(event -> {
             addressFormViewController.saveNewAddress(binder.getBean());
             Notification.show(binder.getBean().getClass().getSimpleName() + " stored.");
             addressFormViewController.clearForm();
         });
-
         return bottomButtonLayout;
     }
 
-    private Component createTopButtonLayout(){
+    private Component createTopButtonLayout() {
         HorizontalLayout topButtonLayout = new HorizontalLayout();
         topButtonLayout.getStyle().set("padding-right", "15px");
         topButtonLayout.getStyle().set("border-bottom", "1px solid var(--lumo-contrast-10pct)");
@@ -139,6 +137,5 @@ public class NewAddressFormView extends Div {
         topButtonLayout.add(back);
         return topButtonLayout;
     }
-
 
 }

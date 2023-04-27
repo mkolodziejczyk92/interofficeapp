@@ -46,8 +46,8 @@ public class AddressService {
 
     public List<Address> allAddresses(){ return repository.findAll();}
 
-    public List<Address> clientAddresses(Client client){
-        return repository.findAddressByClient(client);
+    public List<Address> clientAddresses(Long clientId){
+        return repository.findAddressesByClientId(clientId);
     }
 
 }

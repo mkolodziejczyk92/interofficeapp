@@ -4,15 +4,12 @@ import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
-import com.vaadin.flow.component.contextmenu.MenuItem;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.grid.contextmenu.GridContextMenu;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
-import com.vaadin.flow.component.menubar.MenuBar;
-import com.vaadin.flow.component.menubar.MenuBarVariant;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.provider.ConfigurableFilterDataProvider;
@@ -24,7 +21,6 @@ import io.mkolodziejczyk92.data.controllers.ClientAddressesViewController;
 import io.mkolodziejczyk92.data.controllers.ClientsViewController;
 import io.mkolodziejczyk92.data.entity.Client;
 import io.mkolodziejczyk92.views.MainLayout;
-import io.mkolodziejczyk92.views.address.ClientAddressesView;
 import jakarta.annotation.security.PermitAll;
 
 @PageTitle("Clients")
@@ -44,7 +40,8 @@ public class ClientsView extends Div {
     private final Button newClientButton = new Button("Add new client");
 
 
-    public ClientsView(ClientsViewController clientsViewController, ClientAddressesViewController clientAddressesViewController) {
+    public ClientsView(ClientsViewController clientsViewController,
+                       ClientAddressesViewController clientAddressesViewController) {
         this.clientsViewController = clientsViewController;
         this.clientAddressesViewController = clientAddressesViewController;
         clientsViewController.initView(this);
@@ -60,20 +57,21 @@ public class ClientsView extends Div {
         grid.getColumns().forEach(clientColumn -> clientColumn.setAutoWidth(true));
         grid.setItems(filterDataProvider);
 
-
-
         GridContextMenu<Client> menu = grid.addContextMenu();
         menu.addItem("View", event -> {
-view_client_profile
-            if(event.getItem().isPresent()){
+            if (event.getItem().isPresent()) {
                 Client client = event.getItem().get();
-                UI.getCurrent().navigate(String.format(CLIENT_VIEW_ROUTE_TEMPLATE, client.getId()));
+                UI.getCurrent().navigate(String.format(CLIENT_VIEW_ROUTE_TEMPLATE, client.getId())); // PUŚCIĆ PRZEZ CONTROLLER!!!
             } else menu.close();
         }).isVisible();
 
-        menu.addItem("Edit", event -> {
+        menu.addItem("Addresses", event -> {
+            if (event.getItem().isPresent()) {
+                clientsViewController
+                        .clientAddresses(event.getItem().get().getId());
+            } else menu.close();
+        }).isVisible();
 
-        });
         menu.addItem("Delete", event -> {
         });
 

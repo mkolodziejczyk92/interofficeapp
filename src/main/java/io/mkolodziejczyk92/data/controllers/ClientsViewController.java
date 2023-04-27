@@ -1,5 +1,6 @@
 package io.mkolodziejczyk92.data.controllers;
 
+import com.vaadin.flow.component.UI;
 import io.mkolodziejczyk92.data.entity.Client;
 import io.mkolodziejczyk92.data.service.ClientService;
 import io.mkolodziejczyk92.views.client.ClientsView;
@@ -27,5 +28,12 @@ public class ClientsViewController {
 
     public List<Client> allClients(){
         return clientService.allClients();
+    }
+
+    public void clientAddresses(Long clientId) {
+        UI.getCurrent().navigate("clientAddresses/" + clientId);
+    }
+    public Client findClientById(Long clientId) {
+        return clientService.get(clientId).orElseThrow();
     }
 }

@@ -9,6 +9,6 @@ import java.util.List;
 
 public interface AddressRepository extends JpaRepository<Address, Long>, JpaSpecificationExecutor<Address> {
 
-    List<Address> findAddressByClient(Client client);
+    List<Address> findAddressesByClientId(Long id);
 
 }

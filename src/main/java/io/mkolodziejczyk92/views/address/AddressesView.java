@@ -1,7 +1,6 @@
 package io.mkolodziejczyk92.views.address;
 
 import com.vaadin.flow.component.Component;
-import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.grid.Grid;
@@ -39,6 +38,7 @@ public class AddressesView extends Div {
 
         Grid<Address> grid = new Grid<>();
         grid.addColumn(address -> address.getClient().getFullName()).setHeader("Client");
+        grid.addColumn(Address::getStreet).setHeader("Street");
         grid.addColumn(Address::getHouseNumber).setHeader("House number");
         grid.addColumn(Address::getApartmentNumber).setHeader("apartmentNumber");
         grid.addColumn(Address::getZipCode).setHeader("Zip code");
@@ -72,8 +72,8 @@ public class AddressesView extends Div {
         searchField.setPlaceholder("Search");
         searchField.setPrefixComponent(new Icon(VaadinIcon.SEARCH));
         searchField.setValueChangeMode(ValueChangeMode.EAGER);
-        searchField.addValueChangeListener(e -> {
-            addressFilter.setSearchTerm(e.getValue());
+        searchField.addValueChangeListener(event -> {
+            addressFilter.setSearchTerm(event.getValue());
             filterDataProvider.setFilter(addressFilter);
         });
         searchLayout.add(searchField);
@@ -86,7 +86,7 @@ public class AddressesView extends Div {
         newAddressButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         newAddressButton.getStyle().set("margin-left", "auto");
         newAddressButton
-                .addClickListener(e -> UI.getCurrent().navigate(NewAddressFormView.class));
+                .addClickListener(event -> addressesViewController.createNewAddressForm());
         topButtonLayout.getStyle().set("padding-right", "15px");
         topButtonLayout.getStyle().set("border-bottom", "1px solid var(--lumo-contrast-10pct)");
         return topButtonLayout;

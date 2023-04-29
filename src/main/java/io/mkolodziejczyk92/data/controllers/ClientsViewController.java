@@ -36,4 +36,8 @@ public class ClientsViewController {
     public Client findClientById(Long clientId) {
         return clientService.get(clientId).orElseThrow();
     }
+
+    public void editClientInformationForm(Long clientId) {
+        UI.getCurrent().navigate("newClient/" + clientId);
+    }
 }

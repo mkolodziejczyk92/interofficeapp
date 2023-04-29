@@ -1,6 +1,7 @@
 package io.mkolodziejczyk92.views.user;
 
 import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
@@ -81,11 +82,13 @@ public class NewUserFormView extends Div {
         bottomButtonLayout.getStyle().set("padding-top", "30px");
 
         cancel.addClickListener(e -> userAddNewFormController.clearForm());
+
         save.addClickListener(e -> {
             userAddNewFormController.saveNewUser(binder.getBean());
             Notification.show(binder.getBean().getClass().getSimpleName() + " stored.");
             userAddNewFormController.clearForm();
         });
+        save.addClickShortcut(Key.ENTER);
 
 
         return bottomButtonLayout;
@@ -99,7 +102,7 @@ public class NewUserFormView extends Div {
         back.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         back.addClickListener(e -> UI.getCurrent().navigate(UsersView.class));
         back.getStyle().set("margin-left", "auto");
-
+        back.addClickShortcut(Key.ESCAPE);
         topButtonLayout.add(back);
         return topButtonLayout;
     }

@@ -39,9 +39,6 @@ public class NewClientFormView extends Div implements HasUrlParameter<String> {
     private Button update = new Button("Update");
     private Binder<Client> binder = new Binder<>(Client.class);
 
-    private String clientId;
-
-
     @Override
     public void setParameter(BeforeEvent beforeEvent, @WildcardParameter String clientId) {
         if (!clientId.isEmpty()) {

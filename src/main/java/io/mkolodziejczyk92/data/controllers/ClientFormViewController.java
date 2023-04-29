@@ -1,5 +1,6 @@
 package io.mkolodziejczyk92.data.controllers;
 
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.data.binder.Binder;
 import io.mkolodziejczyk92.data.entity.Client;
 import io.mkolodziejczyk92.data.service.ClientService;
@@ -34,5 +35,16 @@ public class ClientFormViewController {
         clientService.save(client);
     }
 
+    public void updateClient(Client client){
+        clientService.update(client);
+    }
 
+    public Client findClientById(Long id){
+        return clientService.get(id).orElseThrow();
+    }
+
+
+    public void returnToClients() {
+        UI.getCurrent().navigate("clients");
+    }
 }

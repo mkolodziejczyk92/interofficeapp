@@ -65,15 +65,12 @@ public class NewClientFormView extends Div implements HasUrlParameter<String> {
         this.clientFormViewController = clientFormViewController;
         clientFormViewController.initView(this, binder);
 
-
         add(createTopButtonLayout());
         createComboBox();
         add(createFormLayout());
         add(createBottomButtonLayout());
         binder.bindInstanceFields(this);
         clientFormViewController.clearForm();
-
-
     }
 
     private Component createFormLayout() {
@@ -90,8 +87,8 @@ public class NewClientFormView extends Div implements HasUrlParameter<String> {
         cancel.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         update.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 
-        bottomButtonLayout.add(cancel);
         bottomButtonLayout.add(save);
+        bottomButtonLayout.add(cancel);
         bottomButtonLayout.add(update);
         bottomButtonLayout.getStyle().set("padding-left", "30px");
         bottomButtonLayout.getStyle().set("padding-top", "30px");

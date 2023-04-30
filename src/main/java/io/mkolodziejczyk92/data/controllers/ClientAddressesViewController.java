@@ -2,10 +2,8 @@ package io.mkolodziejczyk92.data.controllers;
 
 import com.vaadin.flow.component.UI;
 import io.mkolodziejczyk92.data.entity.Address;
-import io.mkolodziejczyk92.data.entity.Client;
 import io.mkolodziejczyk92.data.service.AddressService;
 import io.mkolodziejczyk92.views.address.ClientAddressesView;
-import io.mkolodziejczyk92.views.address.NewAddressFormView;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 

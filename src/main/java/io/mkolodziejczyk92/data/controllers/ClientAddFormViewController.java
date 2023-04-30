@@ -10,14 +10,14 @@ import org.springframework.stereotype.Controller;
 
 @Slf4j
 @Controller
-public class ClientFormViewController {
+public class ClientAddFormViewController {
 
     private NewClientFormView newClientFormView;
 
     private ClientService clientService;
     private Binder<Client> binder;
 
-    public ClientFormViewController(ClientService clientService) {
+    public ClientAddFormViewController(ClientService clientService) {
         this.clientService = clientService;
     }
 

@@ -48,6 +48,7 @@ public class ClientsView extends Div {
 
 
         Grid<Client> grid = new Grid<>();
+
         grid.addColumn(Client::getFullName).setHeader("Full Name");
         grid.addColumn(Client::getPhoneNumber).setHeader("Phone number");
         grid.addColumn(Client::getNip).setHeader("NIP");

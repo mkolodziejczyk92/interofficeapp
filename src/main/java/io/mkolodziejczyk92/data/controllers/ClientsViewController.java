@@ -1,13 +1,17 @@
 package io.mkolodziejczyk92.data.controllers;
 
 import com.vaadin.flow.component.UI;
+import com.vaadin.flow.component.notification.Notification;
 import io.mkolodziejczyk92.data.entity.Client;
 import io.mkolodziejczyk92.data.service.ClientRepository;
 import io.mkolodziejczyk92.data.service.ClientService;
 import io.mkolodziejczyk92.views.client.ClientsView;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 
+import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 
 @Slf4j
@@ -42,8 +46,15 @@ public class ClientsViewController {
         return clientService.get(clientId).orElseThrow();
     }
 
-    public void deleteClient(Long clientId) {
-        clientService.delete(clientId);
+    public void deleteClient(Client client) {
+        try{clientService.delete(client.getId());}
+        catch (DataIntegrityViolationException e){
+            Notification.show("Client "
+                    + client.getFullName()
+                    + " cannot be deleted because he has connections in the database.");
+            return;
+        };
+        Notification.show("Client " + client.getFullName() + " deleted.");
     }
     public void editClientInformationForm (Long clientId){
         UI.getCurrent().navigate("newClient/" + clientId);

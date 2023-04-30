@@ -64,10 +64,9 @@ public class ClientsView extends Div {
         grid.setItems(filterDataProvider);
 
         GridContextMenu<Client> menu = grid.addContextMenu();
-        menu.addItem("View", event -> {
+        menu.addItem("Edit", event -> {
             if (event.getItem().isPresent()) {
-                Client client = event.getItem().get();
-                UI.getCurrent().navigate(String.format(CLIENT_VIEW_ROUTE_TEMPLATE, client.getId())); // PUŚCIĆ PRZEZ CONTROLLER!!!
+                clientsViewController.editClientInformationForm(event.getItem().get().getId());
             } else menu.close();
         }).isVisible();
 

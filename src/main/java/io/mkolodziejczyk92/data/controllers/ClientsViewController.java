@@ -43,5 +43,8 @@ public class ClientsViewController {
 
     public void deleteClient(Long clientId) {
         clientService.delete(clientId);
+
+    public void editClientInformationForm(Long clientId) {
+        UI.getCurrent().navigate("newClient/" + clientId);
     }
 }

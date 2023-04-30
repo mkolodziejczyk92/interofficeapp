@@ -1,6 +1,7 @@
 package io.mkolodziejczyk92.views.address;
 
 import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
@@ -122,6 +123,7 @@ public class NewAddressFormView extends Div implements HasUrlParameter<String> {
             Notification.show(binder.getBean().getClass().getSimpleName() + " stored.");
             addressFormViewController.clearForm();
         });
+        save.addClickShortcut(Key.ENTER);
         return bottomButtonLayout;
     }
 
@@ -133,7 +135,7 @@ public class NewAddressFormView extends Div implements HasUrlParameter<String> {
         back.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         back.addClickListener(e -> UI.getCurrent().navigate(AddressesView.class));
         back.getStyle().set("margin-left", "auto");
-
+        back.addClickShortcut(Key.ESCAPE);
         topButtonLayout.add(back);
         return topButtonLayout;
     }

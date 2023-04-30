@@ -6,8 +6,8 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum EClientType {
-    INDIVIDUAL("indywidualny"),
-    COMPANY("firma");
+    INDIVIDUAL("Individual"),
+    COMPANY("Company");
 
-    private String type;
+    private final String type;
 }

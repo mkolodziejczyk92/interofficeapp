@@ -45,4 +45,8 @@ public class PurchaseService {
     public List<Purchase> allPurchases() {
         return repository.findAll();
     }
+
+    public void save(Purchase purchase) {
+        repository.save(purchase);
+    }
 }

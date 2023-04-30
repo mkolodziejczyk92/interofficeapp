@@ -43,6 +43,7 @@ public class ClientsViewController {
     }
 
     public Client findClientById(Long clientId) {
+
         return clientService.get(clientId).orElseThrow();
     }
 

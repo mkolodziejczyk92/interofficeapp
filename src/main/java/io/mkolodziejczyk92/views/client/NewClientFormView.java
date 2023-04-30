@@ -12,7 +12,7 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.router.*;
-import io.mkolodziejczyk92.data.controllers.ClientFormViewController;
+import io.mkolodziejczyk92.data.controllers.ClientAddFormViewController;
 import io.mkolodziejczyk92.data.entity.Client;
 import io.mkolodziejczyk92.data.enums.EClientType;
 import io.mkolodziejczyk92.views.MainLayout;
@@ -23,21 +23,21 @@ import jakarta.annotation.security.PermitAll;
 @PermitAll
 public class NewClientFormView extends Div implements HasUrlParameter<String> {
 
-    private final ClientFormViewController clientFormViewController;
+    private final ClientAddFormViewController clientFormViewController;
 
-    private TextField firstName = new TextField("First Name");
+    private final TextField firstName = new TextField("First Name");
 
-    private TextField lastName = new TextField("Last Name");
-    private TextField phoneNumber = new TextField("Phone Number");
-    private TextField email = new TextField("Email");
-    private TextField nip = new TextField("NIP");
-    private ComboBox<EClientType> clientType = new ComboBox<>("Client Type");
-    private Button cancel = new Button("Cancel");
-    private Button save = new Button("Save");
-    private Button back = new Button("Back");
+    private final TextField lastName = new TextField("Last Name");
+    private final TextField phoneNumber = new TextField("Phone Number");
+    private final TextField email = new TextField("Email");
+    private final TextField nip = new TextField("NIP");
+    private final ComboBox<EClientType> clientType = new ComboBox<>("Client Type");
+    private final Button cancel = new Button("Cancel");
+    private final Button save = new Button("Save");
+    private final Button back = new Button("Back");
 
-    private Button update = new Button("Update");
-    private Binder<Client> binder = new Binder<>(Client.class);
+    private final Button update = new Button("Update");
+    private final Binder<Client> binder = new Binder<>(Client.class);
 
     @Override
     public void setParameter(BeforeEvent beforeEvent, @WildcardParameter String clientId) {
@@ -61,7 +61,7 @@ public class NewClientFormView extends Div implements HasUrlParameter<String> {
 
     }
 
-    public NewClientFormView(ClientFormViewController clientFormViewController) {
+    public NewClientFormView(ClientAddFormViewController clientFormViewController) {
         this.clientFormViewController = clientFormViewController;
         clientFormViewController.initView(this, binder);
 
@@ -105,6 +105,7 @@ public class NewClientFormView extends Div implements HasUrlParameter<String> {
             clientFormViewController.updateClient(binder.getBean());
             Notification.show(binder.getBean().getClass().getSimpleName() + " updated.");
             clientFormViewController.clearForm();
+
         });
         update.setVisible(false);
         update.addClickShortcut(Key.ENTER);

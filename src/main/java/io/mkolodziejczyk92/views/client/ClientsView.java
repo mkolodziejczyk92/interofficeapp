@@ -4,12 +4,16 @@ import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
+import com.vaadin.flow.component.confirmdialog.ConfirmDialog;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.grid.contextmenu.GridContextMenu;
 import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
+import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.provider.ConfigurableFilterDataProvider;
@@ -38,6 +42,8 @@ public class ClientsView extends Div {
     private ConfigurableFilterDataProvider<Client, Void, ClientFilter> filterDataProvider = dataProvider
             .withConfigurableFilter();
     private final Button newClientButton = new Button("Add new client");
+
+    private Span status;
 
 
     public ClientsView(ClientsViewController clientsViewController,
@@ -72,6 +78,8 @@ public class ClientsView extends Div {
         }).isVisible();
 
         menu.addItem("Delete", event -> {
+            clientsViewController.deleteClient(event.getItem().get().getId());
+            Notification.show("Client " + event.getItem().get().getFullName() + " deleted.");
         });
 
         add(createTopButtonLayout());

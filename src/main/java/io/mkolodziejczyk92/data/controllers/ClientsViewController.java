@@ -30,21 +30,22 @@ public class ClientsViewController {
         this.clientsView = clientsView;
     }
 
-    public List<Client> allClients(){
+    public List<Client> allClients() {
         return clientService.allClients();
     }
 
     public void clientAddresses(Long clientId) {
         UI.getCurrent().navigate("clientAddresses/" + clientId);
     }
+
     public Client findClientById(Long clientId) {
         return clientService.get(clientId).orElseThrow();
     }
 
     public void deleteClient(Long clientId) {
         clientService.delete(clientId);
-
-    public void editClientInformationForm(Long clientId) {
+    }
+    public void editClientInformationForm (Long clientId){
         UI.getCurrent().navigate("newClient/" + clientId);
     }
 }

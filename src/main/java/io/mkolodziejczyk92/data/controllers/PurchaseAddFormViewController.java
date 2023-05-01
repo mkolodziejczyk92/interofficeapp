@@ -6,6 +6,7 @@ import io.mkolodziejczyk92.data.entity.Client;
 import io.mkolodziejczyk92.data.entity.Purchase;
 import io.mkolodziejczyk92.data.entity.Supplier;
 import io.mkolodziejczyk92.data.service.ClientService;
+import io.mkolodziejczyk92.data.service.ContractService;
 import io.mkolodziejczyk92.data.service.PurchaseService;
 import io.mkolodziejczyk92.data.service.SupplierService;
 import io.mkolodziejczyk92.views.purchase.NewPurchaseFormView;
@@ -16,17 +17,20 @@ import java.util.List;
 @Controller
 public class PurchaseAddFormViewController {
 
-    private PurchaseService purchaseService;
-    private ClientService clientService;
-    private SupplierService supplierService;
-    private Binder<Purchase> binder;
+    private final PurchaseService purchaseService;
+    private final ClientService clientService;
+    private final SupplierService supplierService;
+
+    private final ContractService contractService;
+    private  Binder<Purchase> binder;
 
     private NewPurchaseFormView newPurchaseFormView;
 
-    public PurchaseAddFormViewController(PurchaseService purchaseService, ClientService clientService, SupplierService supplierService) {
+    public PurchaseAddFormViewController(PurchaseService purchaseService, ClientService clientService, SupplierService supplierService, ContractService contractService) {
         this.purchaseService = purchaseService;
         this.clientService = clientService;
         this.supplierService = supplierService;
+        this.contractService = contractService;
     }
 
 
@@ -56,6 +60,9 @@ public class PurchaseAddFormViewController {
 
     public void updatePurchase(Purchase purchase) {
         purchaseService.update(purchase);
-
     }
+    public Purchase findPurchaseById(Long purchaseId) {
+        return purchaseService.get(purchaseId).orElseThrow();
+    }
+
 }

@@ -67,6 +67,9 @@ public class PurchasesView extends Div {
         menu.addItem("View", event -> {
         });
         menu.addItem("Edit", event -> {
+            if(event.getItem().isPresent()){
+                purchasesViewController.editPurchaseInformation(event.getItem().get().getId());
+            } else menu.close();
         });
         menu.addItem("Delete", event -> {
         });

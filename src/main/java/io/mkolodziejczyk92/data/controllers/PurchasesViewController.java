@@ -1,5 +1,6 @@
 package io.mkolodziejczyk92.data.controllers;
 
+import com.vaadin.flow.component.UI;
 import io.mkolodziejczyk92.data.entity.Purchase;
 import io.mkolodziejczyk92.data.service.PurchaseService;
 import io.mkolodziejczyk92.views.purchase.PurchasesView;
@@ -26,5 +27,9 @@ public class PurchasesViewController {
 
     public List<Purchase> allPurchases(){
         return purchaseService.allPurchases();
+    }
+
+    public void editPurchaseInformation(Long purchaseId) {
+        UI.getCurrent().navigate("newPurchase/" + purchaseId);
     }
 }

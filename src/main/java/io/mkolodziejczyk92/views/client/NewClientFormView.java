@@ -39,27 +39,6 @@ public class NewClientFormView extends Div implements HasUrlParameter<String> {
     private final Button update = new Button("Update");
     private final Binder<Client> binder = new Binder<>(Client.class);
 
-    @Override
-    public void setParameter(BeforeEvent beforeEvent, @WildcardParameter String clientId) {
-        if (!clientId.isEmpty()) {
-            Client client = clientFormViewController.findClientById(Long.valueOf(clientId));
-
-            binder.setBean(client);
-            firstName.setValue(client.getFirstName());
-            lastName.setValue(client.getLastName());
-            phoneNumber.setValue(client.getPhoneNumber());
-            if (!nip.isEmpty()) {
-                nip.setValue(client.getNip());
-            }
-            email.setValue(client.getEmail());
-            clientType.setValue(client.getClientType());
-
-            cancel.setVisible(false);
-            save.setVisible(false);
-            update.setVisible(true);
-        }
-
-    }
 
     public NewClientFormView(ClientAddFormViewController clientFormViewController) {
         this.clientFormViewController = clientFormViewController;
@@ -132,6 +111,28 @@ public class NewClientFormView extends Div implements HasUrlParameter<String> {
         clientType.setItems(EClientType.values());
         clientType.getStyle().set("padding-left", "30px");
         add(clientType);
+    }
+
+    @Override
+    public void setParameter(BeforeEvent beforeEvent, @WildcardParameter String clientId) {
+        if (!clientId.isEmpty()) {
+            Client client = clientFormViewController.findClientById(Long.valueOf(clientId));
+
+            binder.setBean(client);
+            firstName.setValue(client.getFirstName());
+            lastName.setValue(client.getLastName());
+            phoneNumber.setValue(client.getPhoneNumber());
+            if (!nip.isEmpty()) {
+                nip.setValue(client.getNip());
+            }
+            email.setValue(client.getEmail());
+            clientType.setValue(client.getClientType());
+
+            cancel.setVisible(false);
+            save.setVisible(false);
+            update.setVisible(true);
+        }
+
     }
 
 

@@ -1,6 +1,7 @@
 package io.mkolodziejczyk92.views.purchase;
 
 import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.HasElement;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
@@ -10,6 +11,7 @@ import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
+import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
@@ -55,7 +57,7 @@ public class NewPurchaseFormView extends Div implements HasUrlParameter<String> 
         this.purchaseAddFormViewController = purchaseAddFormViewController;
         purchaseAddFormViewController.initView(this, binder);
         add(createTopButtonLayout());
-        add(createFormComboBoxes());
+        createFormComboBoxes();
         add(createFormLayout());
         binder.bindInstanceFields(this);
         add(createBottomButtonLayout());
@@ -77,8 +79,9 @@ public class NewPurchaseFormView extends Div implements HasUrlParameter<String> 
     }
 
     private Component createFormLayout() {
-        comment.setWidthFull();
-        FormLayout formLayout = new FormLayout(netAmount, supplierPurchaseNumber, comment);
+
+        FormLayout formLayout = new FormLayout(client, commodityType,  status, supplier,
+                netAmount, supplierPurchaseNumber, comment);
         formLayout.getStyle().set("padding-left", "30px");
         formLayout.getStyle().set("padding-right", "30px");
         return formLayout;
@@ -115,31 +118,25 @@ public class NewPurchaseFormView extends Div implements HasUrlParameter<String> 
 
     }
 
-    private Component createFormComboBoxes() {
-        HorizontalLayout comboBoxes = new HorizontalLayout();
+    private void createFormComboBoxes() {
+
         client.setItems(purchaseAddFormViewController.allClients());
         client.setItemLabelGenerator(Client::getFullName);
-        client.setMinWidth("350px");
-        comboBoxes.add(client);
-        client.getStyle().set("padding-left", "30px");
+        client.setMaxWidth("300px");
+
         commodityType.setItems(ECommodityType.values());
         commodityType.setItemLabelGenerator(ECommodityType::getName);
-        commodityType.getStyle().set("padding-left", "30px");
-        commodityType.setMinWidth("400px");
-        comboBoxes.add(commodityType);
+        commodityType.setMaxWidth("350px");
+        commodityType.getStyle().set("padding-right", "30px");
 
         status.setItems(EPurchaseStatus.values());
         status.setItemLabelGenerator(EPurchaseStatus::getStatusName);
-        status.getStyle().set("padding-left", "30px");
-        comboBoxes.add(status);
+        status.setMaxWidth("300px");
 
         supplier.setItems(purchaseAddFormViewController.allSuppliers());
         supplier.setItemLabelGenerator(Supplier::getNameOfCompany);
-        supplier.getStyle().set("padding-left", "30px");
-        comboBoxes.add(supplier);
-        comboBoxes.setJustifyContentMode(FlexComponent.JustifyContentMode.BETWEEN);
-        comboBoxes.getStyle().set("padding-right", "30px");
-        return comboBoxes;
+        supplier.setMaxWidth("300px");
+
     }
 
     @Override

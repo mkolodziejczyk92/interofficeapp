@@ -50,13 +50,18 @@ public class PurchasesView extends Div {
         grid.addColumn(Purchase::getSupplierPurchaseNumber).setHeader("Supplier purchase number");
         grid.addColumn(
                 new ComponentRenderer<>(Button::new, (button, purchase) -> {
-                    button.addThemeVariants(ButtonVariant.LUMO_ICON,
-                            ButtonVariant.LUMO_PRIMARY);
-                    button.addClickListener(e -> {
-                        Dialog commentDialog = createCommentDialogLayout(purchase.getComment());
-                        add(commentDialog);
-                        commentDialog.open();
-                    });
+                    if(!purchase.getComment().isBlank()){
+                        button.addThemeVariants(ButtonVariant.LUMO_ICON,
+                                ButtonVariant.LUMO_PRIMARY);
+                        button.addClickListener(e -> {
+                            Dialog commentDialog = createCommentDialogLayout(purchase.getComment());
+                            add(commentDialog);
+                            commentDialog.open();
+                        });
+                    } else {
+                        button.addThemeVariants(ButtonVariant.LUMO_ICON,
+                                ButtonVariant.LUMO_CONTRAST);
+                    }
                     button.setIcon(new Icon(VaadinIcon.COMMENT));
                 })).setHeader("Comment");
         grid.getColumns().forEach(purchaseColumn -> purchaseColumn.setAutoWidth(true));

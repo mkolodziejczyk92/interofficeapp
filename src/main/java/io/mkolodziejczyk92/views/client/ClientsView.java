@@ -67,7 +67,7 @@ public class ClientsView extends Div {
 
         menu.addItem("Edit", event -> {
             if (event.getItem().isPresent()) {
-                clientsViewController.editClientInformationForm(event.getItem().get().getId());
+                clientsViewController.editClientInformationForm(event.getItem().get());
             } else menu.close();
         }).isVisible();
 

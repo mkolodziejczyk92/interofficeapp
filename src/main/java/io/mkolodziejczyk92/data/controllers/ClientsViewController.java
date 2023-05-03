@@ -48,16 +48,24 @@ public class ClientsViewController {
     }
 
     public void deleteClient(Client client) {
-        try{clientService.delete(client.getId());}
-        catch (DataIntegrityViolationException e){
+        try{
+            clientService.delete(client.getId());
+        } catch (DataIntegrityViolationException e) {
             Notification.show("Client "
                     + client.getFullName()
-                    + " cannot be deleted because he has connections in the database.");
+                    + " cannot be deleted because it has connections in the database.");
             return;
-        };
+        }
         Notification.show("Client " + client.getFullName() + " deleted.");
     }
-    public void editClientInformationForm (Long clientId){
-        UI.getCurrent().navigate("newClient/" + clientId);
+
+    public void editClientInformationForm(Client client) {
+        if (clientService.isExist(client.getId())) {
+            UI.getCurrent().navigate("newClient/" + client.getId());
+        } else {
+            Notification.show("Client "
+                    + client.getFullName()
+                    + " does not exist in the database.");
+        }
     }
 }

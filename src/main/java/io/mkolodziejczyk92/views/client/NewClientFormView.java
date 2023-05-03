@@ -82,9 +82,6 @@ public class NewClientFormView extends Div implements HasUrlParameter<String> {
 
         update.addClickListener(e -> {
             clientFormViewController.updateClient(binder.getBean());
-            Notification.show(binder.getBean().getClass().getSimpleName() + " updated.");
-            clientFormViewController.clearForm();
-
         });
         update.setVisible(false);
         update.addClickShortcut(Key.ENTER);

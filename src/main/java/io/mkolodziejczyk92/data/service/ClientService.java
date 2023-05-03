@@ -48,6 +48,9 @@ public class ClientService {
 
     public  List<Client> allClients(){ return repository.findAll();}
 
+    public boolean isExist(Long id) {
+        return repository.findById(id).isPresent();
+    }
 }
 
 

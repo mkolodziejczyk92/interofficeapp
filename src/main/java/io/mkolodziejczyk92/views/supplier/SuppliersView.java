@@ -32,7 +32,7 @@ public class SuppliersView extends Div {
     private SupplierDataProvider supplierDataProvider = new SupplierDataProvider();
     private ConfigurableFilterDataProvider<Supplier, Void, SupplierFilter> filterDataProvider
             = supplierDataProvider.withConfigurableFilter();
-    private Button newSupplierButton = new Button("Add new supplier");
+    private Button newSupplierButton = new Button("New Supplier");
 
 
     public SuppliersView(SuppliersViewController suppliersViewController) {

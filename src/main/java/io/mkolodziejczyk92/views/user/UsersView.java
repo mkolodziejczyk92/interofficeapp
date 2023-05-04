@@ -22,7 +22,7 @@ import jakarta.annotation.security.RolesAllowed;
 public class UsersView extends Div {
 
     private final UserViewController userViewController;
-    private final Button newUserButton = new Button("Add new user");
+    private final Button newUserButton = new Button("New User");
 
 
     public UsersView(io.mkolodziejczyk92.data.controllers.UserViewController userViewController) {

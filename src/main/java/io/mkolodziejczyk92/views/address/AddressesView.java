@@ -30,7 +30,7 @@ public class AddressesView extends Div {
     private AddressDataProvider addressDataProvider = new AddressDataProvider();
     private ConfigurableFilterDataProvider<Address, Void, AddressFilter> filterDataProvider
             = addressDataProvider.withConfigurableFilter();
-    private Button newAddressButton = new Button("Add new address");
+    private Button newAddressButton = new Button("New Address");
 
     public AddressesView(AddressesViewController addressesViewController) {
         this.addressesViewController = addressesViewController;

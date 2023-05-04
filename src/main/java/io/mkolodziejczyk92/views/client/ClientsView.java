@@ -38,7 +38,7 @@ public class ClientsView extends Div {
     private ClientDataProvider dataProvider = new ClientDataProvider();
     private ConfigurableFilterDataProvider<Client, Void, ClientFilter> filterDataProvider = dataProvider
             .withConfigurableFilter();
-    private final Button newClientButton = new Button("Add new client");
+    private final Button newClientButton = new Button("New Client");
     private Grid<Client> grid = new Grid<>();
 
 

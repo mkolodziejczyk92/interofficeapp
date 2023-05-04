@@ -61,7 +61,7 @@ public class ContractsView extends Div {
             }
             return icon;
         }).setHeader("Completed").setTextAlign(ColumnTextAlign.CENTER);
-        grid.addColumn(Contract::getCommodityType).setHeader("Commodity Type");
+        grid.addColumn(contract -> contract.getCommodityType().getName()).setHeader("Commodity Type");
         grid.getColumns().forEach(contractColumn -> contractColumn.setAutoWidth(true));
         grid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
         grid.setItems(filterDataProvider);

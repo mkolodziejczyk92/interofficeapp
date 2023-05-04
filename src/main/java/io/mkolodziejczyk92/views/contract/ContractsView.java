@@ -1,6 +1,7 @@
 package io.mkolodziejczyk92.views.contract;
 
 import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.dependency.Uses;
@@ -20,6 +21,7 @@ import com.vaadin.flow.router.Route;
 import io.mkolodziejczyk92.data.controllers.ContractsViewController;
 import io.mkolodziejczyk92.data.entity.Contract;
 import io.mkolodziejczyk92.views.MainLayout;
+import io.mkolodziejczyk92.views.purchase.NewPurchaseFormView;
 import jakarta.annotation.security.PermitAll;
 
 @PageTitle("Contracts")
@@ -35,7 +37,7 @@ public class ContractsView extends Div {
     private ConfigurableFilterDataProvider<Contract, Void, ContractFilter> filterDataProvider
             = contractDataProvider.withConfigurableFilter();
 
-    private Button emptyButton = new Button("EMPTY");
+    private Button newContract = new Button("New Contract");
 
 
     public ContractsView(ContractsViewController contractsViewController) {
@@ -68,6 +70,9 @@ public class ContractsView extends Div {
         menu.addItem("View", event -> {
         });
         menu.addItem("Edit", event -> {
+            if(event.getItem().isPresent()){
+                contractsViewController.editContractInformationForm(event.getItem().get().getId());
+            }else menu.close();
         });
         menu.addItem("Delete", event -> {
         });
@@ -97,9 +102,10 @@ public class ContractsView extends Div {
 
     private Component createTopButtonLayout() {
         HorizontalLayout topButtonLayout = new HorizontalLayout();
-        topButtonLayout.add(emptyButton);
-        emptyButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-        emptyButton.getStyle().set("margin-left", "auto");
+        topButtonLayout.add(newContract);
+        newContract.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+        newContract.addClickListener( e -> UI.getCurrent().navigate(NewContractFormView.class));
+        newContract.getStyle().set("margin-left", "auto");
         topButtonLayout.getStyle().set("padding-right", "15px");
         topButtonLayout.getStyle().set("border-bottom", "1px solid var(--lumo-contrast-10pct)");
         return topButtonLayout;

@@ -1,5 +1,6 @@
 package io.mkolodziejczyk92.data.controllers;
 
+import com.vaadin.flow.component.UI;
 import io.mkolodziejczyk92.data.entity.Contract;
 import io.mkolodziejczyk92.data.service.ContractService;
 import io.mkolodziejczyk92.views.contract.ContractsView;
@@ -25,5 +26,10 @@ public class ContractsViewController {
 
     public List<Contract> allContracts() {
         return contractService.allContracts();
+    }
+
+    public void editContractInformationForm(Long contractId) {
+        UI.getCurrent().navigate("newContract/" + contractId);
+
     }
 }

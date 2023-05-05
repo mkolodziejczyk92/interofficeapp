@@ -42,8 +42,11 @@ public class ClientsViewController {
         UI.getCurrent().navigate("clientAddresses/" + clientId);
     }
 
-    public Client findClientById(Long clientId) {
+    public void clientPurchases(Long clientId) {
+        UI.getCurrent().navigate("clientPurchases/" + clientId);
+    }
 
+    public Client findClientById(Long clientId) {
         return clientService.get(clientId).orElseThrow();
     }
 

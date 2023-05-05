@@ -49,4 +49,8 @@ public class PurchaseService {
     public void save(Purchase purchase) {
         repository.save(purchase);
     }
+
+    public List<Purchase> clientPurchases(Long clientId) {
+        return repository.findPurchasesByClientId(clientId);
+    }
 }

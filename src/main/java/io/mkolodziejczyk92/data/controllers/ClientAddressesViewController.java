@@ -24,8 +24,8 @@ public class ClientAddressesViewController {
         this.clientAddressesView = clientAddressesView;
     }
 
-    public List<Address> clientAddresses(Long id) {
-        return addressService.clientAddresses(id);
+    public List<Address> clientAddresses(Long clientId) {
+        return addressService.clientAddresses(clientId);
     }
 
     public void createNewAddressFormForClient(Long clientId) {

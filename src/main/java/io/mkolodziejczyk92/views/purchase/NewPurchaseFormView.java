@@ -105,9 +105,6 @@ public class NewPurchaseFormView extends Div implements HasUrlParameter<String> 
 
         update.addClickListener(e -> {
             purchaseAddFormViewController.updatePurchase(binder.getBean());
-            Notification.show(binder.getBean().getClass().getSimpleName() + " updated.");
-            purchaseAddFormViewController.clearForm();
-
         });
 
         update.setVisible(false);

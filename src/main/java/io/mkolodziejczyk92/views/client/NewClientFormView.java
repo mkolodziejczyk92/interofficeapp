@@ -7,7 +7,6 @@ import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.html.Div;
-import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
@@ -76,10 +75,7 @@ public class NewClientFormView extends Div implements HasUrlParameter<String> {
         cancel.addClickListener(e -> clientFormViewController.clearForm());
         save.addClickListener(e -> {
             clientFormViewController.saveNewClient(binder.getBean());
-            Notification.show(binder.getBean().getClass().getSimpleName() + " stored.");
-            clientFormViewController.clearForm();
         });
-
         update.addClickListener(e -> {
             clientFormViewController.updateClient(binder.getBean());
         });

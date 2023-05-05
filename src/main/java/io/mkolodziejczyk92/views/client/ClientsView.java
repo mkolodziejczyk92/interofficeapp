@@ -65,6 +65,13 @@ public class ClientsView extends Div {
             } else menu.close();
         }).isVisible();
 
+        menu.addItem("Purchases", event -> {
+            if (event.getItem().isPresent()) {
+                clientsViewController
+                        .clientPurchases(event.getItem().get().getId());
+            } else menu.close();
+        }).isVisible();
+
         menu.addItem("Edit", event -> {
             if (event.getItem().isPresent()) {
                 clientsViewController.editClientInformationForm(event.getItem().get());
@@ -77,13 +84,11 @@ public class ClientsView extends Div {
                 add(confirmDialog);
                 confirmDialog.open();
             } else menu.close();
-
         });
 
         add(createTopButtonLayout());
         add(createSearchLayout());
         add(grid);
-
     }
 
     private Component createSearchLayout() {

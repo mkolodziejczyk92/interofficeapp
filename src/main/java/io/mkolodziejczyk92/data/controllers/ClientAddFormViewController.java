@@ -34,6 +34,8 @@ public class ClientAddFormViewController {
 
     public void saveNewClient(Client client) {
         clientService.save(client);
+        Notification.show(client.getFullName() + " stored.");
+        UI.getCurrent().navigate("clients");
     }
 
     public void updateClient(Client client){

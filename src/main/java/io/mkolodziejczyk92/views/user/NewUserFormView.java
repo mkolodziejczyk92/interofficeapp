@@ -49,7 +49,7 @@ public class NewUserFormView extends Div {
 
     public NewUserFormView(UserFormController userAddNewFormController) {
         this.userAddNewFormController = userAddNewFormController;
-        userAddNewFormController.initView(this, binder);
+        userAddNewFormController.initBinder(binder);
 
         add(createTopButtonLayout());
         createComboBox();

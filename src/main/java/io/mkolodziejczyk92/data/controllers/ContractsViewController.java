@@ -12,16 +12,10 @@ import java.util.List;
 @Slf4j
 @Controller
 public class ContractsViewController {
-
-    private ContractsView contractsView;
     private final ContractService contractService;
 
     public ContractsViewController(ContractService contractService) {
         this.contractService = contractService;
-    }
-
-    public void initView(ContractsView contractsView) {
-        this.contractsView = contractsView;
     }
 
     public List<Contract> allContracts() {
@@ -30,6 +24,5 @@ public class ContractsViewController {
 
     public void editContractInformationForm(Long contractId) {
         UI.getCurrent().navigate("newContract/" + contractId);
-
     }
 }

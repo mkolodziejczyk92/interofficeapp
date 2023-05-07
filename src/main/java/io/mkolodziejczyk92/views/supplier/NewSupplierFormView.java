@@ -17,7 +17,6 @@ import io.mkolodziejczyk92.data.controllers.SupplierFormViewController;
 import io.mkolodziejczyk92.data.controllers.SuppliersViewController;
 import io.mkolodziejczyk92.data.entity.Supplier;
 import io.mkolodziejczyk92.views.MainLayout;
-import io.mkolodziejczyk92.views.address.AddressesView;
 import jakarta.annotation.security.PermitAll;
 
 @PageTitle("New Supplier")
@@ -39,7 +38,7 @@ public class NewSupplierFormView extends Div {
     public NewSupplierFormView(SuppliersViewController suppliersViewController, SupplierFormViewController supplierFormViewController) {
         this.suppliersViewController = suppliersViewController;
         this.supplierFormViewController = supplierFormViewController;
-        supplierFormViewController.initView(this, binder);
+        supplierFormViewController.initBinder(binder);
 
         addClassName("supplier-view");
 

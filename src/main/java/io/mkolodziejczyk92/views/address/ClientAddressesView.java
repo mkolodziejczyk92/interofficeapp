@@ -11,7 +11,6 @@ import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.router.*;
 import io.mkolodziejczyk92.data.controllers.AddressesViewController;
-import io.mkolodziejczyk92.data.controllers.ClientAddressesViewController;
 import io.mkolodziejczyk92.data.entity.Address;
 import io.mkolodziejczyk92.views.MainLayout;
 import io.mkolodziejczyk92.views.client.ClientsView;
@@ -22,7 +21,6 @@ import jakarta.annotation.security.PermitAll;
 @PermitAll
 public class ClientAddressesView extends Div implements HasUrlParameter<String> {
 
-    private final ClientAddressesViewController clientAddressesViewController;
     private final AddressesViewController addressesViewController;
     private Long clientId;
 
@@ -33,14 +31,12 @@ public class ClientAddressesView extends Div implements HasUrlParameter<String> 
     @Override
     public void setParameter(BeforeEvent event, @WildcardParameter String clientId) {
         this.clientId = Long.valueOf(clientId);
-        grid.setItems(clientAddressesViewController.clientAddresses(Long.valueOf(clientId)));
+        grid.setItems(addressesViewController.clientAddresses(Long.valueOf(clientId)));
     }
 
-    public ClientAddressesView(ClientAddressesViewController clientAddressesViewController,
-                               AddressesViewController addressesViewController) {
-        this.clientAddressesViewController = clientAddressesViewController;
+    public ClientAddressesView(AddressesViewController addressesViewController) {
         this.addressesViewController = addressesViewController;
-        clientAddressesViewController.initView(this);
+
 
         grid.addColumn(Address::getStreet).setHeader("Street");
         grid.addColumn(Address::getHouseNumber).setHeader("House number");
@@ -68,7 +64,7 @@ public class ClientAddressesView extends Div implements HasUrlParameter<String> 
         newAddressButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         newAddressButton.getStyle().set("margin-left", "auto");
         newAddressButton
-                .addClickListener(event -> clientAddressesViewController.createNewAddressFormForClient(clientId));
+                .addClickListener(event -> addressesViewController.createNewAddressFormForClient(clientId));
         back.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         back.addClickListener(event -> UI.getCurrent().navigate(ClientsView.class));
         back.getStyle().set("margin-left", "auto");

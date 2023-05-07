@@ -18,7 +18,6 @@ import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
-import io.mkolodziejczyk92.data.controllers.ClientAddressesViewController;
 import io.mkolodziejczyk92.data.controllers.ClientsViewController;
 import io.mkolodziejczyk92.data.entity.Client;
 import io.mkolodziejczyk92.views.MainLayout;
@@ -30,9 +29,7 @@ import jakarta.annotation.security.PermitAll;
 @PermitAll
 public class ClientsView extends Div {
 
-    private final String CLIENT_VIEW_ROUTE_TEMPLATE = "clients/%s";
     private final ClientsViewController clientsViewController;
-    private final ClientAddressesViewController clientAddressesViewController;
 
     private ClientFilter clientFilter = new ClientFilter();
     private ClientDataProvider dataProvider = new ClientDataProvider();
@@ -42,11 +39,8 @@ public class ClientsView extends Div {
     private Grid<Client> grid = new Grid<>();
 
 
-    public ClientsView(ClientsViewController clientsViewController,
-                       ClientAddressesViewController clientAddressesViewController) {
+    public ClientsView(ClientsViewController clientsViewController) {
         this.clientsViewController = clientsViewController;
-        this.clientAddressesViewController = clientAddressesViewController;
-        clientsViewController.initView(this);
 
         grid.addColumn(Client::getFullName).setHeader("Full Name");
         grid.addColumn(Client::getPhoneNumber).setHeader("Phone number");

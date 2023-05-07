@@ -38,7 +38,7 @@ public class PurchasesView extends Div {
 
     public PurchasesView(PurchasesViewController purchasesViewController) {
         this.purchasesViewController = purchasesViewController;
-        purchasesViewController.initView(this);
+
 
         Grid<Purchase> grid = new Grid<>(Purchase.class, false);
         grid.addColumn(purchase -> purchase.getClient().getFullName()).setHeader("Client");
@@ -69,14 +69,15 @@ public class PurchasesView extends Div {
         grid.setItems(filterDataProvider);
 
         GridContextMenu<Purchase> menu = grid.addContextMenu();
-        menu.addItem("View", event -> {
-        });
         menu.addItem("Edit", event -> {
             if(event.getItem().isPresent()){
-                purchasesViewController.editPurchaseInformation(event.getItem().get().getId());
+                purchasesViewController.editPurchaseInformation(event.getItem().get());
             } else menu.close();
         });
         menu.addItem("Delete", event -> {
+            if(event.getItem().isPresent()){
+                purchasesViewController.deletePurchase(event.getItem().get());
+            } else menu.close();
         });
 
         add(createTopButtonLayout());

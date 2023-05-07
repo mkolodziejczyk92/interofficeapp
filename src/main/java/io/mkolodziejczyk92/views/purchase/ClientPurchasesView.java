@@ -15,7 +15,6 @@ import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.data.renderer.ComponentRenderer;
 import com.vaadin.flow.router.*;
-import io.mkolodziejczyk92.data.controllers.ClientPurchasesViewController;
 import io.mkolodziejczyk92.data.controllers.PurchasesViewController;
 import io.mkolodziejczyk92.data.entity.Purchase;
 import io.mkolodziejczyk92.views.MainLayout;
@@ -26,7 +25,6 @@ import jakarta.annotation.security.PermitAll;
 @PermitAll
 public class ClientPurchasesView extends Div implements HasUrlParameter<String> {
 
-    private final ClientPurchasesViewController clientPurchasesViewController;
     private final PurchasesViewController purchasesViewController;
     private Long clientId;
 
@@ -37,14 +35,11 @@ public class ClientPurchasesView extends Div implements HasUrlParameter<String> 
     @Override
     public void setParameter(BeforeEvent event, @WildcardParameter String id) {
         this.clientId = Long.valueOf(id);
-        grid.setItems(clientPurchasesViewController.clientPurchases(clientId));
+        grid.setItems(purchasesViewController.clientPurchases(clientId));
     }
 
-    public ClientPurchasesView(ClientPurchasesViewController clientPurchasesViewController,
-                               PurchasesViewController purchasesViewController) {
-        this.clientPurchasesViewController = clientPurchasesViewController;
+    public ClientPurchasesView(PurchasesViewController purchasesViewController) {
         this.purchasesViewController = purchasesViewController;
-        clientPurchasesViewController.initView(this);
 
         grid.addColumn(purchase -> purchase.getClient().getFullName()).setHeader("Client");
         grid.addColumn(Purchase::getContractNumber).setHeader("Contract number");
@@ -55,7 +50,7 @@ public class ClientPurchasesView extends Div implements HasUrlParameter<String> 
         grid.addColumn(Purchase::getSupplierPurchaseNumber).setHeader("Supplier purchase number");
         grid.addColumn(
                 new ComponentRenderer<>(Button::new, (button, purchase) -> {
-                    if(!purchase.getComment().isBlank()){
+                    if (!purchase.getComment().isBlank()) {
                         button.addThemeVariants(ButtonVariant.LUMO_ICON,
                                 ButtonVariant.LUMO_PRIMARY);
                         button.addClickListener(e -> {
@@ -75,21 +70,25 @@ public class ClientPurchasesView extends Div implements HasUrlParameter<String> 
 
         GridContextMenu<Purchase> menu = grid.addContextMenu();
         menu.addItem("Edit", event -> {
-            if(event.getItem().isPresent()){
-                purchasesViewController.editPurchaseInformation(event.getItem().get().getId());
+            if (event.getItem().isPresent()) {
+                purchasesViewController.editPurchaseInformation(event.getItem().get());
             } else menu.close();
         });
         menu.addItem("Delete", event -> {
+            if (event.getItem().isPresent()) {
+                purchasesViewController.deletePurchase(event.getItem().get());
+            } else menu.close();
         });
         add(createTopButtonLayout());
         add(grid);
     }
+
     private Component createTopButtonLayout() {
         HorizontalLayout topButtonLayout = new HorizontalLayout();
         topButtonLayout.add(newPurchaseButton);
         newPurchaseButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         newPurchaseButton.getStyle().set("margin-left", "auto");
-        newPurchaseButton.addClickListener( e -> UI.getCurrent().navigate(NewPurchaseFormView.class));
+        newPurchaseButton.addClickListener(e -> UI.getCurrent().navigate(NewPurchaseFormView.class));
         topButtonLayout.getStyle().set("padding-right", "15px");
         topButtonLayout.getStyle().set("border-bottom", "1px solid var(--lumo-contrast-10pct)");
         return topButtonLayout;

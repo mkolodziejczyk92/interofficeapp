@@ -14,14 +14,8 @@ public class InvoicesViewController {
 
     private final InvoiceService invoiceService;
 
-    private InvoicesView invoicesView;
-
     public InvoicesViewController(InvoiceService invoiceService) {
         this.invoiceService = invoiceService;
-    }
-
-    public void initView(InvoicesView invoicesView){
-        this.invoicesView = invoicesView;
     }
 
     public List<Invoice> allInvoices(){

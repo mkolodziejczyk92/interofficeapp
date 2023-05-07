@@ -4,8 +4,8 @@ import com.vaadin.flow.data.provider.AbstractBackEndDataProvider;
 import com.vaadin.flow.data.provider.Query;
 import com.vaadin.flow.data.provider.QuerySortOrder;
 import com.vaadin.flow.data.provider.SortDirection;
+import io.mkolodziejczyk92.data.controllers.InvoicesViewController;
 import io.mkolodziejczyk92.data.entity.Invoice;
-import io.mkolodziejczyk92.data.service.InvoiceService;
 import io.mkolodziejczyk92.utils.BeanProvider;
 
 import java.util.Comparator;
@@ -18,7 +18,7 @@ public class InvoiceDataProvider extends AbstractBackEndDataProvider<Invoice, In
     private final List<Invoice> allInvoices;
 
     public InvoiceDataProvider() {
-        allInvoices = BeanProvider.getBean(InvoiceService.class).allInvoices();
+        allInvoices = BeanProvider.getBean(InvoicesViewController.class).allInvoices();
     }
 
     @Override

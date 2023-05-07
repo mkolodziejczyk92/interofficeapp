@@ -34,7 +34,6 @@ public class AddressesView extends Div {
 
     public AddressesView(AddressesViewController addressesViewController) {
         this.addressesViewController = addressesViewController;
-        addressesViewController.initView(this);
 
         Grid<Address> grid = new Grid<>();
         grid.addColumn(address -> address.getClient().getFullName()).setHeader("Client");

@@ -4,16 +4,12 @@ import com.vaadin.flow.data.binder.Binder;
 import io.mkolodziejczyk92.data.entity.User;
 import io.mkolodziejczyk92.data.enums.ERole;
 import io.mkolodziejczyk92.data.service.UserService;
-import io.mkolodziejczyk92.views.user.NewUserFormView;
 import org.springframework.stereotype.Controller;
 
-import java.util.HashSet;
 import java.util.Set;
 
 @Controller
 public class UserFormController {
-
-    private NewUserFormView newUserFormView;
 
     private final UserService userService;
 
@@ -23,8 +19,7 @@ public class UserFormController {
         this.userService = userService;
     }
 
-    public void initView(NewUserFormView newUserFormView, Binder<User> binder){
-        this.newUserFormView = newUserFormView;
+    public void initBinder(Binder<User> binder){
         this.binder=binder;
     }
 

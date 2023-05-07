@@ -4,8 +4,8 @@ import com.vaadin.flow.data.provider.AbstractBackEndDataProvider;
 import com.vaadin.flow.data.provider.Query;
 import com.vaadin.flow.data.provider.QuerySortOrder;
 import com.vaadin.flow.data.provider.SortDirection;
+import io.mkolodziejczyk92.data.controllers.AddressesViewController;
 import io.mkolodziejczyk92.data.entity.Address;
-import io.mkolodziejczyk92.data.service.AddressService;
 import io.mkolodziejczyk92.utils.BeanProvider;
 
 import java.util.Comparator;
@@ -18,9 +18,8 @@ public class AddressDataProvider extends AbstractBackEndDataProvider<Address, Ad
     private final List<Address> allAddresses;
 
     public AddressDataProvider() {
-        allAddresses = BeanProvider.getBean(AddressService.class).allAddresses();
+        allAddresses = BeanProvider.getBean(AddressesViewController.class).allAddresses();
     }
-
 
     @Override
     protected Stream<Address> fetchFromBackEnd(Query<Address, AddressFilter> query) {

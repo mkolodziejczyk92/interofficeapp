@@ -21,7 +21,6 @@ import com.vaadin.flow.router.Route;
 import io.mkolodziejczyk92.data.controllers.ContractsViewController;
 import io.mkolodziejczyk92.data.entity.Contract;
 import io.mkolodziejczyk92.views.MainLayout;
-import io.mkolodziejczyk92.views.purchase.NewPurchaseFormView;
 import jakarta.annotation.security.PermitAll;
 
 @PageTitle("Contracts")
@@ -42,7 +41,6 @@ public class ContractsView extends Div {
 
     public ContractsView(ContractsViewController contractsViewController) {
         this.contractsViewController = contractsViewController;
-        contractsViewController.initView(this);
 
         Grid<Contract> grid = new Grid<>(Contract.class, false);
         grid.addColumn(contract -> contract.getClient().getFullName()).setHeader("Client");
@@ -70,9 +68,9 @@ public class ContractsView extends Div {
         menu.addItem("View", event -> {
         });
         menu.addItem("Edit", event -> {
-            if(event.getItem().isPresent()){
+            if (event.getItem().isPresent()) {
                 contractsViewController.editContractInformationForm(event.getItem().get().getId());
-            }else menu.close();
+            } else menu.close();
         });
         menu.addItem("Delete", event -> {
         });
@@ -104,7 +102,7 @@ public class ContractsView extends Div {
         HorizontalLayout topButtonLayout = new HorizontalLayout();
         topButtonLayout.add(newContract);
         newContract.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-        newContract.addClickListener( e -> UI.getCurrent().navigate(NewContractFormView.class));
+        newContract.addClickListener(e -> UI.getCurrent().navigate(NewContractFormView.class));
         newContract.getStyle().set("margin-left", "auto");
         topButtonLayout.getStyle().set("padding-right", "15px");
         topButtonLayout.getStyle().set("border-bottom", "1px solid var(--lumo-contrast-10pct)");

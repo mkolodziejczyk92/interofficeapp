@@ -53,4 +53,8 @@ public class PurchaseService {
     public List<Purchase> clientPurchases(Long clientId) {
         return repository.findPurchasesByClientId(clientId);
     }
+
+    public boolean isExist(Long purchaseId) {
+        return repository.existsById(purchaseId);
+    }
 }

@@ -47,7 +47,7 @@ public class NewContractFormView extends Div implements HasUrlParameter<String> 
 
     public NewContractFormView(ContractAddFormViewController contractAddFormController) {
         this.contractAddFormController = contractAddFormController;
-        contractAddFormController.initView(this, binder);
+        contractAddFormController.initBinder(binder);
 
         add(createTopButtonLayout());
         add(createFormLayout());

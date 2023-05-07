@@ -37,7 +37,6 @@ public class SuppliersView extends Div {
 
     public SuppliersView(SuppliersViewController suppliersViewController) {
         this.suppliersViewController = suppliersViewController;
-        suppliersViewController.initView(this);
 
         Grid<Supplier> grid = new Grid<>(Supplier.class, false);
         grid.addColumn(Supplier::getNameOfCompany).setHeader("Name of company");

@@ -63,7 +63,7 @@ public class NewAddressFormView extends Div implements HasUrlParameter<String> {
                               ClientsViewController clientsViewController) {
         this.addressFormViewController = addressFormViewController;
         this.clientsViewController = clientsViewController;
-        addressFormViewController.initView(this, binder);
+        addressFormViewController.initBinder(binder);
 
         add(createTopButtonLayout());
         createTopComboBox();

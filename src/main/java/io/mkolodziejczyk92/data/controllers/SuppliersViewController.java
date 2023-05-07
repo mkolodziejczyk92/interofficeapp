@@ -12,18 +12,12 @@ import java.util.List;
 @Controller
 public class SuppliersViewController {
 
-    private SuppliersView suppliersView;
 
     private final SupplierService supplierService;
 
     public SuppliersViewController(SupplierService supplierService) {
         this.supplierService = supplierService;
     }
-
-    public void initView(SuppliersView suppliersView) {
-        this.suppliersView = suppliersView;
-    }
-
     public List<Supplier> allSuppliers() {
         return supplierService.allSuppliers();
     }

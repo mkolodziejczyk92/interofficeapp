@@ -4,6 +4,7 @@ import com.vaadin.flow.data.provider.AbstractBackEndDataProvider;
 import com.vaadin.flow.data.provider.Query;
 import com.vaadin.flow.data.provider.QuerySortOrder;
 import com.vaadin.flow.data.provider.SortDirection;
+import io.mkolodziejczyk92.data.controllers.ContractsViewController;
 import io.mkolodziejczyk92.data.entity.Contract;
 import io.mkolodziejczyk92.data.service.ContractService;
 import io.mkolodziejczyk92.utils.BeanProvider;
@@ -16,7 +17,7 @@ public class ContractDataProvider extends AbstractBackEndDataProvider<Contract, 
     private final List<Contract> allContracts;
 
     public ContractDataProvider() {
-        allContracts = BeanProvider.getBean(ContractService.class).allContracts();
+        allContracts = BeanProvider.getBean(ContractsViewController.class).allContracts();
     }
 
     @Override

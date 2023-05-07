@@ -10,7 +10,6 @@ import io.mkolodziejczyk92.data.service.ClientService;
 import io.mkolodziejczyk92.data.service.ContractService;
 import io.mkolodziejczyk92.data.service.PurchaseService;
 import io.mkolodziejczyk92.data.service.SupplierService;
-import io.mkolodziejczyk92.views.purchase.NewPurchaseFormView;
 import org.springframework.stereotype.Controller;
 
 import java.util.List;
@@ -24,9 +23,7 @@ public class PurchaseAddFormViewController {
     private final ContractService contractService;
     private  Binder<Purchase> binder;
 
-    private NewPurchaseFormView newPurchaseFormView;
-
-    public PurchaseAddFormViewController(PurchaseService purchaseService, ClientService clientService, SupplierService supplierService, ClientsViewController clientsViewController, ContractService contractService) {
+    public PurchaseAddFormViewController(PurchaseService purchaseService, ClientService clientService, SupplierService supplierService, ContractService contractService) {
         this.purchaseService = purchaseService;
         this.clientService = clientService;
         this.supplierService = supplierService;
@@ -34,8 +31,7 @@ public class PurchaseAddFormViewController {
     }
 
 
-    public void initView(NewPurchaseFormView newPurchaseFormView, Binder<Purchase> binder) {
-        this.newPurchaseFormView = newPurchaseFormView;
+    public void initBinder(Binder<Purchase> binder) {
         this.binder = binder;
     }
 

@@ -6,12 +6,13 @@ import io.mkolodziejczyk92.data.entity.Client;
 import io.mkolodziejczyk92.data.entity.Contract;
 import io.mkolodziejczyk92.data.service.ClientService;
 import io.mkolodziejczyk92.data.service.ContractService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
-import io.mkolodziejczyk92.views.contract.NewContractFormView;
 
 import java.util.List;
 
 @Controller
+@Slf4j
 public class ContractAddFormViewController {
 
     private final ContractService contractService;
@@ -20,16 +21,12 @@ public class ContractAddFormViewController {
 
     private Binder<Contract> binder;
 
-    private NewContractFormView newContractFormView;
-
     public ContractAddFormViewController(ContractService contractService, ClientService clientService) {
         this.contractService = contractService;
         this.clientService = clientService;
     }
 
-
-    public void initView(NewContractFormView newContractFormView, Binder<Contract> binder) {
-        this.newContractFormView = newContractFormView;
+    public void initBinder(Binder<Contract> binder) {
         this.binder = binder;
     }
 

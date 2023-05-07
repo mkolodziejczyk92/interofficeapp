@@ -41,7 +41,7 @@ public class NewClientFormView extends Div implements HasUrlParameter<String> {
 
     public NewClientFormView(ClientAddFormViewController clientFormViewController) {
         this.clientFormViewController = clientFormViewController;
-        clientFormViewController.initView(this, binder);
+        clientFormViewController.initBinder(binder);
 
         add(createTopButtonLayout());
         createComboBox();

@@ -52,7 +52,7 @@ public class NewPurchaseFormView extends Div implements HasUrlParameter<String> 
 
     public NewPurchaseFormView(PurchaseAddFormViewController purchaseAddFormViewController) {
         this.purchaseAddFormViewController = purchaseAddFormViewController;
-        purchaseAddFormViewController.initView(this, binder);
+        purchaseAddFormViewController.initBinder(binder);
         add(createTopButtonLayout());
         createFormComboBoxes();
         add(createFormLayout());

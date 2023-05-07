@@ -4,8 +4,8 @@ import com.vaadin.flow.data.provider.AbstractBackEndDataProvider;
 import com.vaadin.flow.data.provider.Query;
 import com.vaadin.flow.data.provider.QuerySortOrder;
 import com.vaadin.flow.data.provider.SortDirection;
+import io.mkolodziejczyk92.data.controllers.SuppliersViewController;
 import io.mkolodziejczyk92.data.entity.Supplier;
-import io.mkolodziejczyk92.data.service.SupplierService;
 import io.mkolodziejczyk92.utils.BeanProvider;
 
 import java.util.Comparator;
@@ -17,7 +17,7 @@ public class SupplierDataProvider extends AbstractBackEndDataProvider<Supplier, 
     private final List<Supplier> allSuppliers;
 
     public SupplierDataProvider() {
-        allSuppliers = BeanProvider.getBean(SupplierService.class).allSuppliers();
+        allSuppliers = BeanProvider.getBean(SuppliersViewController.class).allSuppliers();
     }
 
     @Override
@@ -26,7 +26,7 @@ public class SupplierDataProvider extends AbstractBackEndDataProvider<Supplier, 
 
         // Filtering
         if (query.getFilter().isPresent()) {
-            stream = stream.filter(supplier-> query.getFilter().get().test(supplier));
+            stream = stream.filter(supplier -> query.getFilter().get().test(supplier));
         }
 
         // Sorting

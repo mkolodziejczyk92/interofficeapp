@@ -39,8 +39,6 @@ public class InvoicesView extends Div {
 
     public InvoicesView(InvoicesViewController invoicesViewController) {
         this.invoicesViewController = invoicesViewController;
-        invoicesViewController.initView(this);
-
 
         Grid<Invoice> grid = new Grid<>(Invoice.class, false);
         grid.addColumn(Invoice::getNumber).setHeader("Invoice number");

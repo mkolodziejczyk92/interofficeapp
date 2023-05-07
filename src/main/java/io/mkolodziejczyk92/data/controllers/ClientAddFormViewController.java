@@ -5,15 +5,12 @@ import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.data.binder.Binder;
 import io.mkolodziejczyk92.data.entity.Client;
 import io.mkolodziejczyk92.data.service.ClientService;
-import io.mkolodziejczyk92.views.client.NewClientFormView;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 
 @Slf4j
 @Controller
 public class ClientAddFormViewController {
-
-    private NewClientFormView newClientFormView;
 
     private ClientService clientService;
     private Binder<Client> binder;
@@ -22,10 +19,8 @@ public class ClientAddFormViewController {
         this.clientService = clientService;
     }
 
-    public void initView(NewClientFormView newClientFormView, Binder<Client> binder) {
-        this.newClientFormView = newClientFormView;
+    public void initBinder(Binder<Client> binder) {
         this.binder = binder;
-
     }
 
     public void clearForm() {

@@ -11,7 +11,7 @@ import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-import io.mkolodziejczyk92.data.controllers.UserViewController;
+import io.mkolodziejczyk92.data.controllers.UsersViewController;
 import io.mkolodziejczyk92.data.entity.User;
 import io.mkolodziejczyk92.views.MainLayout;
 import jakarta.annotation.security.RolesAllowed;
@@ -21,13 +21,12 @@ import jakarta.annotation.security.RolesAllowed;
 @RolesAllowed("ADMIN")
 public class UsersView extends Div {
 
-    private final UserViewController userViewController;
+    private final UsersViewController usersViewController;
     private final Button newUserButton = new Button("New User");
 
 
-    public UsersView(io.mkolodziejczyk92.data.controllers.UserViewController userViewController) {
-        this.userViewController = userViewController;
-        userViewController.initView(this);
+    public UsersView(UsersViewController usersViewController) {
+        this.usersViewController = usersViewController;
 
         Grid<User> grid = new Grid<>(User.class, false);
         grid.addColumn(User::getUserName).setHeader("User name");
@@ -36,7 +35,7 @@ public class UsersView extends Div {
         grid.addColumn(User::getEmail).setHeader("Email");
         grid.getColumns().forEach(userColumn -> userColumn.setAutoWidth(true));
         grid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
-        grid.setItems(userViewController::allUsersPageableStream);
+        grid.setItems(usersViewController::allUsersPageableStream);
 
 
 

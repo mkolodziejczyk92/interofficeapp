@@ -2,7 +2,6 @@ package io.mkolodziejczyk92.views.purchase;
 
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.Key;
-import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.dialog.Dialog;
@@ -17,30 +16,32 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.provider.ConfigurableFilterDataProvider;
 import com.vaadin.flow.data.renderer.ComponentRenderer;
 import com.vaadin.flow.data.value.ValueChangeMode;
-import com.vaadin.flow.router.PageTitle;
-import com.vaadin.flow.router.Route;
+import com.vaadin.flow.router.*;
 import io.mkolodziejczyk92.data.controllers.PurchasesViewController;
 import io.mkolodziejczyk92.data.entity.Purchase;
+import io.mkolodziejczyk92.utils.ComponentFactory;
 import io.mkolodziejczyk92.views.MainLayout;
 import jakarta.annotation.security.PermitAll;
 
 @PageTitle("Purchases")
-@Route(value = "purchase", layout = MainLayout.class)
+@Route(value = "purchases", layout = MainLayout.class)
 @PermitAll
-public class PurchasesView extends Div {
+public class PurchasesView extends Div implements HasUrlParameter<String> {
 
     private final PurchasesViewController purchasesViewController;
     private PurchaseFilter purchaseFilter = new PurchaseFilter();
     private PurchaseDataProvider purchaseDataProvider = new PurchaseDataProvider();
     private ConfigurableFilterDataProvider<Purchase, Void, PurchaseFilter> filterDataProvider
             = purchaseDataProvider.withConfigurableFilter();
-    private Button newPurchase = new Button("New Purchase");
+    private Button newPurchase = ComponentFactory.createStandardButton("New Purchase");
+
+    private final Grid<Purchase> grid = new Grid<>(Purchase.class, false);
+    private String clientIdWithParameter;
 
     public PurchasesView(PurchasesViewController purchasesViewController) {
         this.purchasesViewController = purchasesViewController;
 
 
-        Grid<Purchase> grid = new Grid<>(Purchase.class, false);
         grid.addColumn(purchase -> purchase.getClient().getFullName()).setHeader("Client");
         grid.addColumn(Purchase::getContractNumber).setHeader("Contract number");
         grid.addColumn(purchase -> purchase.getSupplier().getNameOfCompany()).setHeader("Supplier");
@@ -87,14 +88,9 @@ public class PurchasesView extends Div {
 
     private Component createSearchLayout() {
         HorizontalLayout searchLayout = new HorizontalLayout();
-        searchLayout.addClassName("button-layout");
 
-        TextField searchField = new TextField();
-        searchField.getStyle().set("padding-left", "15px");
-        searchField.setWidth("30%");
-        searchField.setPlaceholder("Search by client, contract number, purchase number or supplier");
-        searchField.setPrefixComponent(new Icon(VaadinIcon.SEARCH));
-        searchField.setValueChangeMode(ValueChangeMode.EAGER);
+        TextField searchField = ComponentFactory.createTextFieldForSearchLayout
+                ("Search by client, contract number, purchase number or supplier");
         searchField.addValueChangeListener(e -> {
             purchaseFilter.setSearchTerm(e.getValue());
             filterDataProvider.setFilter(purchaseFilter);
@@ -104,13 +100,9 @@ public class PurchasesView extends Div {
     }
 
     private Component createTopButtonLayout() {
-        HorizontalLayout topButtonLayout = new HorizontalLayout();
+        HorizontalLayout topButtonLayout = ComponentFactory.createTopButtonLayout();
         topButtonLayout.add(newPurchase);
-        newPurchase.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-        newPurchase.getStyle().set("margin-left", "auto");
-        newPurchase.addClickListener( e -> UI.getCurrent().navigate(NewPurchaseFormView.class));
-        topButtonLayout.getStyle().set("padding-right", "15px");
-        topButtonLayout.getStyle().set("border-bottom", "1px solid var(--lumo-contrast-10pct)");
+        newPurchase.addClickListener( e -> purchasesViewController.createNewPurchaseForClient(clientIdWithParameter));
         return topButtonLayout;
     }
 
@@ -130,4 +122,12 @@ public class PurchasesView extends Div {
     }
 
 
+    @Override
+    public void setParameter(BeforeEvent event, @WildcardParameter String urlParameter) {
+        if(!urlParameter.isEmpty()){
+            String clientId = urlParameter.substring(1);
+            clientIdWithParameter = urlParameter;
+            grid.setItems(purchasesViewController.clientPurchases(Long.valueOf(clientId)));
+        }
+    }
 }

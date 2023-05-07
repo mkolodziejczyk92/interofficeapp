@@ -2,9 +2,7 @@ package io.mkolodziejczyk92.data.service;
 
 import io.mkolodziejczyk92.data.entity.Contract;
 
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.Month;
 import java.time.Year;
 import java.util.List;
 import java.util.Optional;
@@ -12,8 +10,6 @@ import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -64,5 +60,9 @@ public class ContractService {
         int thisMonthContractsQuantity = repository.findThisMonthContractsQuantity(month, year);
 
         return (thisMonthContractsQuantity + 10) + "/" + (month<10?("0"+month):(month))+ "/" + year;
+    }
+
+    public List<Contract> clientContracts(Long clientId) {
+        return repository.findContractsByClientId(clientId);
     }
 }

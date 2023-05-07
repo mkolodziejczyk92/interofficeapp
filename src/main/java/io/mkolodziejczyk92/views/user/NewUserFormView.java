@@ -17,6 +17,7 @@ import com.vaadin.flow.router.Route;
 import io.mkolodziejczyk92.data.controllers.UserFormController;
 import io.mkolodziejczyk92.data.entity.User;
 import io.mkolodziejczyk92.data.enums.ERole;
+import io.mkolodziejczyk92.utils.ComponentFactory;
 import io.mkolodziejczyk92.views.MainLayout;
 import jakarta.annotation.security.RolesAllowed;
 
@@ -39,11 +40,11 @@ public class NewUserFormView extends Div {
 
     private final CheckboxGroup<ERole> ERoles = new CheckboxGroup<>("Role");
 
-    private final Button cancel = new Button("Cancel");
+    private final Button cancel = ComponentFactory.createCancelButton();
 
-    private final Button save = new Button("Save");
+    private final Button save = ComponentFactory.createSaveButton();
 
-    private final Button back = new Button("Back");
+    private final Button back = ComponentFactory.createBackButton();
 
     private final Binder<User> binder = new Binder<>(User.class);
 
@@ -63,23 +64,13 @@ public class NewUserFormView extends Div {
     }
 
     private Component createFormLayout(){
-        FormLayout formLayout = new FormLayout(userName, firstName, lastName, email, hashedPassword);
-        formLayout.getStyle().set("padding-left", "30px");
-        formLayout.getStyle().set("padding-right", "30px");
-        return formLayout;
+        return  ComponentFactory.createFormLayout(userName, firstName, lastName, email, hashedPassword);
     }
 
     private Component createBottomButtonLayout(){
 
-        HorizontalLayout bottomButtonLayout = new HorizontalLayout();
-        bottomButtonLayout.addClassName("button-layout");
-        save.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-        cancel.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-
-        bottomButtonLayout.add(save);
-        bottomButtonLayout.add(cancel);
-        bottomButtonLayout.getStyle().set("padding-left", "30px");
-        bottomButtonLayout.getStyle().set("padding-top", "30px");
+        HorizontalLayout bottomButtonLayout = ComponentFactory.createBottomButtonLayout();
+        bottomButtonLayout.add(cancel, save);
 
         cancel.addClickListener(e -> userAddNewFormController.clearForm());
 
@@ -88,21 +79,13 @@ public class NewUserFormView extends Div {
             Notification.show(binder.getBean().getClass().getSimpleName() + " stored.");
             userAddNewFormController.clearForm();
         });
-        save.addClickShortcut(Key.ENTER);
-
 
         return bottomButtonLayout;
     }
 
     private Component createTopButtonLayout(){
-        HorizontalLayout topButtonLayout = new HorizontalLayout();
-        topButtonLayout.getStyle().set("padding-right", "15px");
-        topButtonLayout.getStyle().set("border-bottom", "1px solid var(--lumo-contrast-10pct)");
-
-        back.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+        HorizontalLayout topButtonLayout = ComponentFactory.createTopButtonLayout();
         back.addClickListener(e -> UI.getCurrent().navigate(UsersView.class));
-        back.getStyle().set("margin-left", "auto");
-        back.addClickShortcut(Key.ESCAPE);
         topButtonLayout.add(back);
         return topButtonLayout;
     }

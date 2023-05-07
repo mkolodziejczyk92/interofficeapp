@@ -2,7 +2,6 @@ package io.mkolodziejczyk92.data.controllers;
 
 import io.mkolodziejczyk92.data.entity.Invoice;
 import io.mkolodziejczyk92.data.service.InvoiceService;
-import io.mkolodziejczyk92.views.invoice.InvoicesView;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 
@@ -20,5 +19,9 @@ public class InvoicesViewController {
 
     public List<Invoice> allInvoices(){
         return invoiceService.allInvoices();
+    }
+
+    public List<Invoice> clientInvoices(Long clientId) {
+        return invoiceService.clientInvoices(clientId);
     }
 }

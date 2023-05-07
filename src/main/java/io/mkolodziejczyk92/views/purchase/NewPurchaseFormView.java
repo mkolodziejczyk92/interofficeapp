@@ -19,14 +19,18 @@ import io.mkolodziejczyk92.data.entity.Purchase;
 import io.mkolodziejczyk92.data.entity.Supplier;
 import io.mkolodziejczyk92.data.enums.ECommodityType;
 import io.mkolodziejczyk92.data.enums.EPurchaseStatus;
+import io.mkolodziejczyk92.utils.ComponentFactory;
 import io.mkolodziejczyk92.views.MainLayout;
 import jakarta.annotation.security.PermitAll;
 
+import static io.mkolodziejczyk92.utils.ComponentFactory.PARAMETER_FOR_CLIENT_ID_FROM_GRID;
+
 
 @PageTitle("New Purchase")
-@Route(value = "newPurchase", layout = MainLayout.class)
+@Route(value = "new-purchase", layout = MainLayout.class)
 @PermitAll
 public class NewPurchaseFormView extends Div implements HasUrlParameter<String> {
+
     private final PurchaseAddFormViewController purchaseAddFormViewController;
 
     private final ComboBox<Client> client = new ComboBox<>("Client");
@@ -43,11 +47,10 @@ public class NewPurchaseFormView extends Div implements HasUrlParameter<String> 
 
     private final ComboBox<ECommodityType> commodityType = new ComboBox<>("Commodity Type");
 
-    private final Button cancel = new Button("Cancel");
-    private final Button save = new Button("Save");
-    private final Button back = new Button("Back");
-
-    private final Button update = new Button("Update");
+    private final Button cancel = ComponentFactory.createCancelButton();
+    private final Button save = ComponentFactory.createStandardButton("Save");
+    private final Button back = ComponentFactory.createBackButton();
+    private final Button update = ComponentFactory.createStandardButton("Update");
     private final Binder<Purchase> binder = new Binder<>(Purchase.class);
 
     public NewPurchaseFormView(PurchaseAddFormViewController purchaseAddFormViewController) {
@@ -62,39 +65,23 @@ public class NewPurchaseFormView extends Div implements HasUrlParameter<String> 
     }
 
     private Component createTopButtonLayout() {
-        HorizontalLayout topButtonLayout = new HorizontalLayout();
-        topButtonLayout.getStyle().set("padding-right", "15px");
-        topButtonLayout.getStyle().set("border-bottom", "1px solid var(--lumo-contrast-10pct)");
+        HorizontalLayout topButtonLayout = ComponentFactory.createTopButtonLayout();
 
-        back.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         back.addClickListener(e -> purchaseAddFormViewController.returnToPurchases());
-        back.getStyle().set("margin-left", "auto");
-        back.addClickShortcut(Key.ESCAPE);
-
         topButtonLayout.add(back);
         return topButtonLayout;
     }
 
     private Component createFormLayout() {
-
-        FormLayout formLayout = new FormLayout(client, commodityType,  status, supplier,
+        return ComponentFactory.createFormLayout(client, commodityType,  status, supplier,
                 netAmount, supplierPurchaseNumber, comment);
-        formLayout.getStyle().set("padding-left", "30px");
-        formLayout.getStyle().set("padding-right", "30px");
-        return formLayout;
+
     }
 
     private Component createBottomButtonLayout() {
-        HorizontalLayout bottomButtonLayout = new HorizontalLayout();
-        save.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-        cancel.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-        update.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+        HorizontalLayout bottomButtonLayout = ComponentFactory.createBottomButtonLayout();
 
-        bottomButtonLayout.add(cancel);
-        bottomButtonLayout.add(save);
-        bottomButtonLayout.add(update);
-        bottomButtonLayout.getStyle().set("padding-left", "30px");
-        bottomButtonLayout.getStyle().set("padding-top", "30px");
+        bottomButtonLayout.add(cancel, save, update);
 
         cancel.addClickListener(e -> purchaseAddFormViewController.clearForm());
         save.addClickListener(e -> {
@@ -134,21 +121,21 @@ public class NewPurchaseFormView extends Div implements HasUrlParameter<String> 
     }
 
     @Override
-    public void setParameter(BeforeEvent beforeEvent, @WildcardParameter String purchaseId) {
-      if(!purchaseId.isEmpty()){
-          Purchase purchase = purchaseAddFormViewController.findPurchaseById(Long.valueOf(purchaseId));
+    public void setParameter(BeforeEvent beforeEvent, @WildcardParameter String urlWithId) {
+
+      if(!urlWithId.isEmpty() && !urlWithId.startsWith(PARAMETER_FOR_CLIENT_ID_FROM_GRID) ){
+          Purchase purchase = purchaseAddFormViewController.findPurchaseById(Long.valueOf(urlWithId));
           binder.setBean(purchase);
-          netAmount.setValue(purchase.getNetAmount());
-          client.setValue(purchase.getClient());
-          status.setValue(purchase.getStatus());
-          supplierPurchaseNumber.setValue(purchase.getSupplierPurchaseNumber());
-          comment.setValue(purchase.getComment());
-          commodityType.setValue(purchase.getCommodityType());
-          supplier.setValue(purchase.getSupplier());
 
           cancel.setVisible(false);
           save.setVisible(false);
           update.setVisible(true);
+
+      } else if (!urlWithId.isEmpty()) {
+          String clientId = urlWithId.substring(1);
+          client.setValue(purchaseAddFormViewController.findClientById(Long.valueOf(clientId)));
       }
+
     }
+
 }

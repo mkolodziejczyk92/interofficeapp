@@ -14,11 +14,12 @@ import com.vaadin.flow.router.*;
 import io.mkolodziejczyk92.data.controllers.ClientAddFormViewController;
 import io.mkolodziejczyk92.data.entity.Client;
 import io.mkolodziejczyk92.data.enums.EClientType;
+import io.mkolodziejczyk92.utils.ComponentFactory;
 import io.mkolodziejczyk92.views.MainLayout;
 import jakarta.annotation.security.PermitAll;
 
 @PageTitle("New Client")
-@Route(value = "newClient", layout = MainLayout.class)
+@Route(value = "new-client", layout = MainLayout.class)
 @PermitAll
 public class NewClientFormView extends Div implements HasUrlParameter<String> {
 
@@ -31,11 +32,10 @@ public class NewClientFormView extends Div implements HasUrlParameter<String> {
     private final TextField email = new TextField("Email");
     private final TextField nip = new TextField("NIP");
     private final ComboBox<EClientType> clientType = new ComboBox<>("Client Type");
-    private final Button cancel = new Button("Cancel");
-    private final Button save = new Button("Save");
-    private final Button back = new Button("Back");
-
-    private final Button update = new Button("Update");
+    private final Button cancel = ComponentFactory.createCancelButton();
+    private final Button save = ComponentFactory.createSaveButton();
+    private final Button back = ComponentFactory.createBackButton();
+    private final Button update = ComponentFactory.createUpdateButton();
     private final Binder<Client> binder = new Binder<>(Client.class);
 
 
@@ -52,25 +52,13 @@ public class NewClientFormView extends Div implements HasUrlParameter<String> {
     }
 
     private Component createFormLayout() {
-        FormLayout formLayout = new FormLayout(firstName, lastName, phoneNumber, email, nip);
-        formLayout.getStyle().set("padding-left", "30px");
-        formLayout.getStyle().set("padding-right", "30px");
-        return formLayout;
+        return ComponentFactory.createFormLayout(firstName, lastName, phoneNumber, email, nip);
     }
 
     private Component createBottomButtonLayout() {
-        HorizontalLayout bottomButtonLayout = new HorizontalLayout();
-        save.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-        save.addClickShortcut(Key.ENTER);
-        cancel.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-        update.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+        HorizontalLayout bottomButtonLayout = ComponentFactory.createBottomButtonLayout();
 
-        bottomButtonLayout.add(save);
-        bottomButtonLayout.add(cancel);
-        bottomButtonLayout.add(update);
-        bottomButtonLayout.getStyle().set("padding-left", "30px");
-        bottomButtonLayout.getStyle().set("padding-top", "30px");
-
+        bottomButtonLayout.add(cancel, save, update);
 
         cancel.addClickListener(e -> clientFormViewController.clearForm());
         save.addClickListener(e -> {
@@ -80,21 +68,13 @@ public class NewClientFormView extends Div implements HasUrlParameter<String> {
             clientFormViewController.updateClient(binder.getBean());
         });
         update.setVisible(false);
-        update.addClickShortcut(Key.ENTER);
         return bottomButtonLayout;
 
     }
 
     private Component createTopButtonLayout() {
-        HorizontalLayout topButtonLayout = new HorizontalLayout();
-        topButtonLayout.getStyle().set("padding-right", "15px");
-        topButtonLayout.getStyle().set("border-bottom", "1px solid var(--lumo-contrast-10pct)");
-
-        back.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+        HorizontalLayout topButtonLayout = ComponentFactory.createTopButtonLayout();
         back.addClickListener(e -> clientFormViewController.returnToClients());
-        back.getStyle().set("margin-left", "auto");
-        back.addClickShortcut(Key.ESCAPE);
-
         topButtonLayout.add(back);
         return topButtonLayout;
     }

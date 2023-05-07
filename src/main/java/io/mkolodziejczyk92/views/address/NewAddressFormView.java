@@ -19,6 +19,7 @@ import io.mkolodziejczyk92.data.entity.Client;
 import io.mkolodziejczyk92.data.enums.EAddressType;
 import io.mkolodziejczyk92.data.enums.ECountry;
 import io.mkolodziejczyk92.data.enums.EVoivodeship;
+import io.mkolodziejczyk92.utils.ComponentFactory;
 import io.mkolodziejczyk92.views.MainLayout;
 import jakarta.annotation.security.PermitAll;
 
@@ -45,9 +46,9 @@ public class NewAddressFormView extends Div implements HasUrlParameter<String> {
 
     private ComboBox<Client> client = new ComboBox<>("Client");
 
-    private Button cancel = new Button("Cancel");
-    private Button save = new Button("Save");
-    private Button back = new Button("Back");
+    private Button cancel = ComponentFactory.createCancelButton();
+    private Button save = ComponentFactory.createSaveButton();
+    private Button back = ComponentFactory.createBackButton();
 
     private Binder<Address> binder = new Binder<>(Address.class);
 
@@ -75,11 +76,8 @@ public class NewAddressFormView extends Div implements HasUrlParameter<String> {
     }
 
     private Component createFormLayout() {
-        FormLayout formLayout = new FormLayout();
-        formLayout.getStyle().set("padding-left", "30px");
-        formLayout.getStyle().set("padding-right", "30px");
-        formLayout.add(street, houseNumber, apartmentNumber, zipCode, city, plotNumber, municipality);
-        return formLayout;
+        return ComponentFactory.createFormLayout(street, houseNumber, apartmentNumber,
+                zipCode,city,plotNumber,municipality);
     }
 
     private void createTopComboBox() {
@@ -107,32 +105,19 @@ public class NewAddressFormView extends Div implements HasUrlParameter<String> {
 
 
     private Component createBottomButtonLayout() {
-        HorizontalLayout bottomButtonLayout = new HorizontalLayout();
-        bottomButtonLayout.addClassName("button-layout");
-        save.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-        cancel.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-        bottomButtonLayout.getStyle().set("padding-left", "30px");
-        bottomButtonLayout.getStyle().set("padding-top", "30px");
-        bottomButtonLayout.add(save);
-        bottomButtonLayout.add(cancel);
+        HorizontalLayout bottomButtonLayout = ComponentFactory.createBottomButtonLayout();
+
+        bottomButtonLayout.add(cancel, save);
 
         cancel.addClickListener(event -> addressFormViewController.clearForm());
-        save.addClickListener(event -> {
-            addressFormViewController.saveNewAddress(binder.getBean());
-        });
-        save.addClickShortcut(Key.ENTER);
+        save.addClickListener(event -> addressFormViewController.saveNewAddress(binder.getBean()));
+
         return bottomButtonLayout;
     }
 
     private Component createTopButtonLayout() {
-        HorizontalLayout topButtonLayout = new HorizontalLayout();
-        topButtonLayout.getStyle().set("padding-right", "15px");
-        topButtonLayout.getStyle().set("border-bottom", "1px solid var(--lumo-contrast-10pct)");
-
-        back.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+        HorizontalLayout topButtonLayout = ComponentFactory.createTopButtonLayout();
         back.addClickListener(e -> UI.getCurrent().navigate(AddressesView.class));
-        back.getStyle().set("margin-left", "auto");
-        back.addClickShortcut(Key.ESCAPE);
         topButtonLayout.add(back);
         return topButtonLayout;
     }

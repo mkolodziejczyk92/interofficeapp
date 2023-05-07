@@ -16,10 +16,10 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.provider.ConfigurableFilterDataProvider;
 import com.vaadin.flow.data.value.ValueChangeMode;
-import com.vaadin.flow.router.PageTitle;
-import com.vaadin.flow.router.Route;
+import com.vaadin.flow.router.*;
 import io.mkolodziejczyk92.data.controllers.InvoicesViewController;
 import io.mkolodziejczyk92.data.entity.Invoice;
+import io.mkolodziejczyk92.utils.ComponentFactory;
 import io.mkolodziejczyk92.views.MainLayout;
 import jakarta.annotation.security.PermitAll;
 
@@ -27,20 +27,24 @@ import jakarta.annotation.security.PermitAll;
 @Route(value = "invoices", layout = MainLayout.class)
 @PermitAll
 @Uses(Icon.class)
-public class InvoicesView extends Div {
+public class InvoicesView extends Div implements HasUrlParameter<String> {
 
     private final InvoicesViewController invoicesViewController;
 
-    private InvoiceFilter invoiceFilter = new InvoiceFilter();
-    private InvoiceDataProvider invoiceDataProvider = new InvoiceDataProvider();
-    private ConfigurableFilterDataProvider<Invoice, Void, InvoiceFilter> filterDataProvider
+    private final InvoiceFilter invoiceFilter = new InvoiceFilter();
+    private final InvoiceDataProvider invoiceDataProvider = new InvoiceDataProvider();
+    private final ConfigurableFilterDataProvider<Invoice, Void, InvoiceFilter> filterDataProvider
             = invoiceDataProvider.withConfigurableFilter();
-    private Button emptyButton = new Button("EMPTY");
+
+    private final Grid<Invoice> grid = new Grid<>(Invoice.class, false);
+    private final Button emptyButton = ComponentFactory.createStandardButton("EMPTY");
+
+    private String clientIdWithParameter;
 
     public InvoicesView(InvoicesViewController invoicesViewController) {
         this.invoicesViewController = invoicesViewController;
 
-        Grid<Invoice> grid = new Grid<>(Invoice.class, false);
+
         grid.addColumn(Invoice::getNumber).setHeader("Invoice number");
         grid.addColumn(invoice -> invoice.getClient().getFullName()).setHeader("Client");
         grid.addColumn(invoice -> invoice.getContract().getNumber()).setHeader("Contract number");
@@ -79,14 +83,8 @@ public class InvoicesView extends Div {
 
     private Component createSearchLayout() {
         HorizontalLayout searchLayout = new HorizontalLayout();
-        searchLayout.addClassName("button-layout");
-
-        TextField searchField = new TextField();
-        searchField.getStyle().set("padding-left", "15px");
-        searchField.setWidth("30%");
-        searchField.setPlaceholder("Search by client, contract number or invoice number");
-        searchField.setPrefixComponent(new Icon(VaadinIcon.SEARCH));
-        searchField.setValueChangeMode(ValueChangeMode.EAGER);
+        TextField searchField = ComponentFactory.createTextFieldForSearchLayout
+                ("Search by client, contract number or invoice number");
         searchField.addValueChangeListener(e -> {
             invoiceFilter.setSearchTerm(e.getValue());
             filterDataProvider.setFilter(invoiceFilter);
@@ -96,13 +94,17 @@ public class InvoicesView extends Div {
     }
 
     private Component createTopButtonLayout() {
-        HorizontalLayout topButtonLayout = new HorizontalLayout();
+        HorizontalLayout topButtonLayout = ComponentFactory.createTopButtonLayout();
         topButtonLayout.add(emptyButton);
-        emptyButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-        emptyButton.getStyle().set("margin-left", "auto");
-        topButtonLayout.getStyle().set("padding-right", "15px");
-        topButtonLayout.getStyle().set("border-bottom", "1px solid var(--lumo-contrast-10pct)");
         return topButtonLayout;
     }
 
+    @Override
+    public void setParameter(BeforeEvent beforeEvent, @WildcardParameter String urlParameter) {
+        if(!urlParameter.isEmpty()){
+            String clientId = urlParameter.substring(1);
+            clientIdWithParameter = urlParameter;
+            grid.setItems(invoicesViewController.clientInvoices(Long.valueOf(clientId)));
+        }
+    }
 }

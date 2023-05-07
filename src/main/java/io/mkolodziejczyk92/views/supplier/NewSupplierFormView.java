@@ -16,6 +16,7 @@ import com.vaadin.flow.router.Route;
 import io.mkolodziejczyk92.data.controllers.SupplierFormViewController;
 import io.mkolodziejczyk92.data.controllers.SuppliersViewController;
 import io.mkolodziejczyk92.data.entity.Supplier;
+import io.mkolodziejczyk92.utils.ComponentFactory;
 import io.mkolodziejczyk92.views.MainLayout;
 import jakarta.annotation.security.PermitAll;
 
@@ -29,9 +30,9 @@ public class NewSupplierFormView extends Div {
     private final SuppliersViewController suppliersViewController;
     private TextField nameOfCompany = new TextField("Name of company");
     private TextField nip = new TextField("NIP");
-    private Button cancel = new Button("Cancel");
-    private Button save = new Button("Save");
-    private Button back = new Button("Back");
+    private Button cancel = ComponentFactory.createCancelButton();
+    private Button save = ComponentFactory.createSaveButton();
+    private Button back = ComponentFactory.createBackButton();
 
     private Binder<Supplier> binder = new Binder<>(Supplier.class);
 
@@ -52,37 +53,20 @@ public class NewSupplierFormView extends Div {
     }
 
     private Component createFormLayout() {
-        FormLayout formLayout = new FormLayout();
-        formLayout.add(nameOfCompany, nip);
-        formLayout.getStyle().set("padding-left", "30px");
-        formLayout.getStyle().set("padding-right", "30px");
-
-        return formLayout;
+       return ComponentFactory.createFormLayout(nameOfCompany, nip);
     }
 
     private Component createTopButtonLayout(){
-        HorizontalLayout topButtonLayout = new HorizontalLayout();
-        topButtonLayout.getStyle().set("padding-right", "15px");
-        topButtonLayout.getStyle().set("border-bottom", "1px solid var(--lumo-contrast-10pct)");
-
-        back.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+        HorizontalLayout topButtonLayout = ComponentFactory.createTopButtonLayout();
         back.addClickListener(e -> UI.getCurrent().navigate(SuppliersView.class));
-        back.getStyle().set("margin-left", "auto");
-        back.addClickShortcut(Key.ESCAPE);
         topButtonLayout.add(back);
         return topButtonLayout;
     }
 
     private Component createBottomButtonLayout() {
-        HorizontalLayout bottomButtonLayout = new HorizontalLayout();
-        bottomButtonLayout.getStyle().set("padding-top", "30px");
-        bottomButtonLayout.getStyle().set("padding-left", "30px");
-        save.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-        cancel.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+        HorizontalLayout bottomButtonLayout = ComponentFactory.createBottomButtonLayout();
 
-        bottomButtonLayout.add(save);
-        bottomButtonLayout.add(cancel);
-
+        bottomButtonLayout.add(cancel, save);
 
         cancel.addClickListener(e -> supplierFormViewController.clearForm());
         save.addClickListener(e -> {
@@ -90,7 +74,6 @@ public class NewSupplierFormView extends Div {
             Notification.show(binder.getBean().getClass().getSimpleName() + " stored.");
             supplierFormViewController.clearForm();
         });
-        save.addClickShortcut(Key.ENTER);
         return bottomButtonLayout;
     }
 }

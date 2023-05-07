@@ -6,11 +6,11 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import java.util.Optional;
+import java.util.List;
 
 public interface ContractRepository extends JpaRepository<Contract, Long>, JpaSpecificationExecutor<Contract> {
 
-   Optional<Contract> findByNumber(String contractNumber);
+    List<Contract> findContractsByClientId(Long clientId);
 
     @Query(value = """   
            SELECT COUNT(number)

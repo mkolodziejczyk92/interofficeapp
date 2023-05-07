@@ -30,6 +30,6 @@ public class AddressFormViewController {
     public void saveNewAddress(Address address) {
         addressService.saveNewAddress(address);
         Notification.show("Address stored.");
-        UI.getCurrent().navigate("clientAddresses/" + address.getClient().getId());
+        UI.getCurrent().navigate("client-addresses/" + address.getClient().getId());
     }
 }

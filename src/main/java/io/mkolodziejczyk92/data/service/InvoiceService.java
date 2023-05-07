@@ -45,4 +45,8 @@ public class InvoiceService {
     public List<Invoice> allInvoices() {
         return repository.findAll();
     }
+
+    public List<Invoice> clientInvoices(Long clientId) {
+        return repository.findInvoiceByClientId(clientId);
+    }
 }

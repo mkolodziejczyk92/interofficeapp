@@ -26,11 +26,11 @@ public class ClientsViewController {
     }
 
     public void clientAddresses(Long clientId) {
-        UI.getCurrent().navigate("clientAddresses/" + clientId);
+        UI.getCurrent().navigate("client-addresses/" + clientId);
     }
 
     public void clientPurchases(Long clientId) {
-        UI.getCurrent().navigate("clientPurchases/" + clientId);
+        UI.getCurrent().navigate("purchases/c" + clientId);
     }
 
     public Client findClientById(Long clientId) {
@@ -51,11 +51,19 @@ public class ClientsViewController {
 
     public void editClientInformationForm(Client client) {
         if (clientService.isExist(client.getId())) {
-            UI.getCurrent().navigate("newClient/" + client.getId());
+            UI.getCurrent().navigate("new-client/" + client.getId());
         } else {
             Notification.show("Client "
                     + client.getFullName()
                     + " does not exist in the database.");
         }
+    }
+
+    public void clientInvoices(Long clientId) {
+        UI.getCurrent().navigate("invoices/c" + clientId);
+    }
+
+    public void clientContracts(Long clientId) {
+        UI.getCurrent().navigate("contracts/c" + clientId);
     }
 }

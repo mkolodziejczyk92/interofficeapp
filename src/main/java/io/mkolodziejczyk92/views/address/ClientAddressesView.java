@@ -8,24 +8,25 @@ import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.grid.contextmenu.GridContextMenu;
 import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.router.*;
 import io.mkolodziejczyk92.data.controllers.AddressesViewController;
 import io.mkolodziejczyk92.data.entity.Address;
+import io.mkolodziejczyk92.utils.ComponentFactory;
 import io.mkolodziejczyk92.views.MainLayout;
 import io.mkolodziejczyk92.views.client.ClientsView;
 import jakarta.annotation.security.PermitAll;
 
 @PageTitle("Client Addresses")
-@Route(value = "clientAddresses", layout = MainLayout.class)
+@Route(value = "client-addresses", layout = MainLayout.class)
 @PermitAll
 public class ClientAddressesView extends Div implements HasUrlParameter<String> {
 
     private final AddressesViewController addressesViewController;
     private Long clientId;
-
-    private Button newAddressButton = new Button("Add new address");
-    private Button back = new Button("Back");
+    private Button newAddressButton = ComponentFactory.createStandardButton("New address");
+    private Button back = ComponentFactory.createBackButton();
     private Grid<Address> grid = new Grid<>();
 
     @Override
@@ -60,16 +61,10 @@ public class ClientAddressesView extends Div implements HasUrlParameter<String> 
 
 
     private Component createTopButtonLayout() {
-        HorizontalLayout topButtonLayout = new HorizontalLayout();
-        newAddressButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-        newAddressButton.getStyle().set("margin-left", "auto");
-        newAddressButton
-                .addClickListener(event -> addressesViewController.createNewAddressFormForClient(clientId));
-        back.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+        HorizontalLayout topButtonLayout = ComponentFactory.createTopButtonLayout();
+        newAddressButton.addClickListener(event -> addressesViewController.createNewAddressFormForClient(clientId));
         back.addClickListener(event -> UI.getCurrent().navigate(ClientsView.class));
-        back.getStyle().set("margin-left", "auto");
-        topButtonLayout.getStyle().set("padding-right", "15px");
-        topButtonLayout.getStyle().set("border-bottom", "1px solid var(--lumo-contrast-10pct)");
+
         topButtonLayout.add(newAddressButton, back);
         return topButtonLayout;
     }

@@ -9,6 +9,7 @@ import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.grid.contextmenu.GridContextMenu;
 import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.html.Hr;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -20,6 +21,7 @@ import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
 import io.mkolodziejczyk92.data.controllers.ClientsViewController;
 import io.mkolodziejczyk92.data.entity.Client;
+import io.mkolodziejczyk92.utils.ComponentFactory;
 import io.mkolodziejczyk92.views.MainLayout;
 import jakarta.annotation.security.PermitAll;
 
@@ -35,7 +37,7 @@ public class ClientsView extends Div {
     private ClientDataProvider dataProvider = new ClientDataProvider();
     private ConfigurableFilterDataProvider<Client, Void, ClientFilter> filterDataProvider = dataProvider
             .withConfigurableFilter();
-    private final Button newClientButton = new Button("New Client");
+    private final Button newClientButton = ComponentFactory.createStandardButton("New Client");
     private Grid<Client> grid = new Grid<>();
 
 
@@ -57,20 +59,32 @@ public class ClientsView extends Div {
                 clientsViewController
                         .clientAddresses(event.getItem().get().getId());
             } else menu.close();
-        }).isVisible();
+        });
 
         menu.addItem("Purchases", event -> {
             if (event.getItem().isPresent()) {
                 clientsViewController
                         .clientPurchases(event.getItem().get().getId());
             } else menu.close();
-        }).isVisible();
-
+        });
+        menu.addItem("Invoices", event ->{
+            if(event.getItem().isPresent()){
+                clientsViewController
+                        .clientInvoices(event.getItem().get().getId());
+            }else menu.close();
+        });
+        menu.addItem("Contracts", event ->{
+            if(event.getItem().isPresent()){
+                clientsViewController
+                        .clientContracts(event.getItem().get().getId());
+            }else menu.close();
+        });
+        menu.add(new Hr());
         menu.addItem("Edit", event -> {
             if (event.getItem().isPresent()) {
                 clientsViewController.editClientInformationForm(event.getItem().get());
             } else menu.close();
-        }).isVisible();
+        });
 
         menu.addItem("Delete", event -> {
             if (event.getItem().isPresent()) {
@@ -87,29 +101,18 @@ public class ClientsView extends Div {
 
     private Component createSearchLayout() {
         HorizontalLayout searchLayout = new HorizontalLayout();
-
-        TextField searchField = new TextField();
-        searchField.getStyle().set("padding-left", "15px");
-        searchField.setWidth("30%");
-        searchField.setPlaceholder("Search");
-        searchField.setPrefixComponent(new Icon(VaadinIcon.SEARCH));
-        searchField.setValueChangeMode(ValueChangeMode.EAGER);
+        TextField searchField = ComponentFactory.createTextFieldForSearchLayout("Search");
         searchField.addValueChangeListener(e -> {
             clientFilter.setSearchTerm(e.getValue());
             filterDataProvider.setFilter(clientFilter);
         });
         searchLayout.add(searchField);
-        searchLayout.getStyle().set("padding-right", "15px");
         return searchLayout;
     }
 
     private Component createTopButtonLayout() {
-        HorizontalLayout topButtonLayout = new HorizontalLayout();
+        HorizontalLayout topButtonLayout = ComponentFactory.createTopButtonLayout();
         topButtonLayout.add(newClientButton);
-        topButtonLayout.getStyle().set("padding-right", "15px");
-        topButtonLayout.getStyle().set("border-bottom", "1px solid var(--lumo-contrast-10pct)");
-        newClientButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-        newClientButton.getStyle().set("margin-left", "auto");
         newClientButton.addClickListener(e -> UI.getCurrent().navigate(NewClientFormView.class));
         return topButtonLayout;
     }

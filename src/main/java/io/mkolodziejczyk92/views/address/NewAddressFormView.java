@@ -8,7 +8,6 @@ import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.html.Div;
-import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
@@ -54,7 +53,7 @@ public class NewAddressFormView extends Div implements HasUrlParameter<String> {
 
     @Override
     public void setParameter(BeforeEvent event, @WildcardParameter String clientId) {
-        if (!clientId.isEmpty()){
+        if (!clientId.isEmpty()) {
             client.setValue(clientsViewController.findClientById(Long.valueOf(clientId)));
         }
     }
@@ -120,8 +119,6 @@ public class NewAddressFormView extends Div implements HasUrlParameter<String> {
         cancel.addClickListener(event -> addressFormViewController.clearForm());
         save.addClickListener(event -> {
             addressFormViewController.saveNewAddress(binder.getBean());
-            Notification.show(binder.getBean().getClass().getSimpleName() + " stored.");
-            addressFormViewController.clearForm();
         });
         save.addClickShortcut(Key.ENTER);
         return bottomButtonLayout;

@@ -99,3 +99,185 @@ INSERT INTO client (id, version, email, firstName, lastName, phoneNumber)
 VALUES('44', 1, 'Sloppy@gmail.pl', 'Valentina', 'Mcmahon', '146461499');
 INSERT INTO client (id, version, email, firstName, lastName, phoneNumber)
 VALUES('45', 1, 'Hushed@gmail.pl', 'Robert', 'Mcclure', '786736102');
+
+
+INSERT INTO supplier(id, version, nameOfCompany, nip)
+VALUES('1', 1 , 'Arrow Company' ,'5241485450');
+INSERT INTO supplier(id, version, nameOfCompany, nip)
+VALUES('2', 1 , 'GrowFox' ,'3393744330');
+INSERT INTO supplier(id, version, nameOfCompany, nip)
+VALUES('3', 1 , 'NewHorizon Windows','5332163479');
+INSERT INTO supplier(id, version, nameOfCompany, nip)
+VALUES('4', 1 , 'Door Tools','5214116518');
+INSERT INTO supplier(id, version, nameOfCompany, nip)
+VALUES('5', 1 , 'Odfix','1247841323');
+INSERT INTO supplier(id, version, nameOfCompany, nip)
+VALUES('6', 1 , 'Primly','5094535039');
+INSERT INTO supplier(id, version, nameOfCompany, nip)
+VALUES('7', 1 ,'Evji' ,'5291722828');
+INSERT INTO supplier(id, version, nameOfCompany, nip)
+VALUES('8', 1 , 'Spireso','3564419655');
+INSERT INTO supplier(id, version, nameOfCompany, nip)
+VALUES('9', 1 , 'Artfully' ,'9324078761');
+INSERT INTO supplier(id, version, nameOfCompany, nip)
+VALUES('10', 1 , 'Voyagly' ,'5355482834');
+INSERT INTO supplier(id, version, nameOfCompany, nip)
+VALUES('11', 1 , 'Fuxly' ,'9516206456');
+
+
+INSERT INTO purchase(id, version, commodityType, netAmount, status,
+                     supplierPurchaseNumber, client_id, supplier_id, comment)
+VALUES ('1',0, 'INTERNAL_DOORS', '5000', 'ORDERED', '4000' , 1 , 1 , 'Fast delivery');
+
+INSERT INTO purchase(id, version, commodityType, netAmount, status,
+                     supplierPurchaseNumber, client_id, supplier_id)
+VALUES ('2',0, 'EXTERNAL_DOORS', '8500', 'PAID_NOT_ORDERED', '3600' , 1 , 2  );
+INSERT INTO purchase(id, version, commodityType, netAmount, status,
+                     supplierPurchaseNumber, client_id, supplier_id, comment)
+VALUES ('3',0, 'EXTERNAL_WINDOWS_BLINDS_TYPE_C', '450', 'PAID_NOT_ORDERED', '400' , 1 , 3, 'Send with one extra window'  );
+INSERT INTO purchase(id, version, commodityType, netAmount, status,
+                     supplierPurchaseNumber, client_id, supplier_id)
+VALUES ('4',0, 'EXTERNAL_DOORS', '7850', 'SUPPLIED_FOR_STORAGE', '840' , 5 , 4  );
+INSERT INTO purchase(id, version, commodityType, netAmount, status,
+                     supplierPurchaseNumber, client_id, supplier_id)
+VALUES ('5',0, 'INTERIOR_WINDOW_SHADES', '9600', 'SUPPLIED_FOR_STORAGE', '840' , 4 , 4  );
+INSERT INTO purchase(id, version, commodityType, netAmount, status,
+                     supplierPurchaseNumber, client_id, supplier_id, comment)
+VALUES ('6',0, 'INTERNAL_DOORS', '13000', 'COMPLETED', '560' , 4 , 5, '10% extra discount' );
+INSERT INTO purchase(id, version, commodityType, netAmount, status,
+                     supplierPurchaseNumber, client_id, supplier_id)
+VALUES ('7',0, 'EXTERNAL_ROLLER_SHUTTER', '4600', 'COMPLETED', '700' , 3 , 8  );
+INSERT INTO purchase(id, version, commodityType, netAmount, status,
+                     supplierPurchaseNumber, client_id, supplier_id)
+VALUES ('8',0, 'INTERIOR_WINDOW_SHADES', '7850', 'SUPPLIED_FOR_STORAGE', '780' , 11 , 2  );
+INSERT INTO purchase(id, version, commodityType, netAmount, status,
+                     supplierPurchaseNumber, client_id, supplier_id)
+VALUES ('9',0, 'EXTERNAL_WINDOWS_BLINDS_TYPE_C', '18000', 'PAID_NOT_ORDERED', '460' , 13 , 3  );
+INSERT INTO purchase(id, version, commodityType, netAmount, status,
+                     supplierPurchaseNumber, client_id, supplier_id, comment)
+VALUES ('10',0, 'WINDOWS', '3700', 'ORDERED', '800' , 14 , 6, 'Call and ask for window type' );
+INSERT INTO purchase(id, version, commodityType, netAmount, status,
+                     supplierPurchaseNumber, client_id, supplier_id)
+VALUES ('11',0, 'INTERIOR_WINDOW_SHADES', '4800', 'NOT_PAID', '9000' , 22 , 10  );
+INSERT INTO purchase(id, version, commodityType, netAmount, status,
+                     supplierPurchaseNumber, client_id, supplier_id)
+VALUES ('12',0, 'INTERNAL_DOORS', '11000', 'NOT_PAID', '3500' , 18 , 11  );
+INSERT INTO purchase(id, version, commodityType, netAmount, status,
+                     supplierPurchaseNumber, client_id, supplier_id , comment)
+VALUES ('13',0, 'INTERNAL_DOORS', '13500', 'PAID_NOT_ORDERED', '150' , 38 , 9, 'Call in next week' );
+INSERT INTO purchase(id, version, commodityType, netAmount, status,
+                     supplierPurchaseNumber, client_id, supplier_id , comment)
+VALUES ('14',0, 'INTERIOR_WINDOW_SHADES', '6800', 'ORDERED', '455' , 24 , 7, 'Ask for extra window order' );
+INSERT INTO purchase(id, version, commodityType, netAmount, status,
+                     supplierPurchaseNumber, client_id, supplier_id , comment)
+VALUES ('15',0, 'EXTERNAL_DOORS', '9850', 'ORDERED', '365' , 18 , 3,'new house' );
+INSERT INTO purchase(id, version, commodityType, netAmount, status,
+                     supplierPurchaseNumber, client_id, supplier_id , comment)
+VALUES ('16',0, 'WINDOWS', '2000', 'COMPLETED', '760' , 20 , 2, '2 extra windows' );
+INSERT INTO purchase(id, version, commodityType, netAmount, status,
+                     supplierPurchaseNumber, client_id, supplier_id , comment)
+VALUES ('17',0, 'INTERIOR_WINDOW_SHADES', '1400', 'PAID_NOT_ORDERED', '480' , 32 , 4, 'finished 1st floor'  );
+INSERT INTO purchase(id, version, commodityType, netAmount, status,
+                     supplierPurchaseNumber, client_id, supplier_id)
+VALUES ('18',0, 'EXTERNAL_DOORS', '1530', 'SUPPLIED_FOR_STORAGE', '687' , 31 , 1  );
+INSERT INTO purchase(id, version, commodityType, netAmount, status,
+                     supplierPurchaseNumber, client_id, supplier_id)
+VALUES ('19',0, 'EXTERNAL_WINDOWS_BLINDS_TYPE_Z', '4000', 'NOT_PAID', '444' , 36 , 7  );
+INSERT INTO purchase(id, version, commodityType, netAmount, status,
+                     supplierPurchaseNumber, client_id, supplier_id, comment)
+VALUES ('20',0, 'INTERIOR_WINDOW_SHADES', '8650', 'COMPLETED', '580' , 26 , 8, 'started new construction ' );
+INSERT INTO purchase(id, version, commodityType, netAmount, status,
+                     supplierPurchaseNumber, client_id, supplier_id)
+VALUES ('21',0, 'EXTERNAL_WINDOWS_BLINDS_TYPE_Z', '3000', 'SUPPLIED_FOR_STORAGE', '170' , 28 , 9  );
+
+INSERT INTO contract(id, version, commodityType, completed, netAmount, number, client_id)
+VALUES ('1', 0, 'INTERNAL_DOORS' , true, '4700' , '10/05/2023', 1);
+INSERT INTO contract(id, version, commodityType, completed, netAmount, number, client_id)
+VALUES ('2', 0, 'INTERNAL_DOORS' , true, '5800' , '11/05/2023', 5);
+INSERT INTO contract(id, version, commodityType, completed, netAmount, number, client_id)
+VALUES ('3', 0, 'WINDOWS' , false, '14000' , '12/05/2023', 1);
+INSERT INTO contract(id, version, commodityType, completed, netAmount, number, client_id)
+VALUES ('4', 0, 'EXTERNAL_WINDOWS_BLINDS_TYPE_C' , true, '6800' , '13/05/2023', 10);
+INSERT INTO contract(id, version, commodityType, completed, netAmount, number, client_id)
+VALUES ('5', 0, 'EXTERNAL_ROLLER_SHUTTER' , false, '7600' , '14/05/2023', 11);
+INSERT INTO contract(id, version, commodityType, completed, netAmount, number, client_id)
+VALUES ('6', 0, 'WINDOWS' , false, '14300' , '10/06/2023', 18);
+INSERT INTO contract(id, version, commodityType, completed, netAmount, number, client_id)
+VALUES ('7', 0, 'INTERIOR_WINDOW_SHADES' , false, '7000' , '11/06/2023', 9);
+INSERT INTO contract(id, version, commodityType, completed, netAmount, number, client_id)
+VALUES ('8', 0, 'EXTERNAL_WINDOWS_BLINDS_TYPE_C' , true, '6870' , '12/06/2023', 7);
+INSERT INTO contract(id, version, commodityType, completed, netAmount, number, client_id)
+VALUES ('9', 0, 'INTERNAL_DOORS' , true, '12000' , '13/06/2023', 22);
+INSERT INTO contract(id, version, commodityType, completed, netAmount, number, client_id)
+VALUES ('10', 0, 'EXTERNAL_ROLLER_SHUTTER' , false, '14950' , '14/06/2023', 36);
+INSERT INTO contract(id, version, commodityType, completed, netAmount, number, client_id)
+VALUES ('11', 0, 'INTERIOR_WINDOW_SHADES' , false, '2050' , '15/06/2023', 22);
+INSERT INTO contract(id, version, commodityType, completed, netAmount, number, client_id)
+VALUES ('12', 0, 'EXTERNAL_DOORS' , false, '6050' , '16/06/2023', 1);
+INSERT INTO contract(id, version, commodityType, completed, netAmount, number, client_id)
+VALUES ('13', 0, 'EXTERNAL_WINDOWS_BLINDS_TYPE_Z' , false, '9500' , '17/06/2023', 1);
+INSERT INTO contract(id, version, commodityType, completed, netAmount, number, client_id)
+VALUES ('14', 0, 'EXTERNAL_ROLLER_SHUTTER' , true, '11500' , '18/06/2023', 8);
+INSERT INTO contract(id, version, commodityType, completed, netAmount, number, client_id)
+VALUES ('15', 0, 'INTERNAL_DOORS' , true, '16000' , '10/07/2023', 24);
+INSERT INTO contract(id, version, commodityType, completed, netAmount, number, client_id)
+VALUES ('16', 0, 'EXTERNAL_WINDOWS_BLINDS_TYPE_C' , false, '7450' , '11/07/2023', 14);
+INSERT INTO contract(id, version, commodityType, completed, netAmount, number, client_id)
+VALUES ('17', 0, 'EXTERNAL_DOORS' , true, '4630' , '12/07/2023', 13);
+INSERT INTO contract(id, version, commodityType, completed, netAmount, number, client_id)
+VALUES ('18', 0, 'EXTERNAL_DOORS' , true, '8600' , '13/07/2023', 16);
+INSERT INTO contract(id, version, commodityType, completed, netAmount, number, client_id)
+VALUES ('19', 0, 'INTERIOR_WINDOW_SHADES' , false, '4700' , '14/07/2023', 12);
+INSERT INTO contract(id, version, commodityType, completed, netAmount, number, client_id)
+VALUES ('20', 0, 'INTERNAL_DOORS' , false, '8400' , '15/07/2023', 40);
+INSERT INTO contract(id, version, commodityType, completed, netAmount, number, client_id)
+VALUES ('21', 0, 'INTERIOR_WINDOW_SHADES' , true, '19000' , '10/08/2023', 41);
+INSERT INTO contract(id, version, commodityType, completed, netAmount, number, client_id)
+VALUES ('22', 0, 'WINDOWS' , false, '2500' , '11/08/2023', 27);
+INSERT INTO contract(id, version, commodityType, completed, netAmount, number, client_id)
+VALUES ('23', 0, 'WINDOWS' , false, '4600' , '12/08/2023', 13);
+INSERT INTO contract(id, version, commodityType, completed, netAmount, number, client_id)
+VALUES ('24', 0, 'EXTERNAL_WINDOWS_BLINDS_TYPE_C' , true, '3500' , '13/08/2023', 16);
+INSERT INTO contract(id, version, commodityType, completed, netAmount, number, client_id)
+VALUES ('25', 0, 'WINDOWS' , false, '2000' , '14/08/2023', 18);
+
+INSERT INTO address(id, version, addressType, apartmentNumber, city, country, houseNumber,
+                    municipality, plotNumber, street, voivodeship, zipCode, client_id)
+VALUES('10', 0,'RESIDENCE', '2', 'Cracow', 'POLAND', '5', 'Krakowska', '' ,
+       'Krakowska', 'LESSER_POLAND' , '30-414' , 1);
+INSERT INTO address(id, version, addressType, apartmentNumber, city, country, houseNumber,
+                    municipality, plotNumber, street, voivodeship, zipCode, client_id)
+VALUES('4', 0,'INVESTMENT', '', 'Cracow', 'POLAND', '14', 'Krakowska', '1' ,
+       'Łukasińskiego', 'LESSER_POLAND' , '30-470' , 1);
+INSERT INTO address(id, version, addressType, apartmentNumber, city, country, houseNumber,
+                    municipality, plotNumber, street, voivodeship, zipCode, client_id)
+VALUES('7', 0,'RESIDENCE', '', 'Cracow', 'POLAND', '23', 'Krakowska', '7' ,
+       'Bieżanowska', 'LESSER_POLAND' , '32-400' , 8);
+INSERT INTO address(id, version, addressType, apartmentNumber, city, country, houseNumber,
+                    municipality, plotNumber, street, voivodeship, zipCode, client_id)
+VALUES('2', 0,'RESIDENCE', '', 'Cracow', 'POLAND', '17', 'Krakowska', '8' ,
+       'Lubelska', 'LESSER_POLAND' , '31-444' , 14);
+INSERT INTO address(id, version, addressType, apartmentNumber, city, country, houseNumber,
+                    municipality, plotNumber, street, voivodeship, zipCode, client_id)
+VALUES('6', 0,'RESIDENCE', '14', 'Wieliczka', 'POLAND', '9', 'Wieliczka', '' ,
+       'Wielicka', 'LESSER_POLAND' , '32-020' , 16);
+INSERT INTO address(id, version, addressType, apartmentNumber, city, country, houseNumber,
+                    municipality, plotNumber, street, voivodeship, zipCode, client_id)
+VALUES('9', 0,'INVESTMENT', '', 'Wieliczka', 'POLAND', '2', 'Wieliczka', '4' ,
+       'Kosocicka', 'LESSER_POLAND' , '32-146' , 3);
+INSERT INTO address(id, version, addressType, apartmentNumber, city, country, houseNumber,
+                    municipality, plotNumber, street, voivodeship, zipCode, client_id)
+VALUES('3', 0,'INVESTMENT', '', 'Wieliczka', 'POLAND', '5', 'Wieliczka', '10' ,
+       'Marszałkowska', 'LESSER_POLAND' , '31-782' , 8);
+INSERT INTO address(id, version, addressType, apartmentNumber, city, country, houseNumber,
+                    municipality, plotNumber, street, voivodeship, zipCode, client_id)
+VALUES('1', 0,'RESIDENCE', '28', 'Lublin', 'POLAND', '13', 'Lublin', '' ,
+       'Wrocławska', 'LUBLIN' , '38-640' , 9);
+INSERT INTO address(id, version, addressType, apartmentNumber, city, country, houseNumber,
+                    municipality, plotNumber, street, voivodeship, zipCode, client_id)
+VALUES('5', 0,'RESIDENCE', '42', 'Lublin', 'POLAND', '7', 'Lublin', '' ,
+       'Zbrojarzy', 'LUBLIN' , '38-540' , 24);
+INSERT INTO address(id, version, addressType, apartmentNumber, city, country, houseNumber,
+                    municipality, plotNumber, street, voivodeship, zipCode, client_id)
+VALUES('8', 0,'INVESTMENT', '', 'Lublin', 'POLAND', '142', 'Lublin', '17' ,
+       'Zakopiańska', 'LUBLIN' , '38-760' , 26);

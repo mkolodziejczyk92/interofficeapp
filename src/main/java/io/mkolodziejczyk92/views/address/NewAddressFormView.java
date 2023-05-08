@@ -1,12 +1,9 @@
 package io.mkolodziejczyk92.views.address;
 
 import com.vaadin.flow.component.Component;
-import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.combobox.ComboBox;
-import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.TextField;
@@ -16,6 +13,7 @@ import io.mkolodziejczyk92.data.controllers.AddressFormViewController;
 import io.mkolodziejczyk92.data.controllers.ClientsViewController;
 import io.mkolodziejczyk92.data.entity.Address;
 import io.mkolodziejczyk92.data.entity.Client;
+import io.mkolodziejczyk92.data.entity.Purchase;
 import io.mkolodziejczyk92.data.enums.EAddressType;
 import io.mkolodziejczyk92.data.enums.ECountry;
 import io.mkolodziejczyk92.data.enums.EVoivodeship;
@@ -23,8 +21,10 @@ import io.mkolodziejczyk92.utils.ComponentFactory;
 import io.mkolodziejczyk92.views.MainLayout;
 import jakarta.annotation.security.PermitAll;
 
+import static io.mkolodziejczyk92.utils.ComponentFactory.PARAMETER_FOR_CLIENT_ID_FROM_GRID;
+
 @PageTitle("New Address")
-@Route(value = "newAddress", layout = MainLayout.class)
+@Route(value = "new-address", layout = MainLayout.class)
 @PermitAll
 public class NewAddressFormView extends Div implements HasUrlParameter<String> {
 
@@ -53,10 +53,15 @@ public class NewAddressFormView extends Div implements HasUrlParameter<String> {
     private Binder<Address> binder = new Binder<>(Address.class);
 
     @Override
-    public void setParameter(BeforeEvent event, @WildcardParameter String clientId) {
-        if (!clientId.isEmpty()) {
+    public void setParameter(BeforeEvent event, @WildcardParameter String urlWithClientId) {
+        if (!urlWithClientId.isEmpty() && !urlWithClientId.startsWith(PARAMETER_FOR_CLIENT_ID_FROM_GRID) ) {
+           // tutaj będzie set beana dla edycji
+
+        } else if (!urlWithClientId.isEmpty()) {
+            String clientId = urlWithClientId.substring(1);
             client.setValue(clientsViewController.findClientById(Long.valueOf(clientId)));
         }
+
     }
 
     public NewAddressFormView(AddressFormViewController addressFormViewController,

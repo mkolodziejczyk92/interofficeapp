@@ -4,9 +4,7 @@ import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.checkbox.CheckboxGroup;
-import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.TextField;
@@ -19,9 +17,6 @@ import io.mkolodziejczyk92.data.enums.ERole;
 import io.mkolodziejczyk92.utils.ComponentFactory;
 import io.mkolodziejczyk92.views.MainLayout;
 import jakarta.annotation.security.RolesAllowed;
-import org.springframework.security.crypto.bcrypt.BCrypt;
-import org.springframework.security.crypto.encrypt.Encryptors;
-import org.springframework.security.crypto.encrypt.TextEncryptor;
 
 import static io.mkolodziejczyk92.data.enums.ERole.ADMIN;
 
@@ -39,7 +34,7 @@ public class NewUserFormView extends Div implements HasUrlParameter<String> {
 
     private final TextField hashedPassword = new TextField("Password");
 
-    private final CheckboxGroup<ERole> ERoles = new CheckboxGroup<>("Role");
+    private final CheckboxGroup<ERole> roles = new CheckboxGroup<>("Role");
 
     private final Button cancel = ComponentFactory.createCancelButton();
 
@@ -47,6 +42,7 @@ public class NewUserFormView extends Div implements HasUrlParameter<String> {
 
     private final Button back = ComponentFactory.createBackButton();
 
+    private final Button update = ComponentFactory.createUpdateButton();
 
     private final Binder<User> binder = new Binder<>(User.class);
 
@@ -106,7 +102,7 @@ public class NewUserFormView extends Div implements HasUrlParameter<String> {
             // ZROBIC DRUGI FORMULARZ DO ZMIANY HASLA
             // SPRAWDZIC
 
-            password.setValue("");
+//            password.setValue("");
 
             cancel.setVisible(false);
             save.setVisible(false);

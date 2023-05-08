@@ -88,7 +88,7 @@ public class ClientsView extends Div {
 
         menu.addItem("Delete", event -> {
             if (event.getItem().isPresent()) {
-                Dialog confirmDialog = createDialogConfirmForDeleteUser(event.getItem().get());
+                Dialog confirmDialog = createDialogConfirmForDeleteClient(event.getItem().get());
                 add(confirmDialog);
                 confirmDialog.open();
             } else menu.close();
@@ -117,10 +117,10 @@ public class ClientsView extends Div {
         return topButtonLayout;
     }
 
-    private Dialog createDialogConfirmForDeleteUser(Client client) {
+    private Dialog createDialogConfirmForDeleteClient(Client client) {
         Dialog dialog = new Dialog();
         dialog.setHeaderTitle(
-                String.format("Delete user %s", client.getFullName()));
+                String.format("Delete client %s", client.getFullName()));
         dialog.add("Are you sure you want to delete this client?");
 
         Button deleteButton = new Button("Delete", event ->

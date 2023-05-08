@@ -23,14 +23,12 @@ public class LoginView extends LoginOverlay implements BeforeEnterObserver {
     public LoginView(AuthenticatedUser authenticatedUser) {
         this.authenticatedUser = authenticatedUser;
         setAction(RouteUtil.getRoutePath(VaadinService.getCurrent().getContext(), getClass()));
-        Image image = new Image("images/r2.png", "logo INTERDOM");
         LoginI18n i18n = LoginI18n.createDefault();
         i18n.setHeader(new LoginI18n.Header());
         i18n.getHeader().setTitle("interOfficeAPP");
         i18n.getHeader().setDescription("Login using username and password");
         i18n.setAdditionalInformation(null);
         setI18n(i18n);
-
 
         setForgotPasswordButtonVisible(false);
         setOpened(true);
@@ -43,7 +41,6 @@ public class LoginView extends LoginOverlay implements BeforeEnterObserver {
             setOpened(false);
             event.forwardTo("");
         }
-
         setError(event.getLocation().getQueryParameters().getParameters().containsKey("error"));
     }
 }

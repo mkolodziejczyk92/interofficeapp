@@ -30,7 +30,7 @@ public class User extends AbstractEntity {
     private String email;
 
     @JsonIgnore
-    private String hashedPassword;
+    private String password;
 
     @Enumerated(EnumType.STRING)
     @ElementCollection(fetch = FetchType.EAGER)

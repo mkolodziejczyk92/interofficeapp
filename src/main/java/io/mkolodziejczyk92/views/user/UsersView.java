@@ -4,6 +4,7 @@ import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
+import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.grid.contextmenu.GridContextMenu;
@@ -37,15 +38,18 @@ public class UsersView extends Div {
         grid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
         grid.setItems(usersViewController::allUsersPageableStream);
 
-
-
-
         GridContextMenu<User> menu = grid.addContextMenu();
-        menu.addItem("View", event -> {
-        });
         menu.addItem("Edit", event -> {
+            if (event.getItem().isPresent()) {
+                usersViewController.editUserInformation(event.getItem().get());
+            } else menu.close();
         });
         menu.addItem("Delete", event -> {
+            if (event.getItem().isPresent()) {
+                Dialog confirmDialog = createDialogConfirmForDeleteUser(event.getItem().get());
+                add(confirmDialog);
+                confirmDialog.open();
+            } else menu.close();
         });
 
         add(createTopButtonLayout());
@@ -61,10 +65,27 @@ public class UsersView extends Div {
         newUserButton.getStyle().set("margin-left", "auto");
         newUserButton.addClickListener(e -> UI.getCurrent().navigate(NewUserFormView.class));
         topButtonLayout.getStyle().set("border-bottom", "1px solid var(--lumo-contrast-10pct)");
-
         topButtonLayout.add(newUserButton);
         return topButtonLayout;
+    }
 
+    private Dialog createDialogConfirmForDeleteUser(User user) {
+        Dialog dialog = new Dialog();
+        dialog.add(String.format("Are you sure you want to delete this user: %s?", user.getUserName()));
+        Button deleteButton = new Button("Delete", event ->
+        {
+            usersViewController.deleteUser(user);
+            dialog.close();
+        });
+        deleteButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY,
+                ButtonVariant.LUMO_PRIMARY);
+        deleteButton.getStyle().set("margin-right", "auto");
+        dialog.getFooter().add(deleteButton);
+
+        Button cancelButton = new Button("Cancel", event -> dialog.close());
+        cancelButton.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
+        dialog.getFooter().add(cancelButton);
+        return dialog;
     }
 
 }

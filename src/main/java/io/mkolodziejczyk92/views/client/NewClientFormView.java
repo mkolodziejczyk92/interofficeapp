@@ -109,17 +109,7 @@ public class NewClientFormView extends Div implements HasUrlParameter<String> {
     @Override
     public void setParameter(BeforeEvent beforeEvent, @WildcardParameter String clientId) {
         if (!clientId.isEmpty()) {
-            Client client = clientFormViewController.findClientById(Long.valueOf(clientId));
-
-            binder.setBean(client);
-            firstName.setValue(client.getFirstName());
-            lastName.setValue(client.getLastName());
-            phoneNumber.setValue(client.getPhoneNumber());
-            if (!nip.isEmpty()) {
-                nip.setValue(client.getNip());
-            }
-            email.setValue(client.getEmail());
-            clientType.setValue(client.getClientType());
+            binder.setBean(clientFormViewController.findClientById(Long.valueOf(clientId)));
 
             cancel.setVisible(false);
             save.setVisible(false);

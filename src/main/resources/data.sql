@@ -1,6 +1,6 @@
-INSERT INTO user (version, id, username, firstName, lastName, hashedPassword)
+INSERT INTO user (version, id, username, firstName, lastName, password)
 VALUES (1, '1','user', 'John', 'Normal', '$2a$10$H1WEkjK3i3aibtlAYs1zCO6Cawjk3ll38vhUWLe6H3.2f2NDNeCX.');
-INSERT INTO user (version, id, username, firstName, lastName, hashedPassword)
+INSERT INTO user (version, id, username, firstName, lastName, password)
 VALUES (1, '2', 'admin', 'Emma', 'Powerful', '$2a$10$H1WEkjK3i3aibtlAYs1zCO6Cawjk3ll38vhUWLe6H3.2f2NDNeCX.');
 
 INSERT INTO user_eroles (user_id, ERoles) VALUES ('1', 'USER');

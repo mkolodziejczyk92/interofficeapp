@@ -14,6 +14,7 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import io.mkolodziejczyk92.data.controllers.UsersViewController;
 import io.mkolodziejczyk92.data.entity.User;
+import io.mkolodziejczyk92.utils.ComponentFactory;
 import io.mkolodziejczyk92.views.MainLayout;
 import jakarta.annotation.security.RolesAllowed;
 
@@ -23,7 +24,7 @@ import jakarta.annotation.security.RolesAllowed;
 public class UsersView extends Div {
 
     private final UsersViewController usersViewController;
-    private final Button newUserButton = new Button("New User");
+    private final Button newUserButton = ComponentFactory.createStandardButton("New User");
 
 
     public UsersView(UsersViewController usersViewController) {
@@ -58,13 +59,8 @@ public class UsersView extends Div {
     }
 
     private Component createTopButtonLayout() {
-        HorizontalLayout topButtonLayout = new HorizontalLayout();
-        topButtonLayout.addClassName("button-layout");
-        topButtonLayout.getStyle().set("padding-right", "15px");
-        newUserButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-        newUserButton.getStyle().set("margin-left", "auto");
+        HorizontalLayout topButtonLayout = ComponentFactory.createTopButtonLayout();
         newUserButton.addClickListener(e -> UI.getCurrent().navigate(NewUserFormView.class));
-        topButtonLayout.getStyle().set("border-bottom", "1px solid var(--lumo-contrast-10pct)");
         topButtonLayout.add(newUserButton);
         return topButtonLayout;
     }

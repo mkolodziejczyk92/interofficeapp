@@ -17,6 +17,7 @@ import io.mkolodziejczyk92.data.controllers.ContractAddFormViewController;
 import io.mkolodziejczyk92.data.entity.Client;
 import io.mkolodziejczyk92.data.entity.Contract;
 import io.mkolodziejczyk92.data.enums.ECommodityType;
+import io.mkolodziejczyk92.utils.ComponentFactory;
 import io.mkolodziejczyk92.views.MainLayout;
 import jakarta.annotation.security.PermitAll;
 
@@ -33,13 +34,13 @@ public class NewContractFormView extends Div implements HasUrlParameter<String> 
 
     private final TextField number = new TextField("Contract Number");
 
-    private final Button cancel = new Button("Cancel");
-    private final Button save = new Button("Save");
-    private final Button back = new Button("Back");
+    private final Button cancel = ComponentFactory.createCancelButton();
+    private final Button save = ComponentFactory.createSaveButton();
+    private final Button back = ComponentFactory.createBackButton();
 
     private final Checkbox completed = new Checkbox("Completed");
 
-    private final Button update = new Button("Update");
+    private final Button update = ComponentFactory.createUpdateButton();
 
     private final Binder<Contract> binder = new Binder<>(Contract.class);
 
@@ -59,27 +60,18 @@ public class NewContractFormView extends Div implements HasUrlParameter<String> 
     }
 
     private Component createTopButtonLayout() {
-        HorizontalLayout topButtonLayout = new HorizontalLayout();
-        topButtonLayout.getStyle().set("padding-right", "15px");
-        topButtonLayout.getStyle().set("border-bottom", "1px solid var(--lumo-contrast-10pct)");
+        HorizontalLayout topButtonLayout = ComponentFactory.createTopButtonLayout();
 
-        back.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         back.addClickListener(e -> contractAddFormController.returnToContracts());
-        back.getStyle().set("margin-left", "auto");
-        back.addClickShortcut(Key.ESCAPE);
 
         topButtonLayout.add(back);
         return topButtonLayout;
     }
 
     private Component createFormLayout(){
-        FormLayout formLayout = new FormLayout(client, commodityType, number, netAmount, completed);
         completed.setEnabled(false);
         number.setReadOnly(true);
-
-        formLayout.getStyle().set("padding-left", "30px");
-        formLayout.getStyle().set("padding-right", "30px");
-        return formLayout;
+        return ComponentFactory.createFormLayout(client, commodityType, number, netAmount, completed);
     }
 
     private void createComboBoxes() {
@@ -97,16 +89,9 @@ public class NewContractFormView extends Div implements HasUrlParameter<String> 
     }
 
     private Component createBottomButtonLayout() {
-        HorizontalLayout bottomButtonLayout = new HorizontalLayout();
-        save.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-        cancel.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-        update.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+        HorizontalLayout bottomButtonLayout = ComponentFactory.createBottomButtonLayout();
 
-        bottomButtonLayout.add(cancel);
-        bottomButtonLayout.add(save);
-        bottomButtonLayout.add(update);
-        bottomButtonLayout.getStyle().set("padding-left", "30px");
-        bottomButtonLayout.getStyle().set("padding-top", "30px");
+        bottomButtonLayout.add(cancel, save, update);
 
         cancel.addClickListener(e -> contractAddFormController.clearForm());
         save.addClickListener(e -> {

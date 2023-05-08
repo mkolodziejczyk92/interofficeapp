@@ -18,6 +18,7 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import io.mkolodziejczyk92.data.controllers.SuppliersViewController;
 import io.mkolodziejczyk92.data.entity.Supplier;
+import io.mkolodziejczyk92.utils.ComponentFactory;
 import io.mkolodziejczyk92.views.MainLayout;
 import jakarta.annotation.security.PermitAll;
 
@@ -28,11 +29,11 @@ import jakarta.annotation.security.PermitAll;
 public class SuppliersView extends Div {
 
     private final SuppliersViewController suppliersViewController;
-    private SupplierFilter supplierFilter = new SupplierFilter();
-    private SupplierDataProvider supplierDataProvider = new SupplierDataProvider();
-    private ConfigurableFilterDataProvider<Supplier, Void, SupplierFilter> filterDataProvider
+    private final SupplierFilter supplierFilter = new SupplierFilter();
+    private final SupplierDataProvider supplierDataProvider = new SupplierDataProvider();
+    private final ConfigurableFilterDataProvider<Supplier, Void, SupplierFilter> filterDataProvider
             = supplierDataProvider.withConfigurableFilter();
-    private Button newSupplierButton = new Button("New Supplier");
+    private final Button newSupplierButton = ComponentFactory.createStandardButton("New Supplier");
 
 
     public SuppliersView(SuppliersViewController suppliersViewController) {
@@ -61,14 +62,8 @@ public class SuppliersView extends Div {
 
     private Component createSearchLayout() {
         HorizontalLayout searchLayout = new HorizontalLayout();
-        searchLayout.addClassName("button-layout");
 
-        TextField searchField = new TextField();
-        searchField.getStyle().set("padding-left", "15px");
-        searchField.setWidth("30%");
-        searchField.setPlaceholder("Search");
-        searchField.setPrefixComponent(new Icon(VaadinIcon.SEARCH));
-        searchField.setValueChangeMode(ValueChangeMode.EAGER);
+        TextField searchField = ComponentFactory.createTextFieldForSearchLayout("Search");
         searchField.addValueChangeListener(e -> {
             supplierFilter.setSearchTerm(e.getValue());
             filterDataProvider.setFilter(supplierFilter);
@@ -78,12 +73,8 @@ public class SuppliersView extends Div {
     }
 
     private Component createTopButtonLayout() {
-        HorizontalLayout topButtonLayout = new HorizontalLayout();
+        HorizontalLayout topButtonLayout = ComponentFactory.createTopButtonLayout();
         topButtonLayout.add(newSupplierButton);
-        topButtonLayout.getStyle().set("padding-right", "15px");
-        topButtonLayout.getStyle().set("border-bottom", "1px solid var(--lumo-contrast-10pct)");
-        newSupplierButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-        newSupplierButton.getStyle().set("margin-left", "auto");
         newSupplierButton.addClickListener(e -> UI.getCurrent().navigate(NewSupplierFormView.class));
         return topButtonLayout;
     }

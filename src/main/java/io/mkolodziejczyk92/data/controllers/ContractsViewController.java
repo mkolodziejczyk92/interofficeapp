@@ -25,4 +25,8 @@ public class ContractsViewController {
     public void editContractInformationForm(Long contractId) {
         UI.getCurrent().navigate("newContract/" + contractId);
     }
+
+    public List<Contract> clientContracts(Long clientId) {
+        return contractService.clientContracts(clientId);
+    }
 }

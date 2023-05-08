@@ -3,7 +3,6 @@ package io.mkolodziejczyk92.views.contract;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.dependency.Uses;
 import com.vaadin.flow.component.grid.ColumnTextAlign;
 import com.vaadin.flow.component.grid.Grid;
@@ -15,11 +14,10 @@ import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.provider.ConfigurableFilterDataProvider;
-import com.vaadin.flow.data.value.ValueChangeMode;
-import com.vaadin.flow.router.PageTitle;
-import com.vaadin.flow.router.Route;
+import com.vaadin.flow.router.*;
 import io.mkolodziejczyk92.data.controllers.ContractsViewController;
 import io.mkolodziejczyk92.data.entity.Contract;
+import io.mkolodziejczyk92.utils.ComponentFactory;
 import io.mkolodziejczyk92.views.MainLayout;
 import jakarta.annotation.security.PermitAll;
 
@@ -27,7 +25,7 @@ import jakarta.annotation.security.PermitAll;
 @Route(value = "contracts", layout = MainLayout.class)
 @PermitAll
 @Uses(Icon.class)
-public class ContractsView extends Div {
+public class ContractsView extends Div implements HasUrlParameter<String> {
 
     private final ContractsViewController contractsViewController;
 
@@ -35,14 +33,13 @@ public class ContractsView extends Div {
     private ContractDataProvider contractDataProvider = new ContractDataProvider();
     private ConfigurableFilterDataProvider<Contract, Void, ContractFilter> filterDataProvider
             = contractDataProvider.withConfigurableFilter();
-
-    private Button newContract = new Button("New Contract");
-
+    private final Grid<Contract> grid = new Grid<>(Contract.class, false);
+    private Button newContract = ComponentFactory.createStandardButton("New Contract");
+    private String clientIdWithParameter;
 
     public ContractsView(ContractsViewController contractsViewController) {
         this.contractsViewController = contractsViewController;
 
-        Grid<Contract> grid = new Grid<>(Contract.class, false);
         grid.addColumn(contract -> contract.getClient().getFullName()).setHeader("Client");
         grid.addColumn(Contract::getNumber).setHeader("Contract Number");
         grid.addColumn(Contract::getNetAmount).setHeader("Net Amount");
@@ -82,14 +79,7 @@ public class ContractsView extends Div {
 
     private Component createSearchLayout() {
         HorizontalLayout searchLayout = new HorizontalLayout();
-        searchLayout.addClassName("button-layout");
-
-        TextField searchField = new TextField();
-        searchField.getStyle().set("padding-left", "15px");
-        searchField.setWidth("30%");
-        searchField.setPlaceholder("Search by client or contract number");
-        searchField.setPrefixComponent(new Icon(VaadinIcon.SEARCH));
-        searchField.setValueChangeMode(ValueChangeMode.EAGER);
+        TextField searchField = ComponentFactory.createTextFieldForSearchLayout("Search by client or contract number");
         searchField.addValueChangeListener(e -> {
             contractFilter.setSearchTerm(e.getValue());
             filterDataProvider.setFilter(contractFilter);
@@ -99,16 +89,20 @@ public class ContractsView extends Div {
     }
 
     private Component createTopButtonLayout() {
-        HorizontalLayout topButtonLayout = new HorizontalLayout();
+        HorizontalLayout topButtonLayout = ComponentFactory.createTopButtonLayout();
         topButtonLayout.add(newContract);
-        newContract.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         newContract.addClickListener(e -> UI.getCurrent().navigate(NewContractFormView.class));
-        newContract.getStyle().set("margin-left", "auto");
-        topButtonLayout.getStyle().set("padding-right", "15px");
-        topButtonLayout.getStyle().set("border-bottom", "1px solid var(--lumo-contrast-10pct)");
         return topButtonLayout;
     }
 
 
+    @Override
+    public void setParameter(BeforeEvent beforeEvent, @WildcardParameter String urlParameter) {
+        if(!urlParameter.isEmpty()){
+            String clientId = urlParameter.substring(1);
+            clientIdWithParameter = urlParameter;
+            grid.setItems(contractsViewController.clientContracts(Long.valueOf(clientId)));
+        }
+    }
 }
 

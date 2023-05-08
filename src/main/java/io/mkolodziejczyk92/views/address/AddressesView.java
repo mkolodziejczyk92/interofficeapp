@@ -17,6 +17,7 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import io.mkolodziejczyk92.data.controllers.AddressesViewController;
 import io.mkolodziejczyk92.data.entity.Address;
+import io.mkolodziejczyk92.utils.ComponentFactory;
 import io.mkolodziejczyk92.views.MainLayout;
 import jakarta.annotation.security.PermitAll;
 
@@ -30,7 +31,7 @@ public class AddressesView extends Div {
     private AddressDataProvider addressDataProvider = new AddressDataProvider();
     private ConfigurableFilterDataProvider<Address, Void, AddressFilter> filterDataProvider
             = addressDataProvider.withConfigurableFilter();
-    private Button newAddressButton = new Button("New Address");
+    private Button newAddressButton = ComponentFactory.createStandardButton("New Address");
 
     public AddressesView(AddressesViewController addressesViewController) {
         this.addressesViewController = addressesViewController;
@@ -63,14 +64,7 @@ public class AddressesView extends Div {
 
     private Component createSearchLayout() {
         HorizontalLayout searchLayout = new HorizontalLayout();
-        searchLayout.addClassName("button-layout");
-
-        TextField searchField = new TextField();
-        searchField.getStyle().set("padding-left", "15px");
-        searchField.setWidth("30%");
-        searchField.setPlaceholder("Search");
-        searchField.setPrefixComponent(new Icon(VaadinIcon.SEARCH));
-        searchField.setValueChangeMode(ValueChangeMode.EAGER);
+        TextField searchField = ComponentFactory.createTextFieldForSearchLayout("Search");
         searchField.addValueChangeListener(event -> {
             addressFilter.setSearchTerm(event.getValue());
             filterDataProvider.setFilter(addressFilter);
@@ -80,14 +74,9 @@ public class AddressesView extends Div {
     }
 
     private Component createTopButtonLayout() {
-        HorizontalLayout topButtonLayout = new HorizontalLayout();
+        HorizontalLayout topButtonLayout = ComponentFactory.createTopButtonLayout();
         topButtonLayout.add(newAddressButton);
-        newAddressButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-        newAddressButton.getStyle().set("margin-left", "auto");
-        newAddressButton
-                .addClickListener(event -> addressesViewController.createNewAddressForm());
-        topButtonLayout.getStyle().set("padding-right", "15px");
-        topButtonLayout.getStyle().set("border-bottom", "1px solid var(--lumo-contrast-10pct)");
+        newAddressButton.addClickListener(event -> addressesViewController.createNewAddressForm());
         return topButtonLayout;
     }
 

@@ -4,12 +4,12 @@ import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.notification.Notification;
 import io.mkolodziejczyk92.data.entity.Purchase;
 import io.mkolodziejczyk92.data.service.PurchaseService;
-import io.mkolodziejczyk92.views.purchase.PurchasesView;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 
 import java.util.List;
+import java.util.Objects;
 
 @Slf4j
 @Controller
@@ -27,13 +27,22 @@ public class PurchasesViewController {
 
     public void editPurchaseInformation(Purchase purchase) {
         if (purchaseService.isExist(purchase.getId())) {
-            UI.getCurrent().navigate("newPurchase/" + purchase.getId());
+            UI.getCurrent().navigate("new-purchase/" + purchase.getId());
         } else {
             Notification.show("Purchase "
                     + purchase.getId()
                     + " does not exist in the database.");
         }
     }
+
+    public void createNewPurchaseForClient(String clientId){
+        if(Objects.isNull(clientId)){
+            UI.getCurrent().navigate("new-purchase");
+        }else {
+            UI.getCurrent().navigate("new-purchase/" + clientId);
+        }
+    }
+
     public void deletePurchase(Purchase purchase) {
         try{
             purchaseService.delete(purchase.getId());

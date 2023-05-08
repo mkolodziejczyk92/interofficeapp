@@ -36,7 +36,7 @@ public class PurchaseAddFormViewController {
     }
 
     public void returnToPurchases() {
-        UI.getCurrent().navigate("purchase");
+        UI.getCurrent().navigate("purchases");
     }
 
     public void saveNewPurchase(Purchase purchase){
@@ -55,10 +55,14 @@ public class PurchaseAddFormViewController {
     public void updatePurchase(Purchase purchase) {
         purchaseService.update(purchase);
         Notification.show("Purchase updated.");
-        UI.getCurrent().navigate("purchase");
+        UI.getCurrent().navigate("purchases");
     }
     public Purchase findPurchaseById(Long purchaseId) {
         return purchaseService.get(purchaseId).orElseThrow();
+    }
+
+    public Client findClientById(Long clientId){
+        return clientService.get(clientId).orElseThrow();
     }
 
 }

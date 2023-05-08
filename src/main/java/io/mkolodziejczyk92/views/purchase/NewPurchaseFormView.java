@@ -1,11 +1,8 @@
 package io.mkolodziejczyk92.views.purchase;
 
 import com.vaadin.flow.component.Component;
-import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.combobox.ComboBox;
-import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -121,18 +118,18 @@ public class NewPurchaseFormView extends Div implements HasUrlParameter<String> 
     }
 
     @Override
-    public void setParameter(BeforeEvent beforeEvent, @WildcardParameter String urlWithId) {
+    public void setParameter(BeforeEvent beforeEvent, @WildcardParameter String urlWithClientId) {
 
-      if(!urlWithId.isEmpty() && !urlWithId.startsWith(PARAMETER_FOR_CLIENT_ID_FROM_GRID) ){
-          Purchase purchase = purchaseAddFormViewController.findPurchaseById(Long.valueOf(urlWithId));
+      if(!urlWithClientId.isEmpty() && !urlWithClientId.startsWith(PARAMETER_FOR_CLIENT_ID_FROM_GRID) ){
+          Purchase purchase = purchaseAddFormViewController.findPurchaseById(Long.valueOf(urlWithClientId));
           binder.setBean(purchase);
 
           cancel.setVisible(false);
           save.setVisible(false);
           update.setVisible(true);
 
-      } else if (!urlWithId.isEmpty()) {
-          String clientId = urlWithId.substring(1);
+      } else if (!urlWithClientId.isEmpty()) {
+          String clientId = urlWithClientId.substring(1);
           client.setValue(purchaseAddFormViewController.findClientById(Long.valueOf(clientId)));
       }
 

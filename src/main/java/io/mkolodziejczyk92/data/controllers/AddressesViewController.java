@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 
 import java.util.List;
+import java.util.Objects;
 
 @Slf4j
 @Controller
@@ -22,14 +23,15 @@ public class AddressesViewController {
         return addressService.allAddresses();
 
     }
-    public void createNewAddressForm() {
-        UI.getCurrent().navigate("newAddress");
+    public void createNewAddressFormForClient(String clientId) {
+        if(Objects.isNull(clientId)){
+            UI.getCurrent().navigate("new-address");
+        } else {
+            UI.getCurrent().navigate("new-address/" + clientId);
+        }
     }
     public List<Address> clientAddresses(Long clientId) {
         return addressService.clientAddresses(clientId);
-    }
-    public void createNewAddressFormForClient(Long clientId) {
-        UI.getCurrent().navigate("newAddress/" + clientId);
     }
 }
 

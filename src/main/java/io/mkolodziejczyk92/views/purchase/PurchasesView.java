@@ -15,13 +15,14 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.provider.ConfigurableFilterDataProvider;
 import com.vaadin.flow.data.renderer.ComponentRenderer;
-import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.*;
 import io.mkolodziejczyk92.data.controllers.PurchasesViewController;
 import io.mkolodziejczyk92.data.entity.Purchase;
 import io.mkolodziejczyk92.utils.ComponentFactory;
 import io.mkolodziejczyk92.views.MainLayout;
 import jakarta.annotation.security.PermitAll;
+
+import java.util.Objects;
 
 @PageTitle("Purchases")
 @Route(value = "purchases", layout = MainLayout.class)
@@ -51,7 +52,7 @@ public class PurchasesView extends Div implements HasUrlParameter<String> {
         grid.addColumn(Purchase::getSupplierPurchaseNumber).setHeader("Supplier purchase number");
         grid.addColumn(
                 new ComponentRenderer<>(Button::new, (button, purchase) -> {
-                    if(!purchase.getComment().isBlank()){
+                    if(!Objects.isNull(purchase.getComment()) && !purchase.getComment().isBlank()){
                         button.addThemeVariants(ButtonVariant.LUMO_ICON,
                                 ButtonVariant.LUMO_PRIMARY);
                         button.addClickListener(e -> {

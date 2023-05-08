@@ -25,14 +25,6 @@ public class ClientsViewController {
         return clientService.allClients();
     }
 
-    public void clientAddresses(Long clientId) {
-        UI.getCurrent().navigate("client-addresses/" + clientId);
-    }
-
-    public void clientPurchases(Long clientId) {
-        UI.getCurrent().navigate("purchases/c" + clientId);
-    }
-
     public Client findClientById(Long clientId) {
         return clientService.get(clientId).orElseThrow();
     }
@@ -65,5 +57,13 @@ public class ClientsViewController {
 
     public void clientContracts(Long clientId) {
         UI.getCurrent().navigate("contracts/c" + clientId);
+    }
+
+    public void clientAddresses(Long clientId) {
+        UI.getCurrent().navigate("addresses/c" + clientId);
+    }
+
+    public void clientPurchases(Long clientId) {
+        UI.getCurrent().navigate("purchases/c" + clientId);
     }
 }

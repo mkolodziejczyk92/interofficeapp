@@ -48,9 +48,10 @@ public class AddressesView extends Div implements HasUrlParameter<String> {
         grid.setItems(filterDataProvider);
 
         GridContextMenu<Address> menu = grid.addContextMenu();
-        menu.addItem("View", event -> {
-        });
         menu.addItem("Edit", event -> {
+            if(event.getItem().isPresent()){
+                addressesViewController.editAddressInformation(event.getItem().get());
+            }else menu.close();
         });
         menu.addItem("Delete", event -> {
         });
@@ -80,7 +81,7 @@ public class AddressesView extends Div implements HasUrlParameter<String> {
 
     @Override
     public void setParameter(BeforeEvent beforeEvent, @WildcardParameter String urlParameter) {
-        if(!urlParameter.isEmpty()){
+        if(!urlParameter.isBlank()){
             String clientId = urlParameter.substring(1);
             clientIdWithParameter = urlParameter;
             grid.setItems(addressesViewController.clientAddresses(Long.valueOf(clientId)));

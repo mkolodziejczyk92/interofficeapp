@@ -35,7 +35,6 @@ public class ContractsView extends Div implements HasUrlParameter<String> {
             = contractDataProvider.withConfigurableFilter();
     private final Grid<Contract> grid = new Grid<>(Contract.class, false);
     private Button newContract = ComponentFactory.createStandardButton("New Contract");
-    private String clientIdWithParameter;
 
     public ContractsView(ContractsViewController contractsViewController) {
         this.contractsViewController = contractsViewController;
@@ -98,9 +97,8 @@ public class ContractsView extends Div implements HasUrlParameter<String> {
 
     @Override
     public void setParameter(BeforeEvent beforeEvent, @WildcardParameter String urlParameter) {
-        if(!urlParameter.isEmpty()){
+        if(!urlParameter.isBlank()){
             String clientId = urlParameter.substring(1);
-            clientIdWithParameter = urlParameter;
             grid.setItems(contractsViewController.clientContracts(Long.valueOf(clientId)));
         }
     }

@@ -25,20 +25,18 @@ public class NewSupplierFormView extends Div {
     private final SupplierFormViewController supplierFormViewController;
 
     private final SuppliersViewController suppliersViewController;
-    private TextField nameOfCompany = new TextField("Name of company");
-    private TextField nip = new TextField("NIP");
-    private Button cancel = ComponentFactory.createCancelButton();
-    private Button save = ComponentFactory.createSaveButton();
-    private Button back = ComponentFactory.createBackButton();
+    private final TextField nameOfCompany = new TextField("Name of company");
+    private final TextField nip = new TextField("NIP");
+    private final Button cancel = ComponentFactory.createCancelButton();
+    private final Button save = ComponentFactory.createSaveButton();
+    private final Button back = ComponentFactory.createBackButton();
 
-    private Binder<Supplier> binder = new Binder<>(Supplier.class);
+    private final Binder<Supplier> binder = new Binder<>(Supplier.class);
 
     public NewSupplierFormView(SuppliersViewController suppliersViewController, SupplierFormViewController supplierFormViewController) {
         this.suppliersViewController = suppliersViewController;
         this.supplierFormViewController = supplierFormViewController;
         supplierFormViewController.initBinder(binder);
-
-        addClassName("supplier-view");
 
         add(createTopButtonLayout());
         add(createFormLayout());

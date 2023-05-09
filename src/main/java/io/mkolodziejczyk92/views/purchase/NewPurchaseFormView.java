@@ -120,15 +120,14 @@ public class NewPurchaseFormView extends Div implements HasUrlParameter<String> 
     @Override
     public void setParameter(BeforeEvent beforeEvent, @WildcardParameter String urlWithClientId) {
 
-      if(!urlWithClientId.isEmpty() && !urlWithClientId.startsWith(PARAMETER_FOR_CLIENT_ID_FROM_GRID) ){
-          Purchase purchase = purchaseAddFormViewController.findPurchaseById(Long.valueOf(urlWithClientId));
-          binder.setBean(purchase);
+      if(!urlWithClientId.isBlank() && !urlWithClientId.startsWith(PARAMETER_FOR_CLIENT_ID_FROM_GRID) ){
+          binder.setBean(purchaseAddFormViewController.findPurchaseById(Long.valueOf(urlWithClientId)));
 
           cancel.setVisible(false);
           save.setVisible(false);
           update.setVisible(true);
 
-      } else if (!urlWithClientId.isEmpty()) {
+      } else if (!urlWithClientId.isBlank()) {
           String clientId = urlWithClientId.substring(1);
           client.setValue(purchaseAddFormViewController.findClientById(Long.valueOf(clientId)));
       }

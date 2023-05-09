@@ -50,4 +50,11 @@ public class AddressService {
         return repository.findAddressesByClientId(clientId);
     }
 
+    public boolean isExist(Long addressId) {
+        return repository.existsById(addressId);
+    }
+
+    public void update(Address address) {
+        repository.save(address);
+    }
 }

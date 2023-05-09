@@ -13,7 +13,6 @@ import io.mkolodziejczyk92.data.controllers.AddressFormViewController;
 import io.mkolodziejczyk92.data.controllers.ClientsViewController;
 import io.mkolodziejczyk92.data.entity.Address;
 import io.mkolodziejczyk92.data.entity.Client;
-import io.mkolodziejczyk92.data.entity.Purchase;
 import io.mkolodziejczyk92.data.enums.EAddressType;
 import io.mkolodziejczyk92.data.enums.ECountry;
 import io.mkolodziejczyk92.data.enums.EVoivodeship;
@@ -30,39 +29,23 @@ public class NewAddressFormView extends Div implements HasUrlParameter<String> {
 
     private final AddressFormViewController addressFormViewController;
     private final ClientsViewController clientsViewController;
-    private TextField street = new TextField("Street");
-    private TextField houseNumber = new TextField("House number");
-    private TextField apartmentNumber = new TextField("Apartment number");
-    private TextField zipCode = new TextField("Zip code");
-    private TextField city = new TextField("City");
+    private final TextField street = new TextField("Street");
+    private final TextField houseNumber = new TextField("House number");
+    private final TextField apartmentNumber = new TextField("Apartment number");
+    private final TextField zipCode = new TextField("Zip code");
+    private final TextField city = new TextField("City");
+    private final TextField plotNumber = new TextField("Plot number");
+    private final TextField municipality = new TextField("Municipality");
+    private final ComboBox<EVoivodeship> voivodeship = new ComboBox<>("Voivodeship");
+    private final ComboBox<ECountry> country = new ComboBox<>("Country");
+    private final ComboBox<EAddressType> addressType = new ComboBox<>("Address type");
+    private final ComboBox<Client> client = new ComboBox<>("Client");
+    private final Button cancel = ComponentFactory.createCancelButton();
+    private final Button save = ComponentFactory.createSaveButton();
+    private final Button back = ComponentFactory.createBackButton();
 
-    private TextField plotNumber = new TextField("Plot number");
-    private TextField municipality = new TextField("Municipality");
-
-    private ComboBox<EVoivodeship> voivodeship = new ComboBox<>("Voivodeship");
-
-    private ComboBox<ECountry> country = new ComboBox<>("Country");
-    private ComboBox<EAddressType> addressType = new ComboBox<>("Address type");
-
-    private ComboBox<Client> client = new ComboBox<>("Client");
-
-    private Button cancel = ComponentFactory.createCancelButton();
-    private Button save = ComponentFactory.createSaveButton();
-    private Button back = ComponentFactory.createBackButton();
-
-    private Binder<Address> binder = new Binder<>(Address.class);
-
-    @Override
-    public void setParameter(BeforeEvent event, @WildcardParameter String urlWithClientId) {
-        if (!urlWithClientId.isEmpty() && !urlWithClientId.startsWith(PARAMETER_FOR_CLIENT_ID_FROM_GRID) ) {
-           // tutaj będzie set beana dla edycji
-
-        } else if (!urlWithClientId.isEmpty()) {
-            String clientId = urlWithClientId.substring(1);
-            client.setValue(clientsViewController.findClientById(Long.valueOf(clientId)));
-        }
-
-    }
+    private final Button update = ComponentFactory.createUpdateButton();
+    private final Binder<Address> binder = new Binder<>(Address.class);
 
     public NewAddressFormView(AddressFormViewController addressFormViewController,
                               ClientsViewController clientsViewController) {
@@ -112,11 +95,12 @@ public class NewAddressFormView extends Div implements HasUrlParameter<String> {
     private Component createBottomButtonLayout() {
         HorizontalLayout bottomButtonLayout = ComponentFactory.createBottomButtonLayout();
 
-        bottomButtonLayout.add(cancel, save);
+        bottomButtonLayout.add(cancel, save , update);
 
         cancel.addClickListener(event -> addressFormViewController.clearForm());
         save.addClickListener(event -> addressFormViewController.saveNewAddress(binder.getBean()));
-
+        update.addClickListener(event -> addressFormViewController.updateAddress(binder.getBean()));
+        update.setVisible(false);
         return bottomButtonLayout;
     }
 
@@ -125,6 +109,22 @@ public class NewAddressFormView extends Div implements HasUrlParameter<String> {
         back.addClickListener(e -> UI.getCurrent().navigate(AddressesView.class));
         topButtonLayout.add(back);
         return topButtonLayout;
+    }
+
+    @Override
+    public void setParameter(BeforeEvent event, @WildcardParameter String urlWithClientId) {
+        if (!urlWithClientId.isBlank() && !urlWithClientId.startsWith(PARAMETER_FOR_CLIENT_ID_FROM_GRID) ) {
+            binder.setBean(addressFormViewController.findAddressById(Long.valueOf(urlWithClientId)));
+
+            cancel.setVisible(false);
+            save.setVisible(false);
+            update.setVisible(true);
+
+        } else if (!urlWithClientId.isBlank()) {
+            String clientId = urlWithClientId.substring(1);
+            client.setValue(clientsViewController.findClientById(Long.valueOf(clientId)));
+        }
+
     }
 
 }

@@ -94,16 +94,9 @@ public class NewContractFormView extends Div implements HasUrlParameter<String> 
         save.addClickListener(e -> {
             number.setValue(contractAddFormController.createContractNumber());
             contractAddFormController.saveNewPurchase(binder.getBean());
-            Notification.show(binder.getBean().getClass().getSimpleName() + " stored.");
-            contractAddFormController.clearForm();
         });
 
-        update.addClickListener(e -> {
-            contractAddFormController.updateContract(binder.getBean());
-            Notification.show(binder.getBean().getClass().getSimpleName() + " updated.");
-            contractAddFormController.clearForm();
-
-        });
+        update.addClickListener(e -> contractAddFormController.updateContract(binder.getBean()));
 
         update.setVisible(false);
         return bottomButtonLayout;
@@ -112,7 +105,7 @@ public class NewContractFormView extends Div implements HasUrlParameter<String> 
 
     @Override
     public void setParameter(BeforeEvent beforeEvent, @WildcardParameter String contractId) {
-        if(!contractId.isEmpty()){
+        if(!contractId.isBlank()){
             Contract contract = contractAddFormController.findContractById(Long.valueOf(contractId));
             binder.setBean(contract);
             client.setValue(contract.getClient());

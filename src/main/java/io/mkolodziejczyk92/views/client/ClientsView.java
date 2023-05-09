@@ -35,12 +35,12 @@ public class ClientsView extends Div {
     private ConfigurableFilterDataProvider<Client, Void, ClientFilter> filterDataProvider = dataProvider
             .withConfigurableFilter();
     private final Button newClientButton = ComponentFactory.createStandardButton("New Client");
-    private Grid<Client> grid = new Grid<>();
 
 
     public ClientsView(ClientsViewController clientsViewController) {
         this.clientsViewController = clientsViewController;
 
+        Grid<Client> grid = new Grid<>();
         grid.addColumn(Client::getFullName).setHeader("Full Name");
         grid.addColumn(Client::getPhoneNumber).setHeader("Phone number");
         grid.addColumn(Client::getNip).setHeader("NIP");

@@ -70,12 +70,8 @@ public class NewUserFormView extends Div implements HasUrlParameter<String> {
         HorizontalLayout bottomButtonLayout = ComponentFactory.createBottomButtonLayout();
         bottomButtonLayout.add(cancel, save);
         cancel.addClickListener(e -> userAddNewFormController.clearForm());
-        save.addClickListener(e -> {
-            userAddNewFormController.saveNewUser(binder.getBean());
-        });
-        update.addClickListener(e -> {
-            userAddNewFormController.update(binder.getBean());
-        });
+        save.addClickListener(e -> userAddNewFormController.saveNewUser(binder.getBean()));
+        update.addClickListener(e -> userAddNewFormController.update(binder.getBean()));
         save.addClickShortcut(Key.ENTER);
 
         return bottomButtonLayout;
@@ -96,7 +92,7 @@ public class NewUserFormView extends Div implements HasUrlParameter<String> {
     }
     @Override
     public void setParameter(BeforeEvent event, @WildcardParameter String userId) {
-        if (!userId.isEmpty()) {
+        if (!userId.isBlank()) {
             binder.setBean(usersViewController.getUserById(Long.valueOf(userId)));
             // ZMIENIĆ METODĘ NA POBIERANIE ENCJI BEZ HASLA I SPRAWDZICZ CZY BINDER DODA JE DO FORMULARZA
             // ZROBIC DRUGI FORMULARZ DO ZMIANY HASLA

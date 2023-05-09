@@ -44,4 +44,5 @@ public class UsersService {
     public boolean isExist(Long userId) {
         return repository.existsById(userId);
     }
+
 }

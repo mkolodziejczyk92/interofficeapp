@@ -60,7 +60,7 @@ public class UsersView extends Div {
 
     private Component createTopButtonLayout() {
         HorizontalLayout topButtonLayout = ComponentFactory.createTopButtonLayout();
-        newUserButton.addClickListener(e -> UI.getCurrent().navigate(NewUserFormView.class));
+        newUserButton.addClickListener(e -> usersViewController.addNewUser());
         topButtonLayout.add(newUserButton);
         return topButtonLayout;
     }

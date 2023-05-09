@@ -7,13 +7,13 @@ import com.vaadin.flow.data.provider.Query;
 import com.vaadin.flow.spring.data.VaadinSpringDataHelpers;
 import io.mkolodziejczyk92.data.entity.User;
 import io.mkolodziejczyk92.data.service.UsersService;
+import io.mkolodziejczyk92.views.user.NewUserFormView;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 
-import java.util.Optional;
 import java.util.stream.Stream;
+
 @Slf4j
 @Controller
 public class UsersViewController {
@@ -24,7 +24,7 @@ public class UsersViewController {
         this.userService = userService;
     }
 
-    public User getUserById(Long userId) {
+    public User getUserByIdForEditForm(Long userId) {
         return userService.get(userId).orElseThrow();
     }
 
@@ -46,5 +46,8 @@ public class UsersViewController {
                     + user.getUserName()
                     + " does not exist in the database.");
         }
+    }
+    public void addNewUser() {
+        UI.getCurrent().navigate(NewUserFormView.class);
     }
 }

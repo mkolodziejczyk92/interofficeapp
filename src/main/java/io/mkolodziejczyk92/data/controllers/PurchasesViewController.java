@@ -29,9 +29,8 @@ public class PurchasesViewController {
         if (purchaseService.isExist(purchase.getId())) {
             UI.getCurrent().navigate("new-purchase/" + purchase.getId());
         } else {
-            Notification.show("Purchase "
-                    + purchase.getId()
-                    + " does not exist in the database.");
+            Notification.show(purchase.getClient().getFullName()
+                    + "'s purchase does not exist in the database.");
         }
     }
 

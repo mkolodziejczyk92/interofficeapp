@@ -1,12 +1,9 @@
 package io.mkolodziejczyk92.views.contract;
 
 import com.vaadin.flow.component.Component;
-import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.checkbox.Checkbox;
 import com.vaadin.flow.component.combobox.ComboBox;
-import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -97,16 +94,9 @@ public class NewContractFormView extends Div implements HasUrlParameter<String> 
         save.addClickListener(e -> {
             number.setValue(contractAddFormController.createContractNumber());
             contractAddFormController.saveNewPurchase(binder.getBean());
-            Notification.show(binder.getBean().getClass().getSimpleName() + " stored.");
-            contractAddFormController.clearForm();
         });
 
-        update.addClickListener(e -> {
-            contractAddFormController.updateContract(binder.getBean());
-            Notification.show(binder.getBean().getClass().getSimpleName() + " updated.");
-            contractAddFormController.clearForm();
-
-        });
+        update.addClickListener(e -> contractAddFormController.updateContract(binder.getBean()));
 
         update.setVisible(false);
         return bottomButtonLayout;
@@ -115,7 +105,7 @@ public class NewContractFormView extends Div implements HasUrlParameter<String> 
 
     @Override
     public void setParameter(BeforeEvent beforeEvent, @WildcardParameter String contractId) {
-        if(!contractId.isEmpty()){
+        if(!contractId.isBlank()){
             Contract contract = contractAddFormController.findContractById(Long.valueOf(contractId));
             binder.setBean(contract);
             client.setValue(contract.getClient());

@@ -22,8 +22,8 @@ public class PurchaseService {
         return repository.findById(id);
     }
 
-    public Purchase update(Purchase entity) {
-        return repository.save(entity);
+    public void update(Purchase purchase) {
+        repository.save(purchase);
     }
 
     public void delete(Long id) {

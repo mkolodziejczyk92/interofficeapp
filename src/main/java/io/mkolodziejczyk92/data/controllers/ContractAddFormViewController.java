@@ -1,6 +1,7 @@
 package io.mkolodziejczyk92.data.controllers;
 
 import com.vaadin.flow.component.UI;
+import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.data.binder.Binder;
 import io.mkolodziejczyk92.data.entity.Client;
 import io.mkolodziejczyk92.data.entity.Contract;
@@ -40,10 +41,14 @@ public class ContractAddFormViewController {
 
     public void saveNewPurchase(Contract contract){
         contractService.save(contract);
+        Notification.show(  "Contract stored.");
+        UI.getCurrent().navigate("contracts");
     }
 
     public void updateContract(Contract contract){
         contractService.update(contract);
+        Notification.show("Contract updated.");
+        UI.getCurrent().navigate("contracts");
     }
 
     public List<Client> allClients() {

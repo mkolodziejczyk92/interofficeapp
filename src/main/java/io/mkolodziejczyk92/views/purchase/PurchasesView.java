@@ -15,7 +15,6 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.provider.ConfigurableFilterDataProvider;
 import com.vaadin.flow.data.renderer.ComponentRenderer;
-import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.*;
 import io.mkolodziejczyk92.data.controllers.PurchasesViewController;
 import io.mkolodziejczyk92.data.entity.Purchase;
@@ -23,20 +22,22 @@ import io.mkolodziejczyk92.utils.ComponentFactory;
 import io.mkolodziejczyk92.views.MainLayout;
 import jakarta.annotation.security.PermitAll;
 
+import java.util.Objects;
+
 @PageTitle("Purchases")
 @Route(value = "purchases", layout = MainLayout.class)
 @PermitAll
 public class PurchasesView extends Div implements HasUrlParameter<String> {
 
     private final PurchasesViewController purchasesViewController;
-    private PurchaseFilter purchaseFilter = new PurchaseFilter();
-    private PurchaseDataProvider purchaseDataProvider = new PurchaseDataProvider();
-    private ConfigurableFilterDataProvider<Purchase, Void, PurchaseFilter> filterDataProvider
+    private final PurchaseFilter purchaseFilter = new PurchaseFilter();
+    private final PurchaseDataProvider purchaseDataProvider = new PurchaseDataProvider();
+    private final ConfigurableFilterDataProvider<Purchase, Void, PurchaseFilter> filterDataProvider
             = purchaseDataProvider.withConfigurableFilter();
-    private Button newPurchase = ComponentFactory.createStandardButton("New Purchase");
+    private final Button newPurchase = ComponentFactory.createStandardButton("New Purchase");
 
     private final Grid<Purchase> grid = new Grid<>(Purchase.class, false);
-    private String clientIdWithParameter;
+    private  String clientIdFromUrl;
 
     public PurchasesView(PurchasesViewController purchasesViewController) {
         this.purchasesViewController = purchasesViewController;
@@ -51,7 +52,7 @@ public class PurchasesView extends Div implements HasUrlParameter<String> {
         grid.addColumn(Purchase::getSupplierPurchaseNumber).setHeader("Supplier purchase number");
         grid.addColumn(
                 new ComponentRenderer<>(Button::new, (button, purchase) -> {
-                    if(!purchase.getComment().isBlank()){
+                    if(!Objects.isNull(purchase.getComment()) && !purchase.getComment().isBlank()){
                         button.addThemeVariants(ButtonVariant.LUMO_ICON,
                                 ButtonVariant.LUMO_PRIMARY);
                         button.addClickListener(e -> {
@@ -102,7 +103,7 @@ public class PurchasesView extends Div implements HasUrlParameter<String> {
     private Component createTopButtonLayout() {
         HorizontalLayout topButtonLayout = ComponentFactory.createTopButtonLayout();
         topButtonLayout.add(newPurchase);
-        newPurchase.addClickListener( e -> purchasesViewController.createNewPurchaseForClient(clientIdWithParameter));
+        newPurchase.addClickListener( e -> purchasesViewController.createNewPurchaseForClient(clientIdFromUrl));
         return topButtonLayout;
     }
 
@@ -123,10 +124,10 @@ public class PurchasesView extends Div implements HasUrlParameter<String> {
 
 
     @Override
-    public void setParameter(BeforeEvent event, @WildcardParameter String urlParameter) {
-        if(!urlParameter.isEmpty()){
-            String clientId = urlParameter.substring(1);
-            clientIdWithParameter = urlParameter;
+    public void setParameter(BeforeEvent event, @WildcardParameter String urlParameterWithClientId) {
+        if(!urlParameterWithClientId.isBlank()){
+            String clientId = urlParameterWithClientId.substring(1);
+            clientIdFromUrl = urlParameterWithClientId;
             grid.setItems(purchasesViewController.clientPurchases(Long.valueOf(clientId)));
         }
     }

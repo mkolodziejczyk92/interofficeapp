@@ -32,4 +32,15 @@ public class AddressFormViewController {
         Notification.show("Address stored.");
         UI.getCurrent().navigate("client-addresses/" + address.getClient().getId());
     }
+
+    public Address findAddressById(Long addressId) {
+        return addressService.get(addressId).orElseThrow();
+    }
+
+    public void updateAddress(Address address) {
+        addressService.update(address);
+        Notification.show("Address updated.");
+        UI.getCurrent().navigate("addresses");
+
+    }
 }

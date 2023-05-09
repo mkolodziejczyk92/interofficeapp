@@ -1,11 +1,8 @@
 package io.mkolodziejczyk92.views.client;
 
 import com.vaadin.flow.component.Component;
-import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.combobox.ComboBox;
-import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.TextField;
@@ -61,12 +58,8 @@ public class NewClientFormView extends Div implements HasUrlParameter<String> {
         bottomButtonLayout.add(cancel, save, update);
 
         cancel.addClickListener(e -> clientFormViewController.clearForm());
-        save.addClickListener(e -> {
-            clientFormViewController.saveNewClient(binder.getBean());
-        });
-        update.addClickListener(e -> {
-            clientFormViewController.updateClient(binder.getBean());
-        });
+        save.addClickListener(e -> clientFormViewController.saveNewClient(binder.getBean()));
+        update.addClickListener(e -> clientFormViewController.updateClient(binder.getBean()));
         update.setVisible(false);
         return bottomButtonLayout;
 
@@ -88,7 +81,7 @@ public class NewClientFormView extends Div implements HasUrlParameter<String> {
 
     @Override
     public void setParameter(BeforeEvent beforeEvent, @WildcardParameter String clientId) {
-        if (!clientId.isEmpty()) {
+        if (!clientId.isBlank()) {
             binder.setBean(clientFormViewController.findClientById(Long.valueOf(clientId)));
 
             cancel.setVisible(false);

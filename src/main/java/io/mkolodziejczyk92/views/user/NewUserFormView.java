@@ -35,6 +35,7 @@ public class NewUserFormView extends Div implements HasUrlParameter<String> {
 
     private final PasswordField password = new PasswordField("Password");
     private final PasswordField confirmPassword = new PasswordField("Confirm password");
+
     private final CheckboxGroup<ERole> roles = new CheckboxGroup<>("Role");
 
     private final Button cancel = ComponentFactory.createCancelButton();
@@ -42,7 +43,9 @@ public class NewUserFormView extends Div implements HasUrlParameter<String> {
     private final Button save = ComponentFactory.createSaveButton();
 
     private final Button back = ComponentFactory.createBackButton();
+
     private final Button update = ComponentFactory.createUpdateButton();
+
     private final Binder<User> binder = new Binder<>(User.class);
 
     public NewUserFormView(UserFormController userAddNewFormController, UsersViewController usersViewController) {
@@ -68,12 +71,14 @@ public class NewUserFormView extends Div implements HasUrlParameter<String> {
         bottomButtonLayout.add(cancel, save, update);
         update.setVisible(false);
         cancel.addClickListener(e -> userAddNewFormController.clearForm());
+
         save.addClickListener(e -> {
             userAddNewFormController.saveNewUser(binder.getBean(), confirmPassword);
         });
         update.addClickListener(e -> {
             userAddNewFormController.update(binder.getBean(), confirmPassword);
         });
+
         save.addClickShortcut(Key.ENTER);
 
         return bottomButtonLayout;
@@ -97,6 +102,7 @@ public class NewUserFormView extends Div implements HasUrlParameter<String> {
     public void setParameter(BeforeEvent event, @WildcardParameter String userId) {
         if (!userId.isEmpty()) {
             binder.setBean(usersViewController.getUserByIdForEditForm(Long.valueOf(userId)));
+
             cancel.setVisible(false);
             save.setVisible(false);
             update.setVisible(true);

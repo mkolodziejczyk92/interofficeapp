@@ -1,7 +1,11 @@
 package io.mkolodziejczyk92.data.service;
 
+import com.vaadin.flow.component.textfield.PasswordField;
 import io.mkolodziejczyk92.data.entity.User;
 import java.util.Optional;
+import java.util.Set;
+
+import io.mkolodziejczyk92.data.enums.ERole;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -12,21 +16,31 @@ import org.springframework.stereotype.Service;
 public class UserService {
 
     private final UserRepository repository;
-
-    public User save(User user){
-        return repository.save(user);
-    }
-
     public UserService(UserRepository repository) {
         this.repository = repository;
+    }
+
+    public User save(User user, PasswordField confirmPassword){
+        user.setPassword(createHashedPassword(user.getPassword()));
+        if(user.getERoles().isEmpty()){
+            user.setERoles(Set.of(ERole.USER));
+        } else{
+            user.setERoles(Set.of(ERole.USER,ERole.ADMIN));
+        }
+        return repository.save(user);
     }
 
     public Optional<User> get(Long id) {
         return repository.findById(id);
     }
 
-    public User update(User entity) {
-        return repository.save(entity);
+    public User update(User user, PasswordField confirmPassword) {
+        if(!user.getPassword().isEmpty()){
+            user.setPassword(createHashedPassword(user.getPassword()));
+        }else{
+            user.setPassword(get(user.getId()).orElseThrow().getPassword());
+        }
+        return repository.save(user);
     }
 
     public void delete(Long id) {

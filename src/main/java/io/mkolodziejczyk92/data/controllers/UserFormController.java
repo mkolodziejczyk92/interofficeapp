@@ -2,13 +2,12 @@ package io.mkolodziejczyk92.data.controllers;
 
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.data.binder.Binder;
 import io.mkolodziejczyk92.data.entity.User;
-import io.mkolodziejczyk92.data.enums.ERole;
+import io.mkolodziejczyk92.data.service.ContractRepository;
 import io.mkolodziejczyk92.data.service.UserService;
 import org.springframework.stereotype.Controller;
-
-import java.util.Set;
 
 @Controller
 public class UserFormController {
@@ -16,37 +15,31 @@ public class UserFormController {
     private final UserService userService;
 
     private Binder<User> binder;
+    private final ContractRepository contractRepository;
 
-    public UserFormController(UserService userService) {
+    public UserFormController(UserService userService,
+                              ContractRepository contractRepository) {
         this.userService = userService;
+        this.contractRepository = contractRepository;
     }
 
-    public void initBinder(Binder<User> binder){
-        this.binder=binder;
+    public void initBinder(Binder<User> binder) {
+        this.binder = binder;
     }
 
-    public void clearForm(){
+    public void clearForm() {
         this.binder.setBean(new User());
     }
 
-    public void saveNewUser(User user){
-        String hashedPassword = userService.createHashedPassword(user.getPassword());
-        user.setPassword(hashedPassword);
-        if(user.getERoles().isEmpty()){
-            user.setERoles(Set.of(ERole.USER));
-        } else{
-            user.setERoles(Set.of(ERole.USER,ERole.ADMIN));
-        }
-        userService.save(user);
-        Notification.show( "User stored.");
+    public void saveNewUser(User user, PasswordField confirmPassword) {
+        userService.save(user, confirmPassword);
+        Notification.show("User " + user.getUserName() + " stored.");
         UI.getCurrent().navigate("users");
     }
 
-    public void update(User user) {
-        String hashedPassword = userService.createHashedPassword(user.getPassword());
-        user.setPassword(hashedPassword);
-        userService.update(user);
-        Notification.show( "User updated.");
+    public void update(User user, PasswordField confirmPassword) {
+        userService.update(user, confirmPassword);
+        Notification.show("User " + user.getUserName() + " updated.");
         UI.getCurrent().navigate("users");
     }
 }

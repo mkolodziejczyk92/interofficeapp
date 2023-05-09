@@ -4,11 +4,10 @@ import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.checkbox.CheckboxGroup;
-import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
+import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.router.*;
@@ -19,9 +18,6 @@ import io.mkolodziejczyk92.data.enums.ERole;
 import io.mkolodziejczyk92.utils.ComponentFactory;
 import io.mkolodziejczyk92.views.MainLayout;
 import jakarta.annotation.security.RolesAllowed;
-import org.springframework.security.crypto.bcrypt.BCrypt;
-import org.springframework.security.crypto.encrypt.Encryptors;
-import org.springframework.security.crypto.encrypt.TextEncryptor;
 
 import static io.mkolodziejczyk92.data.enums.ERole.ADMIN;
 
@@ -37,17 +33,16 @@ public class NewUserFormView extends Div implements HasUrlParameter<String> {
     private final TextField lastName = new TextField("Last Name");
     private final TextField email = new TextField("Email");
 
-    private final TextField hashedPassword = new TextField("Password");
-
-    private final CheckboxGroup<ERole> ERoles = new CheckboxGroup<>("Role");
+    private final PasswordField password = new PasswordField("Password");
+    private final PasswordField confirmPassword = new PasswordField("Confirm password");
+    private final CheckboxGroup<ERole> roles = new CheckboxGroup<>("Role");
 
     private final Button cancel = ComponentFactory.createCancelButton();
 
     private final Button save = ComponentFactory.createSaveButton();
 
     private final Button back = ComponentFactory.createBackButton();
-
-
+    private final Button update = ComponentFactory.createUpdateButton();
     private final Binder<User> binder = new Binder<>(User.class);
 
     public NewUserFormView(UserFormController userAddNewFormController, UsersViewController usersViewController) {
@@ -62,30 +57,29 @@ public class NewUserFormView extends Div implements HasUrlParameter<String> {
         binder.bindInstanceFields(this);
         binder.forField(roles).bind("ERoles");
         userAddNewFormController.clearForm();
-
-
     }
 
-    private Component createFormLayout(){
-    return  ComponentFactory.createFormLayout(userName, firstName, lastName, email, hashedPassword);
+    private Component createFormLayout() {
+        return ComponentFactory.createFormLayout(userName, firstName, lastName, email, password, confirmPassword);
     }
 
-    private Component createBottomButtonLayout(){
+    private Component createBottomButtonLayout() {
         HorizontalLayout bottomButtonLayout = ComponentFactory.createBottomButtonLayout();
-        bottomButtonLayout.add(cancel, save);
+        bottomButtonLayout.add(cancel, save, update);
+        update.setVisible(false);
         cancel.addClickListener(e -> userAddNewFormController.clearForm());
         save.addClickListener(e -> {
-            userAddNewFormController.saveNewUser(binder.getBean());
+            userAddNewFormController.saveNewUser(binder.getBean(), confirmPassword);
         });
         update.addClickListener(e -> {
-            userAddNewFormController.update(binder.getBean());
+            userAddNewFormController.update(binder.getBean(), confirmPassword);
         });
         save.addClickShortcut(Key.ENTER);
 
         return bottomButtonLayout;
     }
 
-    private Component createTopButtonLayout(){
+    private Component createTopButtonLayout() {
         HorizontalLayout topButtonLayout = ComponentFactory.createTopButtonLayout();
         back.addClickListener(e -> UI.getCurrent().navigate(UsersView.class));
         topButtonLayout.add(back);
@@ -98,19 +92,17 @@ public class NewUserFormView extends Div implements HasUrlParameter<String> {
         roles.getStyle().set("padding-left", "30px");
         add(roles);
     }
+
     @Override
     public void setParameter(BeforeEvent event, @WildcardParameter String userId) {
         if (!userId.isEmpty()) {
-            binder.setBean(usersViewController.getUserById(Long.valueOf(userId)));
-            // ZMIENIĆ METODĘ NA POBIERANIE ENCJI BEZ HASLA I SPRAWDZICZ CZY BINDER DODA JE DO FORMULARZA
-            // ZROBIC DRUGI FORMULARZ DO ZMIANY HASLA
-            // SPRAWDZIC
-
-            password.setValue("");
-
+            binder.setBean(usersViewController.getUserByIdForEditForm(Long.valueOf(userId)));
             cancel.setVisible(false);
             save.setVisible(false);
             update.setVisible(true);
+
+            password.setValue("");
+            password.setPlaceholder("Add new or leave empty");
         }
     }
 }

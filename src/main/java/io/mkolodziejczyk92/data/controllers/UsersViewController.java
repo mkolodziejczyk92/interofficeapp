@@ -6,7 +6,7 @@ import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.data.provider.Query;
 import com.vaadin.flow.spring.data.VaadinSpringDataHelpers;
 import io.mkolodziejczyk92.data.entity.User;
-import io.mkolodziejczyk92.data.service.UsersService;
+import io.mkolodziejczyk92.data.service.UserService;
 import io.mkolodziejczyk92.views.user.NewUserFormView;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
@@ -18,9 +18,9 @@ import java.util.stream.Stream;
 @Controller
 public class UsersViewController {
 
-    private final UsersService userService;
+    private final UserService userService;
 
-    public UsersViewController(UsersService userService) {
+    public UsersViewController(UserService userService) {
         this.userService = userService;
     }
 
@@ -47,6 +47,7 @@ public class UsersViewController {
                     + " does not exist in the database.");
         }
     }
+
     public void addNewUser() {
         UI.getCurrent().navigate(NewUserFormView.class);
     }

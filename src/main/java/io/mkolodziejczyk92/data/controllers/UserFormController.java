@@ -3,12 +3,15 @@ package io.mkolodziejczyk92.data.controllers;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.textfield.PasswordField;
+import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
 import io.mkolodziejczyk92.data.entity.User;
 import io.mkolodziejczyk92.data.service.ContractRepository;
 import io.mkolodziejczyk92.data.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 
+@Slf4j
 @Controller
 public class UserFormController {
 
@@ -32,6 +35,7 @@ public class UserFormController {
     }
 
     public void saveNewUser(User user, PasswordField confirmPassword) {
+        log.info("Saving user...");
         userService.save(user, confirmPassword);
         Notification.show("User " + user.getUserName() + " stored.");
         UI.getCurrent().navigate("users");
@@ -41,5 +45,9 @@ public class UserFormController {
         userService.update(user, confirmPassword);
         Notification.show("User " + user.getUserName() + " updated.");
         UI.getCurrent().navigate("users");
+    }
+
+    public boolean checkIfExist(String userName) {
+        return userService.isExist(userName);
     }
 }

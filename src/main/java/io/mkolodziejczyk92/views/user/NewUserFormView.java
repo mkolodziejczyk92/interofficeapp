@@ -26,7 +26,7 @@ import static io.mkolodziejczyk92.data.enums.ERole.ADMIN;
 @RolesAllowed("ADMIN")
 public class NewUserFormView extends Div implements HasUrlParameter<String> {
 
-    private final UserFormController userAddNewFormController;
+    private final UserFormController userFormController;
     private final UsersViewController usersViewController;
     private final TextField userName = new TextField("User Name");
     private final TextField firstName = new TextField("First Name");
@@ -48,10 +48,10 @@ public class NewUserFormView extends Div implements HasUrlParameter<String> {
 
     private final Binder<User> binder = new Binder<>(User.class);
 
-    public NewUserFormView(UserFormController userAddNewFormController, UsersViewController usersViewController) {
-        this.userAddNewFormController = userAddNewFormController;
+    public NewUserFormView(UserFormController userFormController, UsersViewController usersViewController) {
+        this.userFormController = userFormController;
         this.usersViewController = usersViewController;
-        userAddNewFormController.initBinder(binder);
+        userFormController.initBinder(binder);
 
         add(createTopButtonLayout());
         createComboBox();
@@ -59,7 +59,7 @@ public class NewUserFormView extends Div implements HasUrlParameter<String> {
         add(createBottomButtonLayout());
         binder.bindInstanceFields(this);
         binder.forField(roles).bind("ERoles");
-        userAddNewFormController.clearForm();
+        userFormController.clearForm();
     }
 
     private Component createFormLayout() {
@@ -70,13 +70,13 @@ public class NewUserFormView extends Div implements HasUrlParameter<String> {
         HorizontalLayout bottomButtonLayout = ComponentFactory.createBottomButtonLayout();
         bottomButtonLayout.add(cancel, save, update);
         update.setVisible(false);
-        cancel.addClickListener(e -> userAddNewFormController.clearForm());
+        cancel.addClickListener(e -> userFormController.clearForm());
 
         save.addClickListener(e -> {
-            userAddNewFormController.saveNewUser(binder.getBean(), confirmPassword);
+            userFormController.saveNewUser(binder.getBean(), confirmPassword);
         });
         update.addClickListener(e -> {
-            userAddNewFormController.update(binder.getBean(), confirmPassword);
+            userFormController.update(binder.getBean(), confirmPassword);
         });
 
         save.addClickShortcut(Key.ENTER);

@@ -68,4 +68,8 @@ public class UserService {
     public boolean isExist(Long userId) {
         return repository.existsById(userId);
     }
+
+    public boolean isExist(String userName) {
+        return repository.findUserByUserName(userName);
+    }
 }

@@ -7,6 +7,8 @@ import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
+import com.vaadin.flow.data.validator.EmailValidator;
+import com.vaadin.flow.data.validator.StringLengthValidator;
 import com.vaadin.flow.router.*;
 import io.mkolodziejczyk92.data.controllers.ClientAddFormViewController;
 import io.mkolodziejczyk92.data.entity.Client;
@@ -14,6 +16,9 @@ import io.mkolodziejczyk92.data.enums.EClientType;
 import io.mkolodziejczyk92.utils.ComponentFactory;
 import io.mkolodziejczyk92.views.MainLayout;
 import jakarta.annotation.security.PermitAll;
+import org.hibernate.validator.internal.constraintvalidators.bv.NotBlankValidator;
+
+import static io.mkolodziejczyk92.utils.ComponentFactory.*;
 
 @PageTitle("New Client")
 @Route(value = "new-client", layout = MainLayout.class)
@@ -29,10 +34,10 @@ public class NewClientFormView extends Div implements HasUrlParameter<String> {
     private final TextField email = new TextField("Email");
     private final TextField nip = new TextField("NIP");
     private final ComboBox<EClientType> clientType = new ComboBox<>("Client Type");
-    private final Button cancel = ComponentFactory.createCancelButton();
-    private final Button save = ComponentFactory.createSaveButton();
-    private final Button back = ComponentFactory.createBackButton();
-    private final Button update = ComponentFactory.createUpdateButton();
+    private final Button cancel = createCancelButton();
+    private final Button save = createSaveButton();
+    private final Button back = createBackButton();
+    private final Button update = createUpdateButton();
     private final Binder<Client> binder = new Binder<>(Client.class);
 
 
@@ -40,11 +45,33 @@ public class NewClientFormView extends Div implements HasUrlParameter<String> {
         this.clientFormViewController = clientFormViewController;
         clientFormViewController.initBinder(binder);
 
+
         add(createTopButtonLayout());
         createComboBox();
         add(createFormLayout());
         add(createBottomButtonLayout());
+
+
         binder.bindInstanceFields(this);
+        binder.forField(clientType)
+                .asRequired("Choose client type")
+                        .bind(Client::getClientType, Client::setClientType);
+        binder.forField(firstName)
+                .withValidator
+                        (new StringLengthValidator("First Name can not be empty", 1,50))
+                .bind(Client::getFirstName, Client::setFirstName);
+        binder.forField(lastName)
+                .withValidator
+                        (new StringLengthValidator("Last name can not be empty", 1,50))
+                .bind(Client::getLastName, Client::setLastName);
+        binder.forField(phoneNumber)
+                        .withValidator
+                                (new StringLengthValidator("Phone Number can not be empty", 1,15))
+                                .bind(Client::getPhoneNumber, Client::setPhoneNumber);
+        binder.forField(email)
+                .withValidator(new EmailValidator("Incorrect email address"))
+                .bind(Client::getEmail, Client::setEmail);
+
         clientFormViewController.clearForm();
     }
 
@@ -58,8 +85,8 @@ public class NewClientFormView extends Div implements HasUrlParameter<String> {
         bottomButtonLayout.add(cancel, save, update);
 
         cancel.addClickListener(e -> clientFormViewController.clearForm());
-        save.addClickListener(e -> clientFormViewController.saveNewClient(binder.getBean()));
-        update.addClickListener(e -> clientFormViewController.updateClient(binder.getBean()));
+        save.addClickListener(e -> clientFormViewController.validateAndSave(binder.getBean()));
+        update.addClickListener(e -> clientFormViewController.validateAndUpdate(binder.getBean()));
         update.setVisible(false);
         return bottomButtonLayout;
 
@@ -90,6 +117,8 @@ public class NewClientFormView extends Div implements HasUrlParameter<String> {
         }
 
     }
+
+
 
 
 }

@@ -3,9 +3,11 @@ package io.mkolodziejczyk92.data.entity;
 import io.mkolodziejczyk92.data.enums.EClientType;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.util.Set;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -14,9 +16,11 @@ import java.util.Set;
 @Entity
 @Table(name = "client")
 public class Client extends AbstractEntity {
-
+    @NotNull
     private String firstName;
+    @NotNull
     private String lastName;
+    @NotNull
     private String phoneNumber;
     @Email
     private String email;

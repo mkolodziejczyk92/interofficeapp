@@ -3,6 +3,7 @@ package io.mkolodziejczyk92.data.controllers;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.data.binder.Binder;
+import com.vaadin.flow.data.binder.ValidationException;
 import io.mkolodziejczyk92.data.entity.Client;
 import io.mkolodziejczyk92.data.service.ClientService;
 import lombok.extern.slf4j.Slf4j;
@@ -27,16 +28,18 @@ public class ClientAddFormViewController {
         this.binder.setBean(new Client());
     }
 
-    public void saveNewClient(Client client) {
-        clientService.save(client);
-        Notification.show(client.getFullName() + " stored.");
-        UI.getCurrent().navigate("clients");
-    }
 
-    public void updateClient(Client client){
-        clientService.update(client);
-        Notification.show(client.getFullName() + " updated.");
-        UI.getCurrent().navigate("clients");
+    public void validateAndUpdate(Client client) {
+        try {
+            binder.writeBean(client);
+            clientService.update(client);
+            Notification.show(client.getFullName() + " updated.");
+            UI.getCurrent().navigate("clients");
+        } catch (Exception ex) {
+            log.error(ex.getMessage(), ex);
+            Notification.show("Validate Error");
+        }
+
     }
 
     public Client findClientById(Long id){
@@ -47,4 +50,17 @@ public class ClientAddFormViewController {
     public void returnToClients() {
         UI.getCurrent().navigate("clients");
     }
+
+    public void validateAndSave(Client client) {
+        try {
+            binder.writeBean(client);
+            clientService.save(client);
+            Notification.show(client.getFullName() + " stored.");
+            UI.getCurrent().navigate("clients");
+        } catch (ValidationException ex) {
+            log.error(ex.getMessage(), ex);
+            Notification.show("Validate Error");
+        }
+    }
+
 }

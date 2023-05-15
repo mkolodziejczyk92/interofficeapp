@@ -20,6 +20,7 @@ import io.mkolodziejczyk92.utils.ComponentFactory;
 import io.mkolodziejczyk92.views.MainLayout;
 import jakarta.annotation.security.PermitAll;
 
+import static io.mkolodziejczyk92.utils.ComponentFactory.*;
 import static io.mkolodziejczyk92.utils.ComponentFactory.PARAMETER_FOR_CLIENT_ID_FROM_GRID;
 
 
@@ -44,10 +45,10 @@ public class NewPurchaseFormView extends Div implements HasUrlParameter<String> 
 
     private final ComboBox<ECommodityType> commodityType = new ComboBox<>("Commodity Type");
 
-    private final Button cancel = ComponentFactory.createCancelButton();
-    private final Button save = ComponentFactory.createStandardButton("Save");
-    private final Button back = ComponentFactory.createBackButton();
-    private final Button update = ComponentFactory.createStandardButton("Update");
+    private final Button cancel = createCancelButton();
+    private final Button save = createStandardButton("Save");
+    private final Button back = createBackButton();
+    private final Button update = createStandardButton("Update");
     private final Binder<Purchase> binder = new Binder<>(Purchase.class);
 
     public NewPurchaseFormView(PurchaseAddFormViewController purchaseAddFormViewController) {

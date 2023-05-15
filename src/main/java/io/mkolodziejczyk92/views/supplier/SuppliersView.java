@@ -18,6 +18,8 @@ import io.mkolodziejczyk92.utils.ComponentFactory;
 import io.mkolodziejczyk92.views.MainLayout;
 import jakarta.annotation.security.PermitAll;
 
+import static io.mkolodziejczyk92.utils.ComponentFactory.*;
+
 
 @PageTitle("Suppliers")
 @Route(value = "suppliers", layout = MainLayout.class)
@@ -29,7 +31,7 @@ public class SuppliersView extends Div {
     private final SupplierDataProvider supplierDataProvider = new SupplierDataProvider();
     private final ConfigurableFilterDataProvider<Supplier, Void, SupplierFilter> filterDataProvider
             = supplierDataProvider.withConfigurableFilter();
-    private final Button newSupplierButton = ComponentFactory.createStandardButton("New Supplier");
+    private final Button newSupplierButton = createStandardButton("New Supplier");
 
 
     public SuppliersView(SuppliersViewController suppliersViewController) {
@@ -59,7 +61,7 @@ public class SuppliersView extends Div {
     private Component createSearchLayout() {
         HorizontalLayout searchLayout = new HorizontalLayout();
 
-        TextField searchField = ComponentFactory.createTextFieldForSearchLayout("Search");
+        TextField searchField = createTextFieldForSearchLayout("Search");
         searchField.addValueChangeListener(e -> {
             supplierFilter.setSearchTerm(e.getValue());
             filterDataProvider.setFilter(supplierFilter);

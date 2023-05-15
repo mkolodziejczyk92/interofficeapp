@@ -21,6 +21,8 @@ import io.mkolodziejczyk92.utils.ComponentFactory;
 import io.mkolodziejczyk92.views.MainLayout;
 import jakarta.annotation.security.PermitAll;
 
+import static io.mkolodziejczyk92.utils.ComponentFactory.*;
+
 @PageTitle("Invoices")
 @Route(value = "invoices", layout = MainLayout.class)
 @PermitAll
@@ -35,7 +37,7 @@ public class InvoicesView extends Div implements HasUrlParameter<String> {
             = invoiceDataProvider.withConfigurableFilter();
 
     private final Grid<Invoice> grid = new Grid<>(Invoice.class, false);
-    private final Button emptyButton = ComponentFactory.createStandardButton("EMPTY");
+    private final Button emptyButton = createStandardButton("EMPTY");
 
     public InvoicesView(InvoicesViewController invoicesViewController) {
         this.invoicesViewController = invoicesViewController;
@@ -79,7 +81,7 @@ public class InvoicesView extends Div implements HasUrlParameter<String> {
 
     private Component createSearchLayout() {
         HorizontalLayout searchLayout = new HorizontalLayout();
-        TextField searchField = ComponentFactory.createTextFieldForSearchLayout
+        TextField searchField = createTextFieldForSearchLayout
                 ("Search by client, contract number or invoice number");
         searchField.addValueChangeListener(e -> {
             invoiceFilter.setSearchTerm(e.getValue());

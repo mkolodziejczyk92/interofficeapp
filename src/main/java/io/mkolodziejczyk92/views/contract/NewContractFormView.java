@@ -18,6 +18,8 @@ import io.mkolodziejczyk92.utils.ComponentFactory;
 import io.mkolodziejczyk92.views.MainLayout;
 import jakarta.annotation.security.PermitAll;
 
+import static io.mkolodziejczyk92.utils.ComponentFactory.*;
+
 @PageTitle("New Contract")
 @Route(value = "newContract", layout = MainLayout.class)
 @PermitAll
@@ -31,13 +33,13 @@ public class NewContractFormView extends Div implements HasUrlParameter<String> 
 
     private final TextField number = new TextField("Contract Number");
 
-    private final Button cancel = ComponentFactory.createCancelButton();
-    private final Button save = ComponentFactory.createSaveButton();
-    private final Button back = ComponentFactory.createBackButton();
+    private final Button cancel = createCancelButton();
+    private final Button save = createSaveButton();
+    private final Button back = createBackButton();
 
     private final Checkbox completed = new Checkbox("Completed");
 
-    private final Button update = ComponentFactory.createUpdateButton();
+    private final Button update = createUpdateButton();
 
     private final Binder<Contract> binder = new Binder<>(Contract.class);
 

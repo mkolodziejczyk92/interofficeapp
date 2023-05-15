@@ -14,6 +14,8 @@ import io.mkolodziejczyk92.data.controllers.ClientAddFormViewController;
 import io.mkolodziejczyk92.data.entity.Client;
 import io.mkolodziejczyk92.data.enums.EClientType;
 import io.mkolodziejczyk92.utils.ComponentFactory;
+import io.mkolodziejczyk92.utils.validators.FirstAndLastNameValidator;
+import io.mkolodziejczyk92.utils.validators.PhoneNumberValidator;
 import io.mkolodziejczyk92.views.MainLayout;
 import jakarta.annotation.security.PermitAll;
 import org.hibernate.validator.internal.constraintvalidators.bv.NotBlankValidator;
@@ -55,19 +57,19 @@ public class NewClientFormView extends Div implements HasUrlParameter<String> {
         binder.bindInstanceFields(this);
         binder.forField(clientType)
                 .asRequired("Choose client type")
-                        .bind(Client::getClientType, Client::setClientType);
+                .bind(Client::getClientType, Client::setClientType);
         binder.forField(firstName)
                 .withValidator
-                        (new StringLengthValidator("First Name can not be empty", 1,50))
+                        (new FirstAndLastNameValidator())
                 .bind(Client::getFirstName, Client::setFirstName);
         binder.forField(lastName)
                 .withValidator
-                        (new StringLengthValidator("Last name can not be empty", 1,50))
+                        (new FirstAndLastNameValidator())
                 .bind(Client::getLastName, Client::setLastName);
         binder.forField(phoneNumber)
-                        .withValidator
-                                (new StringLengthValidator("Phone Number can not be empty", 1,15))
-                                .bind(Client::getPhoneNumber, Client::setPhoneNumber);
+                .withValidator
+                        (new PhoneNumberValidator())
+                .bind(Client::getPhoneNumber, Client::setPhoneNumber);
         binder.forField(email)
                 .withValidator(new EmailValidator("Incorrect email address"))
                 .bind(Client::getEmail, Client::setEmail);
@@ -117,8 +119,6 @@ public class NewClientFormView extends Div implements HasUrlParameter<String> {
         }
 
     }
-
-
 
 
 }

@@ -8,7 +8,6 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.validator.EmailValidator;
-import com.vaadin.flow.data.validator.StringLengthValidator;
 import com.vaadin.flow.router.*;
 import io.mkolodziejczyk92.data.controllers.ClientAddFormViewController;
 import io.mkolodziejczyk92.data.entity.Client;
@@ -18,7 +17,6 @@ import io.mkolodziejczyk92.utils.validators.FirstAndLastNameValidator;
 import io.mkolodziejczyk92.utils.validators.PhoneNumberValidator;
 import io.mkolodziejczyk92.views.MainLayout;
 import jakarta.annotation.security.PermitAll;
-import org.hibernate.validator.internal.constraintvalidators.bv.NotBlankValidator;
 
 import static io.mkolodziejczyk92.utils.ComponentFactory.*;
 

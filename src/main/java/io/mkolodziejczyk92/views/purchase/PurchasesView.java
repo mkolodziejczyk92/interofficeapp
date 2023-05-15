@@ -24,6 +24,8 @@ import jakarta.annotation.security.PermitAll;
 
 import java.util.Objects;
 
+import static io.mkolodziejczyk92.utils.ComponentFactory.*;
+
 @PageTitle("Purchases")
 @Route(value = "purchases", layout = MainLayout.class)
 @PermitAll
@@ -34,7 +36,7 @@ public class PurchasesView extends Div implements HasUrlParameter<String> {
     private final PurchaseDataProvider purchaseDataProvider = new PurchaseDataProvider();
     private final ConfigurableFilterDataProvider<Purchase, Void, PurchaseFilter> filterDataProvider
             = purchaseDataProvider.withConfigurableFilter();
-    private final Button newPurchase = ComponentFactory.createStandardButton("New Purchase");
+    private final Button newPurchase = createStandardButton("New Purchase");
 
     private final Grid<Purchase> grid = new Grid<>(Purchase.class, false);
     private  String clientIdFromUrl;
@@ -90,7 +92,7 @@ public class PurchasesView extends Div implements HasUrlParameter<String> {
     private Component createSearchLayout() {
         HorizontalLayout searchLayout = new HorizontalLayout();
 
-        TextField searchField = ComponentFactory.createTextFieldForSearchLayout
+        TextField searchField = createTextFieldForSearchLayout
                 ("Search by client, contract number, purchase number or supplier");
         searchField.addValueChangeListener(e -> {
             purchaseFilter.setSearchTerm(e.getValue());

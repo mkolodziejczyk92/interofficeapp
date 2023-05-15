@@ -22,6 +22,8 @@ import io.mkolodziejczyk92.utils.ComponentFactory;
 import io.mkolodziejczyk92.views.MainLayout;
 import jakarta.annotation.security.PermitAll;
 
+import static io.mkolodziejczyk92.utils.ComponentFactory.*;
+
 @PageTitle("Clients")
 @Route(value = "clients", layout = MainLayout.class)
 @RouteAlias(value = "", layout = MainLayout.class)
@@ -29,12 +31,11 @@ import jakarta.annotation.security.PermitAll;
 public class ClientsView extends Div {
 
     private final ClientsViewController clientsViewController;
-
     private ClientFilter clientFilter = new ClientFilter();
     private ClientDataProvider dataProvider = new ClientDataProvider();
     private ConfigurableFilterDataProvider<Client, Void, ClientFilter> filterDataProvider = dataProvider
             .withConfigurableFilter();
-    private final Button newClientButton = ComponentFactory.createStandardButton("New Client");
+    private final Button newClientButton = createStandardButton("New Client");
 
 
     public ClientsView(ClientsViewController clientsViewController) {
@@ -98,7 +99,7 @@ public class ClientsView extends Div {
 
     private Component createSearchLayout() {
         HorizontalLayout searchLayout = new HorizontalLayout();
-        TextField searchField = ComponentFactory.createTextFieldForSearchLayout("Search");
+        TextField searchField = createTextFieldForSearchLayout("Search");
         searchField.addValueChangeListener(e -> {
             clientFilter.setSearchTerm(e.getValue());
             filterDataProvider.setFilter(clientFilter);

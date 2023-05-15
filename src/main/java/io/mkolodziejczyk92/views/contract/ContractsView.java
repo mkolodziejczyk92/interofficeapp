@@ -21,6 +21,8 @@ import io.mkolodziejczyk92.utils.ComponentFactory;
 import io.mkolodziejczyk92.views.MainLayout;
 import jakarta.annotation.security.PermitAll;
 
+import static io.mkolodziejczyk92.utils.ComponentFactory.*;
+
 @PageTitle("Contracts")
 @Route(value = "contracts", layout = MainLayout.class)
 @PermitAll
@@ -34,7 +36,7 @@ public class ContractsView extends Div implements HasUrlParameter<String> {
     private ConfigurableFilterDataProvider<Contract, Void, ContractFilter> filterDataProvider
             = contractDataProvider.withConfigurableFilter();
     private final Grid<Contract> grid = new Grid<>(Contract.class, false);
-    private Button newContract = ComponentFactory.createStandardButton("New Contract");
+    private Button newContract = createStandardButton("New Contract");
 
     public ContractsView(ContractsViewController contractsViewController) {
         this.contractsViewController = contractsViewController;
@@ -78,7 +80,7 @@ public class ContractsView extends Div implements HasUrlParameter<String> {
 
     private Component createSearchLayout() {
         HorizontalLayout searchLayout = new HorizontalLayout();
-        TextField searchField = ComponentFactory.createTextFieldForSearchLayout("Search by client or contract number");
+        TextField searchField = createTextFieldForSearchLayout("Search by client or contract number");
         searchField.addValueChangeListener(e -> {
             contractFilter.setSearchTerm(e.getValue());
             filterDataProvider.setFilter(contractFilter);

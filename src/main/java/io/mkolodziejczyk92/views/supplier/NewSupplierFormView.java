@@ -17,6 +17,8 @@ import io.mkolodziejczyk92.utils.ComponentFactory;
 import io.mkolodziejczyk92.views.MainLayout;
 import jakarta.annotation.security.PermitAll;
 
+import static io.mkolodziejczyk92.utils.ComponentFactory.*;
+
 @PageTitle("New Supplier")
 @Route(value = "new-supplier", layout = MainLayout.class)
 @PermitAll
@@ -27,9 +29,9 @@ public class NewSupplierFormView extends Div {
     private final SuppliersViewController suppliersViewController;
     private final TextField nameOfCompany = new TextField("Name of company");
     private final TextField nip = new TextField("NIP");
-    private final Button cancel = ComponentFactory.createCancelButton();
-    private final Button save = ComponentFactory.createSaveButton();
-    private final Button back = ComponentFactory.createBackButton();
+    private final Button cancel = createCancelButton();
+    private final Button save = createSaveButton();
+    private final Button back = createBackButton();
 
     private final Binder<Supplier> binder = new Binder<>(Supplier.class);
 

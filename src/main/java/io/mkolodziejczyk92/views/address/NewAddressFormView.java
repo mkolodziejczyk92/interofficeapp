@@ -163,10 +163,10 @@ public class NewAddressFormView extends Div implements HasUrlParameter<String> {
     private void turnOnFieldsForInvestmentAddressType() {
         turnOnFieldsInEveryAddressType();
         street.setEnabled(false);
-        plotNumber.setEnabled(false);
         city.setEnabled(false);
         houseNumber.setEnabled(false);
         apartmentNumber.setEnabled(false);
+        plotNumber.setEnabled(true);
         binder.forField(plotNumber)
                 .withValidator(new StringLengthValidator("Plot number is required", 1, 5))
                 .bind(Address::getPlotNumber, Address::setPlotNumber);

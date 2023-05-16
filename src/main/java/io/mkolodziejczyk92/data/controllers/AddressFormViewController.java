@@ -3,6 +3,7 @@ package io.mkolodziejczyk92.data.controllers;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.data.binder.Binder;
+import com.vaadin.flow.data.binder.ValidationException;
 import io.mkolodziejczyk92.data.entity.Address;
 import io.mkolodziejczyk92.data.service.AddressService;
 import lombok.extern.slf4j.Slf4j;
@@ -27,11 +28,6 @@ public class AddressFormViewController {
         this.binder.setBean(new Address());
     }
 
-    public void saveNewAddress(Address address) {
-        addressService.saveNewAddress(address);
-        Notification.show("Address stored.");
-        UI.getCurrent().navigate("client-addresses/" + address.getClient().getId());
-    }
 
     public Address findAddressById(Long addressId) {
         return addressService.get(addressId).orElseThrow();
@@ -42,5 +38,17 @@ public class AddressFormViewController {
         Notification.show("Address updated.");
         UI.getCurrent().navigate("addresses");
 
+    }
+
+    public void validateAndSave(Address address) {
+        try {
+            binder.writeBean(address);
+            addressService.save(address);
+            Notification.show(address.getClient().getFullName() + "'s address stored.");
+            UI.getCurrent().navigate("addresses");
+        } catch (ValidationException ex) {
+            log.error(ex.getMessage(), ex);
+            Notification.show("Validate Error");
+        }
     }
 }

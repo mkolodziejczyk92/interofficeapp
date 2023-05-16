@@ -8,12 +8,13 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.validator.EmailValidator;
-import com.vaadin.flow.data.validator.StringLengthValidator;
 import com.vaadin.flow.router.*;
 import io.mkolodziejczyk92.data.controllers.ClientAddFormViewController;
 import io.mkolodziejczyk92.data.entity.Client;
 import io.mkolodziejczyk92.data.enums.EClientType;
 import io.mkolodziejczyk92.utils.ComponentFactory;
+import io.mkolodziejczyk92.utils.validators.FirstAndLastNameValidator;
+import io.mkolodziejczyk92.utils.validators.PhoneNumberValidator;
 import io.mkolodziejczyk92.views.MainLayout;
 import jakarta.annotation.security.PermitAll;
 
@@ -57,15 +58,15 @@ public class NewClientFormView extends Div implements HasUrlParameter<String> {
                 .bind(Client::getClientType, Client::setClientType);
         binder.forField(firstName)
                 .withValidator
-                        (new StringLengthValidator("First name can not be empty", 1, 50))
+                     (new FirstAndLastNameValidator())
                 .bind(Client::getFirstName, Client::setFirstName);
         binder.forField(lastName)
                 .withValidator
-                        (new StringLengthValidator("Last name can not be empty", 1, 50))
+                        (new FirstAndLastNameValidator())
                 .bind(Client::getLastName, Client::setLastName);
         binder.forField(phoneNumber)
                 .withValidator
-                        (new StringLengthValidator("Phone number can not be empty", 1, 15))
+                        (new PhoneNumberValidator())
                 .bind(Client::getPhoneNumber, Client::setPhoneNumber);
         binder.forField(email)
                 .withValidator(new EmailValidator("Incorrect email address"))

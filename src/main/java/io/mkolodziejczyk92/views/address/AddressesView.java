@@ -16,6 +16,8 @@ import io.mkolodziejczyk92.utils.ComponentFactory;
 import io.mkolodziejczyk92.views.MainLayout;
 import jakarta.annotation.security.PermitAll;
 
+import static io.mkolodziejczyk92.utils.ComponentFactory.*;
+
 @PageTitle("Addresses")
 @Route(value = "addresses", layout = MainLayout.class)
 @PermitAll
@@ -26,7 +28,7 @@ public class AddressesView extends Div implements HasUrlParameter<String> {
     private AddressDataProvider addressDataProvider = new AddressDataProvider();
     private ConfigurableFilterDataProvider<Address, Void, AddressFilter> filterDataProvider
             = addressDataProvider.withConfigurableFilter();
-    private Button newAddressButton = ComponentFactory.createStandardButton("New Address");
+    private Button newAddressButton = createStandardButton("New Address");
 
     private final Grid<Address> grid = new Grid<>();
 
@@ -63,7 +65,7 @@ public class AddressesView extends Div implements HasUrlParameter<String> {
 
     private Component createSearchLayout() {
         HorizontalLayout searchLayout = new HorizontalLayout();
-        TextField searchField = ComponentFactory.createTextFieldForSearchLayout("Search");
+        TextField searchField = createTextFieldForSearchLayout("Search");
         searchField.addValueChangeListener(event -> {
             addressFilter.setSearchTerm(event.getValue());
             filterDataProvider.setFilter(addressFilter);

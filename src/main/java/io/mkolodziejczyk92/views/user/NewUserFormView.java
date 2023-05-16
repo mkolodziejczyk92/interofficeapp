@@ -23,6 +23,7 @@ import io.mkolodziejczyk92.views.MainLayout;
 import jakarta.annotation.security.RolesAllowed;
 
 import static io.mkolodziejczyk92.data.enums.ERole.ADMIN;
+import static io.mkolodziejczyk92.utils.ComponentFactory.*;
 
 @PageTitle("New User")
 @Route(value = "new-user", layout = MainLayout.class)
@@ -43,14 +44,16 @@ public class NewUserFormView extends Div implements HasUrlParameter<String> {
 
     private final CheckboxGroup<ERole> roles = new CheckboxGroup<>("Role");
 
-    private final Button cancel = ComponentFactory.createCancelButton();
+    private final Button cancel = createCancelButton();
 
-    private final Button save = ComponentFactory.createSaveButton();
+    private final Button save = createSaveButton();
 
-    private final Button back = ComponentFactory.createBackButton();
+    private final Button back = createBackButton();
 
-    private final Button update = ComponentFactory.createUpdateButton();
     private final Button changePassword = new Button("Change password");
+
+    private final Button update = createUpdateButton();
+
 
     private final Binder<User> binder = new Binder<>(User.class);
 

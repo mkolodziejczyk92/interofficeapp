@@ -1,7 +1,6 @@
 package io.mkolodziejczyk92.views.user;
 
 import com.vaadin.flow.component.Component;
-import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.dialog.Dialog;
@@ -18,13 +17,15 @@ import io.mkolodziejczyk92.utils.ComponentFactory;
 import io.mkolodziejczyk92.views.MainLayout;
 import jakarta.annotation.security.RolesAllowed;
 
+import static io.mkolodziejczyk92.utils.ComponentFactory.createStandardButton;
+
 @PageTitle("Users")
 @Route(value = "users", layout = MainLayout.class)
 @RolesAllowed("ADMIN")
 public class UsersView extends Div {
 
     private final UsersViewController usersViewController;
-    private final Button newUserButton = ComponentFactory.createStandardButton("New User");
+    private final Button newUserButton = createStandardButton("New User");
 
 
     public UsersView(UsersViewController usersViewController) {

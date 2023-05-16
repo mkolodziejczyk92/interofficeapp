@@ -54,7 +54,11 @@ public class AddressService {
         return repository.existsById(addressId);
     }
 
-    public void update(Address address) {
-        repository.save(address);
+    public Address update(Address address) {
+        return repository.save(address);
+    }
+
+    public Address save(Address address) {
+        return repository.save(address);
     }
 }

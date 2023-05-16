@@ -6,8 +6,9 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum EAddressType {
-    INVESTMENT("inwestycyjny"),
-    RESIDENCE("zamieszkania");
+    INVESTMENT("investment"),
+    RESIDENCE("residence");
+
 
     private String type;
 }

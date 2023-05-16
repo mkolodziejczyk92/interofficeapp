@@ -3,10 +3,11 @@ package io.mkolodziejczyk92.views.purchase;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
+import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
-import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.router.*;
@@ -20,7 +21,8 @@ import io.mkolodziejczyk92.utils.ComponentFactory;
 import io.mkolodziejczyk92.views.MainLayout;
 import jakarta.annotation.security.PermitAll;
 
-import static io.mkolodziejczyk92.utils.ComponentFactory.PARAMETER_FOR_CLIENT_ID_FROM_GRID;
+import static com.vaadin.flow.component.Key.ENTER;
+import static io.mkolodziejczyk92.utils.ComponentFactory.*;
 
 
 @PageTitle("New Purchase")
@@ -36,7 +38,7 @@ public class NewPurchaseFormView extends Div implements HasUrlParameter<String> 
 
     private final TextField supplierPurchaseNumber = new TextField("Supplier Purchase Number");
 
-    private final TextArea comment = new TextArea("Comment");
+    private final TextField comment = new TextField("Comment");
 
     private final ComboBox<EPurchaseStatus> status = new ComboBox<>("Purchase Status");
 
@@ -44,10 +46,10 @@ public class NewPurchaseFormView extends Div implements HasUrlParameter<String> 
 
     private final ComboBox<ECommodityType> commodityType = new ComboBox<>("Commodity Type");
 
-    private final Button cancel = ComponentFactory.createCancelButton();
-    private final Button save = ComponentFactory.createStandardButton("Save");
-    private final Button back = ComponentFactory.createBackButton();
-    private final Button update = ComponentFactory.createStandardButton("Update");
+    private final Button cancel = createCancelButton();
+    private final Button save = createStandardButton("Save");
+    private final Button back = createBackButton();
+    private final Button update = createStandardButton("Update");
     private final Binder<Purchase> binder = new Binder<>(Purchase.class);
 
     public NewPurchaseFormView(PurchaseAddFormViewController purchaseAddFormViewController) {
@@ -70,8 +72,9 @@ public class NewPurchaseFormView extends Div implements HasUrlParameter<String> 
     }
 
     private Component createFormLayout() {
-        return ComponentFactory.createFormLayout(client, commodityType,  status, supplier,
+        return   ComponentFactory.createFormLayout(client, commodityType, status, supplier,
                 netAmount, supplierPurchaseNumber, comment);
+
 
     }
 
@@ -90,7 +93,7 @@ public class NewPurchaseFormView extends Div implements HasUrlParameter<String> 
         update.addClickListener(e -> {
             purchaseAddFormViewController.updatePurchase(binder.getBean());
         });
-
+        save.addClickShortcut(ENTER);
         update.setVisible(false);
         return bottomButtonLayout;
 

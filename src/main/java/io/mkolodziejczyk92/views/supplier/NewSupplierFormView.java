@@ -14,6 +14,7 @@ import io.mkolodziejczyk92.data.controllers.SupplierFormViewController;
 import io.mkolodziejczyk92.data.controllers.SuppliersViewController;
 import io.mkolodziejczyk92.data.entity.Supplier;
 import io.mkolodziejczyk92.utils.ComponentFactory;
+import io.mkolodziejczyk92.utils.validators.NipValidator;
 import io.mkolodziejczyk92.views.MainLayout;
 import jakarta.annotation.security.PermitAll;
 
@@ -43,17 +44,23 @@ public class NewSupplierFormView extends Div {
         add(createTopButtonLayout());
         add(createFormLayout());
         add(createBottomButtonLayout());
-        binder.bindInstanceFields(this);
+        binder.forField(nameOfCompany)
+                .asRequired("Company name is required")
+                .bind(Supplier::getNameOfCompany, Supplier::setNameOfCompany);
+
+        binder.forField(nip)
+                .withValidator(new NipValidator())
+                .bind(Supplier::getNip, Supplier::setNip);
 
         supplierFormViewController.clearForm();
 
     }
 
     private Component createFormLayout() {
-       return ComponentFactory.createFormLayout(nameOfCompany, nip);
+        return ComponentFactory.createFormLayout(nameOfCompany, nip);
     }
 
-    private Component createTopButtonLayout(){
+    private Component createTopButtonLayout() {
         HorizontalLayout topButtonLayout = ComponentFactory.createTopButtonLayout();
         back.addClickListener(e -> UI.getCurrent().navigate(SuppliersView.class));
         topButtonLayout.add(back);

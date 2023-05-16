@@ -15,10 +15,12 @@ public class PhoneNumberValidator implements Validator<String> {
 
     @Override
     public ValidationResult apply(String value, ValueContext valueContext) {
+
         if (value == null || value.isBlank()) {
             return ValidationResult.error("Phone number is required");
         }
-        if (!value.matches(PHONE_NUMBER_REGEX)) {
+        String number = value.replaceAll("\\s", "");
+        if (!number.matches(PHONE_NUMBER_REGEX)) {
             return ValidationResult.error("Use correct phone number");
         }
         return ValidationResult.ok();

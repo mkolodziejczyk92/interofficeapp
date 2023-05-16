@@ -4,7 +4,6 @@ import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.Div;
-import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
@@ -73,10 +72,7 @@ public class NewSupplierFormView extends Div {
         bottomButtonLayout.add(cancel, save);
 
         cancel.addClickListener(e -> supplierFormViewController.clearForm());
-        save.addClickListener(e -> {
-            supplierFormViewController.saveNewSupplier(binder.getBean());
-            Notification.show(binder.getBean().getClass().getSimpleName() + " stored.");
-            supplierFormViewController.clearForm();
+        save.addClickListener(e -> {supplierFormViewController.saveNewSupplier(binder.getBean());
         });
         return bottomButtonLayout;
     }

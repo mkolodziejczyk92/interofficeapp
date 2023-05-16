@@ -22,10 +22,9 @@ import io.mkolodziejczyk92.utils.validators.ZipCodeValidator;
 import io.mkolodziejczyk92.views.MainLayout;
 import jakarta.annotation.security.PermitAll;
 
-import static io.mkolodziejczyk92.data.enums.EAddressType.*;
+import static io.mkolodziejczyk92.data.enums.EAddressType.INVESTMENT;
+import static io.mkolodziejczyk92.data.enums.EAddressType.RESIDENCE;
 import static io.mkolodziejczyk92.utils.ComponentFactory.*;
-import static io.mkolodziejczyk92.utils.ComponentFactory.PARAMETER_FOR_CLIENT_ID_FROM_GRID;
-import static io.mkolodziejczyk92.utils.ComponentFactory.createCancelButton;
 
 @PageTitle("New Address")
 @Route(value = "new-address", layout = MainLayout.class)

@@ -34,20 +34,34 @@ public class UserFormController {
         this.binder.setBean(new User());
     }
 
-    public void saveNewUser(User user, PasswordField confirmPassword) {
+    public void saveNewUser(User user) {
         log.info("Saving user...");
-        userService.save(user, confirmPassword);
+        userService.save(user);
         Notification.show("User " + user.getUserName() + " stored.");
         UI.getCurrent().navigate("users");
+        log.info("User saved.");
     }
 
-    public void update(User user, PasswordField confirmPassword) {
-        userService.update(user, confirmPassword);
+    public void update(User user) {
+        userService.update(user);
         Notification.show("User " + user.getUserName() + " updated.");
         UI.getCurrent().navigate("users");
     }
-
     public boolean checkIfExist(String userName) {
         return userService.isExist(userName);
+    }
+
+    public void changePassword(User user, PasswordField newPassword, PasswordField confirmPassword) {
+        if(userService.checkIfPasswordMatch(newPassword, confirmPassword)){
+            user.setPassword(userService.createHashedPassword(newPassword.getValue()));
+            userService.update(user);
+            Notification.show("Password for " + user.getUserName() + " updated.");
+            UI.getCurrent().navigate("users");
+        }else{
+            Notification.show("Passwords do not match!");
+            UI.getCurrent().navigate("new-user/" + user.getId());
+
+        }
+
     }
 }

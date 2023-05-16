@@ -21,8 +21,7 @@ public class UserService {
         this.repository = repository;
     }
 
-    public User save(User user, PasswordField confirmPassword) {
-        user.setPassword(createHashedPassword(user.getPassword()));
+    public User save(User user) {
         if (user.getERoles().isEmpty()) {
             user.setERoles(Set.of(ERole.USER));
         } else {
@@ -35,12 +34,7 @@ public class UserService {
         return repository.findById(id);
     }
 
-    public User update(User user, PasswordField confirmPassword) {
-        if (!user.getPassword().isEmpty()) {
-            user.setPassword(createHashedPassword(user.getPassword()));
-        } else {
-            user.setPassword(get(user.getId()).orElseThrow().getPassword());
-        }
+    public User update(User user) {
         return repository.save(user);
     }
 
@@ -70,6 +64,10 @@ public class UserService {
     }
 
     public boolean isExist(String userName) {
-        return repository.findUserByUserName(userName);
+        return repository.existsUserByUserName(userName);
+    }
+
+    public boolean checkIfPasswordMatch(PasswordField newPassword, PasswordField confirmPassword) {
+        return newPassword.getValue().equals(confirmPassword.getValue());
     }
 }

@@ -74,13 +74,12 @@ public class UsersView extends Div {
             usersViewController.deleteUser(user);
             dialog.close();
         });
-        deleteButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY,
-                ButtonVariant.LUMO_PRIMARY);
+        deleteButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         deleteButton.getStyle().set("margin-right", "auto");
         dialog.getFooter().add(deleteButton);
 
         Button cancelButton = new Button("Cancel", event -> dialog.close());
-        cancelButton.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
+        cancelButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         dialog.getFooter().add(cancelButton);
         return dialog;
     }

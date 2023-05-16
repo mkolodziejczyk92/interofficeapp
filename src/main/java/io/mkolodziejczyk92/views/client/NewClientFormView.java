@@ -58,7 +58,7 @@ public class NewClientFormView extends Div implements HasUrlParameter<String> {
                 .bind(Client::getClientType, Client::setClientType);
         binder.forField(firstName)
                 .withValidator
-                        (new FirstAndLastNameValidator())
+                     (new FirstAndLastNameValidator())
                 .bind(Client::getFirstName, Client::setFirstName);
         binder.forField(lastName)
                 .withValidator

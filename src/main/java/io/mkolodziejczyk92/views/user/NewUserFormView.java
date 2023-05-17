@@ -83,10 +83,16 @@ public class NewUserFormView extends Div implements HasUrlParameter<String> {
             userName.setErrorMessage("This username exist in the database.");
             userName.setInvalid(true);
             save.setEnabled(false);
+            if (userName.isReadOnly()) {
+                update.setEnabled(true);
+            } else {
+                update.setEnabled(false);
+            }
         } else {
             userName.setErrorMessage(null);
             userName.setInvalid(false);
             save.setEnabled(true);
+            update.setEnabled(true);
         }
     }
 
@@ -173,6 +179,7 @@ public class NewUserFormView extends Div implements HasUrlParameter<String> {
     public void setParameter(BeforeEvent event, @WildcardParameter String userId) {
         if (!userId.isEmpty()) {
             binder.setBean(usersViewController.getUserByIdForEditForm(Long.valueOf(userId)));
+            userName.setReadOnly(true);
             cancel.setVisible(false);
             save.setVisible(false);
             update.setVisible(true);

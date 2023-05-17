@@ -3,7 +3,6 @@ package io.mkolodziejczyk92.data.controllers;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.textfield.PasswordField;
-import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
 import io.mkolodziejczyk92.data.entity.User;
 import io.mkolodziejczyk92.data.service.ContractRepository;
@@ -35,11 +34,11 @@ public class UserFormController {
     }
 
     public void saveNewUser(User user) {
-        log.info("Saving user...");
-        userService.save(user);
-        Notification.show("User " + user.getUserName() + " stored.");
-        UI.getCurrent().navigate("users");
-        log.info("User saved.");
+        if (!checkIfExist(user.getUserName())) {
+            userService.save(user);
+            Notification.show("User " + user.getUserName() + " stored.");
+            UI.getCurrent().navigate("users");
+        }
     }
 
     public void update(User user) {
@@ -47,17 +46,18 @@ public class UserFormController {
         Notification.show("User " + user.getUserName() + " updated.");
         UI.getCurrent().navigate("users");
     }
+
     public boolean checkIfExist(String userName) {
         return userService.isExist(userName);
     }
 
     public void changePassword(User user, PasswordField newPassword, PasswordField confirmPassword) {
-        if(userService.checkIfPasswordMatch(newPassword, confirmPassword)){
+        if (userService.checkIfPasswordMatch(newPassword, confirmPassword)) {
             user.setPassword(userService.createHashedPassword(newPassword.getValue()));
             userService.update(user);
             Notification.show("Password for " + user.getUserName() + " updated.");
             UI.getCurrent().navigate("users");
-        }else{
+        } else {
             Notification.show("Passwords do not match!");
             UI.getCurrent().navigate("new-user/" + user.getId());
 

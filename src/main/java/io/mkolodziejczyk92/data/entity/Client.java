@@ -30,6 +30,13 @@ public class Client extends AbstractEntity {
 
     private String nip;
 
+    private boolean officeClient;
+
+    @NotNull
+    @OneToOne
+    @JoinColumn(name = "addedBy", referencedColumnName = "id")
+    private User addedBy;
+
     @OneToMany(mappedBy = "client")
     private Set<Address> allAddresses;
 

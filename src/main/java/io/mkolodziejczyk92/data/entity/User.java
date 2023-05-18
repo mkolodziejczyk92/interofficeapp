@@ -22,6 +22,7 @@ import java.util.Set;
 @Table(name = "user")
 public class User extends AbstractEntity {
 
+
     private String userName;
     private String firstName;
     private String lastName;
@@ -35,5 +36,9 @@ public class User extends AbstractEntity {
     @Enumerated(EnumType.STRING)
     @ElementCollection(fetch = FetchType.EAGER)
     private Set<ERole> ERoles;
+
+    public String getFullName(){
+        return firstName + " " + lastName;
+    }
 
 }

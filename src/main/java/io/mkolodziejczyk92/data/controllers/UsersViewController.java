@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 
+import java.util.List;
 import java.util.stream.Stream;
 
 @Slf4j
@@ -50,5 +51,9 @@ public class UsersViewController {
 
     public void addNewUser() {
         UI.getCurrent().navigate(NewUserFormView.class);
+    }
+
+    public List<User> allUsers() {
+        return userService.allUser();
     }
 }

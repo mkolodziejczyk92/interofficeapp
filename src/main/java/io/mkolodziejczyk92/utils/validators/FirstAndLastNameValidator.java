@@ -6,7 +6,7 @@ import com.vaadin.flow.data.binder.ValueContext;
 
 public class FirstAndLastNameValidator implements Validator<String> {
 
-    private static final String FIRST_NAME_AND_LAST_NAME_REGEX = "[a-zA-Z]{1,50}";
+    private static final String FIRST_NAME_AND_LAST_NAME_REGEX = "[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ]{1,50}";
 
     public FirstAndLastNameValidator() {
     }
@@ -17,7 +17,7 @@ public class FirstAndLastNameValidator implements Validator<String> {
             return ValidationResult.error("This field  is required");
         }
         if (!value.matches(FIRST_NAME_AND_LAST_NAME_REGEX)) {
-            return ValidationResult.error("Only letters of the alphabet are allowed");
+            return ValidationResult.error("Only letters of the  alphabet are allowed");
         }
         return ValidationResult.ok();
     }

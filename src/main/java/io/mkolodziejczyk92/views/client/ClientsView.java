@@ -5,11 +5,14 @@ import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.dialog.Dialog;
+import com.vaadin.flow.component.grid.ColumnTextAlign;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.grid.contextmenu.GridContextMenu;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.Hr;
+import com.vaadin.flow.component.icon.Icon;
+import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.provider.ConfigurableFilterDataProvider;
@@ -46,7 +49,18 @@ public class ClientsView extends Div {
         grid.addColumn(Client::getPhoneNumber).setHeader("Phone number");
         grid.addColumn(Client::getNip).setHeader("NIP");
         grid.addColumn(Client::getEmail).setHeader("Email");
-
+        grid.addComponentColumn(client -> {
+            Icon icon;
+            if (client.isOfficeClient()) {
+                icon = VaadinIcon.CHECK_CIRCLE.create();
+                icon.setColor("green");
+            } else {
+                icon = VaadinIcon.CLOSE_CIRCLE.create();
+                icon.setColor("red");
+            }
+            return icon;
+        }).setHeader("Office Client").setTextAlign(ColumnTextAlign.CENTER);
+        grid.addColumn(client -> client.getAddedBy().getFullName()).setHeader("Added By");
         grid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
         grid.getColumns().forEach(clientColumn -> clientColumn.setAutoWidth(true));
         grid.setItems(filterDataProvider);

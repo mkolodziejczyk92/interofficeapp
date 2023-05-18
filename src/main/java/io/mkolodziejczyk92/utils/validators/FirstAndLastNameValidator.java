@@ -17,7 +17,7 @@ public class FirstAndLastNameValidator implements Validator<String> {
             return ValidationResult.error("This field  is required");
         }
         if (!value.matches(FIRST_NAME_AND_LAST_NAME_REGEX)) {
-            return ValidationResult.error("Only letters of the english alphabet are allowed");
+            return ValidationResult.error("Only letters of the  alphabet are allowed");
         }
         return ValidationResult.ok();
     }

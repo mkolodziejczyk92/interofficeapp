@@ -15,7 +15,9 @@ import io.mkolodziejczyk92.data.controllers.UsersViewController;
 import io.mkolodziejczyk92.data.entity.Client;
 import io.mkolodziejczyk92.data.entity.User;
 import io.mkolodziejczyk92.data.enums.EClientType;
+import io.mkolodziejczyk92.security.AuthenticatedUser;
 import io.mkolodziejczyk92.utils.ComponentFactory;
+import io.mkolodziejczyk92.utils.validators.ClientNipValidator;
 import io.mkolodziejczyk92.utils.validators.FirstAndLastNameValidator;
 import io.mkolodziejczyk92.utils.validators.PhoneNumberValidator;
 import io.mkolodziejczyk92.views.MainLayout;
@@ -29,11 +31,7 @@ import static io.mkolodziejczyk92.utils.ComponentFactory.*;
 public class NewClientFormView extends Div implements HasUrlParameter<String> {
 
     private final ClientAddFormViewController clientFormViewController;
-
-    private final UsersViewController usersViewController;
-
     private final TextField firstName = new TextField("First Name");
-
     private final TextField lastName = new TextField("Last Name");
     private final TextField phoneNumber = new TextField("Phone Number");
     private final TextField email = new TextField("Email");
@@ -41,24 +39,15 @@ public class NewClientFormView extends Div implements HasUrlParameter<String> {
 
     private final Checkbox officeClient = new Checkbox("Office Client");
     private final ComboBox<EClientType> clientType = new ComboBox<>("Client Type");
-
-    private final ComboBox<User> addedBy = new ComboBox<>("Added By");
+    private final ComboBox<User> addedBy = new ComboBox<>();
     private final Button cancel = createCancelButton();
     private final Button save = createSaveButton();
     private final Button back = createBackButton();
     private final Button update = createUpdateButton();
     private final Binder<Client> binder = new Binder<>(Client.class);
 
-    private boolean isClientTypeValid = false;
-    private boolean isEmailValid = false;
-    private boolean isLastNameValid = false;
-    private boolean isFirstNameValid = false;
-    private boolean isPhoneNumberValid = false;
-
-
-    public NewClientFormView(ClientAddFormViewController clientFormViewController, UsersViewController usersViewController) {
+    public NewClientFormView(ClientAddFormViewController clientFormViewController, UsersViewController usersViewController, AuthenticatedUser loggedUser) {
         this.clientFormViewController = clientFormViewController;
-        this.usersViewController = usersViewController;
         clientFormViewController.initBinder(binder);
 
 
@@ -87,14 +76,17 @@ public class NewClientFormView extends Div implements HasUrlParameter<String> {
         binder.forField(email)
                 .withValidator(new EmailValidator("Incorrect email address"))
                 .bind(Client::getEmail, Client::setEmail);
-        binder.forField(addedBy)
-                .asRequired("Choose who added this client")
-                .bind(Client::getAddedBy, Client::setAddedBy);
-        clientFormViewController.clearForm();
+       binder.forField(nip)
+               .withValidator(new ClientNipValidator())
+               .bind(Client::getNip, Client::setNip);
 
+        clientFormViewController.clearForm();
         createSaveButtonStatus();
 
-
+        if (loggedUser.get().isPresent() && addedBy.isEmpty()) {
+            addedBy.setItems(usersViewController.allUsers());
+            addedBy.setValue(loggedUser.get().get());
+        }
     }
 
     private Component createFormLayout() {
@@ -111,7 +103,6 @@ public class NewClientFormView extends Div implements HasUrlParameter<String> {
         update.addClickListener(e -> clientFormViewController.validateAndUpdate(binder.getBean()));
         update.setVisible(false);
         return bottomButtonLayout;
-
     }
 
     private Component createTopButtonLayout() {
@@ -126,23 +117,21 @@ public class NewClientFormView extends Div implements HasUrlParameter<String> {
         clientType.setItems(EClientType.values());
         clientType.getStyle().set("padding-left", "30px");
         clientType.getStyle().set("padding-right", "30px");
-        addedBy.getStyle().set("padding-right", "30px");
-        addedBy.setItems(usersViewController.allUsers());
-        addedBy.setItemLabelGenerator(User::getFullName);
-        add(clientType,  addedBy, officeClient);
+        add(clientType, officeClient);
     }
 
     private void createSaveButtonStatus() {
         clientType.addValueChangeListener(e -> updateSaveButtonStatus(clientType.isInvalid()));
-        addedBy.addValueChangeListener(e -> updateSaveButtonStatus(addedBy.isInvalid()));
         email.addValidationStatusChangeListener(e -> updateSaveButtonStatus(email.isInvalid()));
         lastName.addValidationStatusChangeListener(e -> updateSaveButtonStatus(lastName.isInvalid()));
         firstName.addValidationStatusChangeListener(e -> updateSaveButtonStatus(firstName.isInvalid()));
         phoneNumber.addValidationStatusChangeListener(e -> updateSaveButtonStatus(phoneNumber.isInvalid()));
+        nip.addValidationStatusChangeListener(e -> updateSaveButtonStatus(nip.isInvalid()));
     }
 
     private void updateSaveButtonStatus(boolean isInvalid) {
-        save.setEnabled(!isInvalid && !clientType.isEmpty() && !addedBy.isEmpty());
+        save.setEnabled(!isInvalid && !clientType.isEmpty() && !email.isEmpty() && !firstName.isEmpty()
+                && !lastName.isEmpty() && !phoneNumber.isEmpty());
     }
 
     @Override
@@ -154,8 +143,5 @@ public class NewClientFormView extends Div implements HasUrlParameter<String> {
             save.setVisible(false);
             update.setVisible(true);
         }
-
     }
-
-
 }

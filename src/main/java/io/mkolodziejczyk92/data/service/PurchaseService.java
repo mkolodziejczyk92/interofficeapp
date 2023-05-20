@@ -57,4 +57,8 @@ public class PurchaseService {
     public boolean isExist(Long purchaseId) {
         return repository.existsById(purchaseId);
     }
+
+    public List<Purchase> allPurchaseForSupplier(Long supplierId){
+        return repository.findPurchasesBySupplierId(supplierId);
+    }
 }

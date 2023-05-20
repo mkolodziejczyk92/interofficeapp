@@ -57,4 +57,8 @@ public class PurchasesViewController {
     public List<Purchase> clientPurchases(Long clientId) {
         return purchaseService.clientPurchases(clientId);
     }
+
+    public List<Purchase> purchasesSentToSupplier(Long supplierId){
+        return purchaseService.allPurchaseForSupplier(supplierId);
+    }
 }

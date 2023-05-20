@@ -8,4 +8,5 @@ import java.util.List;
 
 public interface PurchaseRepository extends JpaRepository<Purchase, Long>, JpaSpecificationExecutor<Purchase> {
     List<Purchase> findPurchasesByClientId(Long clientId);
+    List<Purchase> findPurchasesBySupplierId(Long supplierId);
 }

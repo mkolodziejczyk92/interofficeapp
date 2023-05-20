@@ -35,9 +35,12 @@ public class ClientAddFormViewController {
             clientService.update(client);
             Notification.show(client.getFullName() + " updated.");
             UI.getCurrent().navigate("clients");
-        } catch (Exception ex) {
+        } catch (ValidationException ex) {
             log.error(ex.getMessage(), ex);
             Notification.show("Validate Error");
+        } catch (Exception e){
+            log.error(e.getMessage(), e);
+            Notification.show("Something went wrong!");
         }
 
     }
@@ -60,6 +63,9 @@ public class ClientAddFormViewController {
         } catch (ValidationException ex) {
             log.error(ex.getMessage(), ex);
             Notification.show("Validate Error");
+        } catch (Exception e){
+            log.error(e.getMessage(), e);
+            Notification.show("Something went wrong");
         }
     }
 

@@ -18,6 +18,7 @@ import io.mkolodziejczyk92.data.enums.EAddressType;
 import io.mkolodziejczyk92.data.enums.ECountry;
 import io.mkolodziejczyk92.data.enums.EVoivodeship;
 import io.mkolodziejczyk92.utils.ComponentFactory;
+import io.mkolodziejczyk92.utils.validators.OnlyLettersOfAlphabetValidator;
 import io.mkolodziejczyk92.utils.validators.ZipCodeValidator;
 import io.mkolodziejczyk92.views.MainLayout;
 import jakarta.annotation.security.PermitAll;
@@ -63,6 +64,9 @@ public class NewAddressFormView extends Div implements HasUrlParameter<String> {
         binder.bindInstanceFields(this);
 
         addressFormViewController.clearForm();
+        save.setEnabled(false);
+        update.setEnabled(false);
+        createSaveAndUpdateButtonStatus();
     }
 
 
@@ -115,6 +119,35 @@ public class NewAddressFormView extends Div implements HasUrlParameter<String> {
         add(addressType);
     }
 
+    private void createSaveAndUpdateButtonStatus() {
+        client.addValueChangeListener(e -> updateSaveAndUpdateButtonStatus(client.isInvalid()));
+        zipCode.addValidationStatusChangeListener(e -> updateSaveAndUpdateButtonStatus(zipCode.isInvalid()));
+        plotNumber.addValidationStatusChangeListener(e -> updateSaveAndUpdateButtonStatus(plotNumber.isInvalid()));
+        municipality.addValidationStatusChangeListener(e -> updateSaveAndUpdateButtonStatus(municipality.isInvalid()));
+        houseNumber.addValidationStatusChangeListener(e -> updateSaveAndUpdateButtonStatus(houseNumber.isInvalid()));
+        country.addValidationStatusChangeListener(e -> updateSaveAndUpdateButtonStatus(country.isInvalid()));
+        apartmentNumber.addValidationStatusChangeListener(e -> updateSaveAndUpdateButtonStatus(apartmentNumber.isInvalid()));
+        voivodeship.addValidationStatusChangeListener(e -> updateSaveAndUpdateButtonStatus(voivodeship.isInvalid()));
+        street.addValidationStatusChangeListener(e -> updateSaveAndUpdateButtonStatus(street.isInvalid()));
+        city.addValidationStatusChangeListener(e -> updateSaveAndUpdateButtonStatus(city.isInvalid()));
+    }
+
+    private void updateSaveAndUpdateButtonStatus(boolean isInvalid) {
+        if(addressType.getValue().equals(RESIDENCE)){
+            save.setEnabled(!isInvalid && !client.isEmpty() && !country.isEmpty() && !voivodeship.isEmpty()
+                    && !zipCode.isEmpty() && !houseNumber.isEmpty() && !street.isEmpty() && !city.isEmpty()
+            && !municipality.isEmpty());
+            update.setEnabled(!isInvalid && !client.isEmpty() && !country.isEmpty() && !voivodeship.isEmpty()
+                    && !zipCode.isEmpty() && !houseNumber.isEmpty() && !street.isEmpty() && !city.isEmpty()
+                    && !municipality.isEmpty());
+        } else if  (addressType.getValue().equals(INVESTMENT)){
+            save.setEnabled(!isInvalid && !client.isEmpty() && !zipCode.isEmpty() && !plotNumber.isEmpty()
+                    && !municipality.isEmpty() && !voivodeship.isEmpty() && !country.isEmpty());
+            update.setEnabled(!isInvalid && !client.isEmpty() && !zipCode.isEmpty() && !plotNumber.isEmpty()
+                    && !municipality.isEmpty() && !voivodeship.isEmpty() && !country.isEmpty());
+        }
+    }
+
     private void turnOnFieldsForResidenceAddressType() {
         turnOnFieldsInEveryAddressType();
         street.setEnabled(true);
@@ -125,12 +158,8 @@ public class NewAddressFormView extends Div implements HasUrlParameter<String> {
         apartmentNumber.setEnabled(true);
 
         binder.forField(houseNumber)
-                .asRequired("")
+                .asRequired("House number is required")
                 .bind(Address::getHouseNumber, Address::setHouseNumber);
-
-        binder.forField(apartmentNumber)
-                .asRequired("")
-                .bind(Address::getApartmentNumber, Address::setApartmentNumber);
 
         binder.forField(zipCode)
                 .withValidator(new ZipCodeValidator())
@@ -173,8 +202,7 @@ public class NewAddressFormView extends Div implements HasUrlParameter<String> {
 
     }
 
-
-    private void turnOnFieldsInEveryAddressType(){
+    private void turnOnFieldsInEveryAddressType() {
         zipCode.setEnabled(true);
         client.setEnabled(true);
         voivodeship.setEnabled(true);
@@ -199,7 +227,7 @@ public class NewAddressFormView extends Div implements HasUrlParameter<String> {
                 .bind(Address::getCountry, Address::setCountry);
 
         binder.forField(municipality)
-                .withValidator(new StringLengthValidator("Municipality is required", 1, 50))
+                .withValidator(new OnlyLettersOfAlphabetValidator())
                 .bind(Address::getMunicipality, Address::setMunicipality);
     }
 

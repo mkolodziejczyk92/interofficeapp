@@ -18,7 +18,7 @@ import io.mkolodziejczyk92.data.enums.EClientType;
 import io.mkolodziejczyk92.security.AuthenticatedUser;
 import io.mkolodziejczyk92.utils.ComponentFactory;
 import io.mkolodziejczyk92.utils.validators.ClientNipValidator;
-import io.mkolodziejczyk92.utils.validators.FirstAndLastNameValidator;
+import io.mkolodziejczyk92.utils.validators.OnlyLettersOfAlphabetValidator;
 import io.mkolodziejczyk92.utils.validators.PhoneNumberValidator;
 import io.mkolodziejczyk92.views.MainLayout;
 import jakarta.annotation.security.PermitAll;
@@ -65,11 +65,11 @@ public class NewClientFormView extends Div implements HasUrlParameter<String> {
                 .bind(Client::getClientType, Client::setClientType);
         binder.forField(firstName)
                 .withValidator
-                        (new FirstAndLastNameValidator())
+                        (new OnlyLettersOfAlphabetValidator())
                 .bind(Client::getFirstName, Client::setFirstName);
         binder.forField(lastName)
                 .withValidator
-                        (new FirstAndLastNameValidator())
+                        (new OnlyLettersOfAlphabetValidator())
                 .bind(Client::getLastName, Client::setLastName);
         binder.forField(phoneNumber)
                 .withValidator
@@ -83,7 +83,10 @@ public class NewClientFormView extends Div implements HasUrlParameter<String> {
                .bind(Client::getNip, Client::setNip);
 
         clientFormViewController.clearForm();
-        createSaveButtonStatus();
+
+        save.setEnabled(false);
+        update.setEnabled(false);
+        createSaveAndUpdateButtonStatus();
 
         if (loggedUser.get().isPresent() && addedBy.isEmpty()) {
             addedBy.setItems(getUsersFullNames());
@@ -122,17 +125,19 @@ public class NewClientFormView extends Div implements HasUrlParameter<String> {
         add(clientType, officeClient);
     }
 
-    private void createSaveButtonStatus() {
-        clientType.addValueChangeListener(e -> updateSaveButtonStatus(clientType.isInvalid()));
-        email.addValidationStatusChangeListener(e -> updateSaveButtonStatus(email.isInvalid()));
-        lastName.addValidationStatusChangeListener(e -> updateSaveButtonStatus(lastName.isInvalid()));
-        firstName.addValidationStatusChangeListener(e -> updateSaveButtonStatus(firstName.isInvalid()));
-        phoneNumber.addValidationStatusChangeListener(e -> updateSaveButtonStatus(phoneNumber.isInvalid()));
-        nip.addValidationStatusChangeListener(e -> updateSaveButtonStatus(nip.isInvalid()));
+    private void createSaveAndUpdateButtonStatus() {
+        clientType.addValueChangeListener(e -> updateSaveAndUpdateButtonStatus(clientType.isInvalid()));
+        email.addValidationStatusChangeListener(e -> updateSaveAndUpdateButtonStatus(email.isInvalid()));
+        lastName.addValidationStatusChangeListener(e -> updateSaveAndUpdateButtonStatus(lastName.isInvalid()));
+        firstName.addValidationStatusChangeListener(e -> updateSaveAndUpdateButtonStatus(firstName.isInvalid()));
+        phoneNumber.addValidationStatusChangeListener(e -> updateSaveAndUpdateButtonStatus(phoneNumber.isInvalid()));
+        nip.addValidationStatusChangeListener(e -> updateSaveAndUpdateButtonStatus(nip.isInvalid()));
     }
 
-    private void updateSaveButtonStatus(boolean isInvalid) {
+    private void updateSaveAndUpdateButtonStatus(boolean isInvalid) {
         save.setEnabled(!isInvalid && !clientType.isEmpty() && !email.isEmpty() && !firstName.isEmpty()
+                && !lastName.isEmpty() && !phoneNumber.isEmpty());
+        update.setEnabled(!isInvalid && !clientType.isEmpty() && !email.isEmpty() && !firstName.isEmpty()
                 && !lastName.isEmpty() && !phoneNumber.isEmpty());
     }
 

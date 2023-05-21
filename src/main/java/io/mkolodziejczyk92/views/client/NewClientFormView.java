@@ -23,6 +23,9 @@ import io.mkolodziejczyk92.utils.validators.PhoneNumberValidator;
 import io.mkolodziejczyk92.views.MainLayout;
 import jakarta.annotation.security.PermitAll;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import static io.mkolodziejczyk92.utils.ComponentFactory.*;
 
 @PageTitle("New Client")
@@ -31,15 +34,15 @@ import static io.mkolodziejczyk92.utils.ComponentFactory.*;
 public class NewClientFormView extends Div implements HasUrlParameter<String> {
 
     private final ClientAddFormViewController clientFormViewController;
+    private final UsersViewController usersViewController;
     private final TextField firstName = new TextField("First Name");
     private final TextField lastName = new TextField("Last Name");
     private final TextField phoneNumber = new TextField("Phone Number");
     private final TextField email = new TextField("Email");
     private final TextField nip = new TextField("NIP");
-
     private final Checkbox officeClient = new Checkbox("Office Client");
     private final ComboBox<EClientType> clientType = new ComboBox<>("Client Type");
-    private final ComboBox<User> addedBy = new ComboBox<>();
+    private final ComboBox<String> addedBy = new ComboBox<>();
     private final Button cancel = createCancelButton();
     private final Button save = createSaveButton();
     private final Button back = createBackButton();
@@ -48,14 +51,13 @@ public class NewClientFormView extends Div implements HasUrlParameter<String> {
 
     public NewClientFormView(ClientAddFormViewController clientFormViewController, UsersViewController usersViewController, AuthenticatedUser loggedUser) {
         this.clientFormViewController = clientFormViewController;
+        this.usersViewController = usersViewController;
         clientFormViewController.initBinder(binder);
-
 
         add(createTopButtonLayout());
         createComboBox();
         add(createFormLayout());
         add(createBottomButtonLayout());
-
 
         binder.bindInstanceFields(this);
         binder.forField(clientType)
@@ -84,8 +86,8 @@ public class NewClientFormView extends Div implements HasUrlParameter<String> {
         createSaveButtonStatus();
 
         if (loggedUser.get().isPresent() && addedBy.isEmpty()) {
-            addedBy.setItems(usersViewController.allUsers());
-            addedBy.setValue(loggedUser.get().get());
+            addedBy.setItems(getUsersFullNames());
+            addedBy.setValue(loggedUser.get().get().getFullName());
         }
     }
 
@@ -132,6 +134,13 @@ public class NewClientFormView extends Div implements HasUrlParameter<String> {
     private void updateSaveButtonStatus(boolean isInvalid) {
         save.setEnabled(!isInvalid && !clientType.isEmpty() && !email.isEmpty() && !firstName.isEmpty()
                 && !lastName.isEmpty() && !phoneNumber.isEmpty());
+    }
+
+    private List<String> getUsersFullNames(){
+        List<User> users = usersViewController.allUsers();
+        return users.stream()
+                .map(User::getFullName)
+                .collect(Collectors.toList());
     }
 
     @Override

@@ -60,7 +60,7 @@ public class ClientsView extends Div {
             }
             return icon;
         }).setHeader("Office Client").setTextAlign(ColumnTextAlign.CENTER);
-        grid.addColumn(client -> client.getAddedBy().getFullName()).setHeader("Added By");
+        grid.addColumn(Client::getAddedBy).setHeader("Added By");
         grid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
         grid.getColumns().forEach(clientColumn -> clientColumn.setAutoWidth(true));
         grid.setItems(filterDataProvider);

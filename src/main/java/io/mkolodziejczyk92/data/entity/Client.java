@@ -8,6 +8,8 @@ import lombok.*;
 
 import java.util.Set;
 
+import static jakarta.persistence.FetchType.EAGER;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -35,7 +37,7 @@ public class Client extends AbstractEntity {
     @NotNull
     private String addedBy;
 
-    @OneToMany(mappedBy = "client")
+    @OneToMany(mappedBy = "client", fetch = EAGER)
     private Set<Address> allAddresses;
 
     @OneToMany(mappedBy = "client")

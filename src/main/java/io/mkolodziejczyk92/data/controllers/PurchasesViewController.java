@@ -61,4 +61,8 @@ public class PurchasesViewController {
     public List<Purchase> purchasesSentToSupplier(Long supplierId){
         return purchaseService.allPurchaseForSupplier(supplierId);
     }
+
+    public void createNewContractFromPurchase(Long purchaseId) {
+        UI.getCurrent().navigate("newContract/p" + purchaseId);
+    }
 }

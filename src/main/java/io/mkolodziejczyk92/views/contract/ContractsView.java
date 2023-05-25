@@ -36,7 +36,6 @@ public class ContractsView extends Div implements HasUrlParameter<String> {
     private ConfigurableFilterDataProvider<Contract, Void, ContractFilter> filterDataProvider
             = contractDataProvider.withConfigurableFilter();
     private final Grid<Contract> grid = new Grid<>(Contract.class, false);
-    private Button newContract = createStandardButton("New Contract");
 
     public ContractsView(ContractsViewController contractsViewController) {
         this.contractsViewController = contractsViewController;
@@ -88,14 +87,6 @@ public class ContractsView extends Div implements HasUrlParameter<String> {
         searchLayout.add(searchField);
         return searchLayout;
     }
-
-    private Component createTopButtonLayout() {
-        HorizontalLayout topButtonLayout = ComponentFactory.createTopButtonLayout();
-        topButtonLayout.add(newContract);
-        newContract.addClickListener(e -> UI.getCurrent().navigate(NewContractFormView.class));
-        return topButtonLayout;
-    }
-
 
     @Override
     public void setParameter(BeforeEvent beforeEvent, @WildcardParameter String urlParameter) {

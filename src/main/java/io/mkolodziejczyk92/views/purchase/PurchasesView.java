@@ -41,6 +41,7 @@ public class PurchasesView extends Div implements HasUrlParameter<String> {
     private final Grid<Purchase> grid = new Grid<>(Purchase.class, false);
     private  String clientIdFromUrl;
     private String supplierIdFromUrl;
+    private String idFromUrl;
 
     public PurchasesView(PurchasesViewController purchasesViewController) {
         this.purchasesViewController = purchasesViewController;
@@ -132,14 +133,16 @@ public class PurchasesView extends Div implements HasUrlParameter<String> {
             char identificationChar = urlParameter.charAt(0);
             switch (identificationChar) {
                 case 'c' -> {
-                    String clientId = urlParameter.substring(1);
-                    clientIdFromUrl = urlParameter;
-                    grid.setItems(purchasesViewController.clientPurchases(Long.valueOf(clientId)));
+                    idFromUrl = urlParameter.substring(1);
+                    grid.setItems(purchasesViewController.clientPurchases(Long.valueOf(idFromUrl)));
                 }
                 case 's' -> {
-                    String supplierId = urlParameter.substring(1);
-                    supplierIdFromUrl = urlParameter;
-                    grid.setItems(purchasesViewController.purchasesSentToSupplier(Long.valueOf(supplierId)));
+                    idFromUrl = urlParameter.substring(1);
+                    grid.setItems(purchasesViewController.purchasesSentToSupplier(Long.valueOf(idFromUrl)));
+                }
+                case 'm' -> {
+                   idFromUrl = urlParameter.substring(1);
+                    grid.setItems(purchasesViewController.purchasesSentToManufacturer(Long.valueOf(idFromUrl)));
                 }
             }
         }

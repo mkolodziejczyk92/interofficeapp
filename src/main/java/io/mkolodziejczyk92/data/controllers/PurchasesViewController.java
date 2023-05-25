@@ -65,10 +65,10 @@ public class PurchasesViewController {
 
     public void createNewContractFromPurchase(Long purchaseId) {
         UI.getCurrent().navigate("newContract/p" + purchaseId);
+    }
 
     public List<Purchase> purchasesSentToManufacturer(Long manufacturerId) {
         return purchaseService.allPurchasesForManufacturer(manufacturerId);
-
     }
 }
 

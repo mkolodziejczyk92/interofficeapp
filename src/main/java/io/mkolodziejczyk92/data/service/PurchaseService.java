@@ -61,4 +61,7 @@ public class PurchaseService {
     public List<Purchase> allPurchaseForSupplier(Long supplierId){
         return repository.findPurchasesBySupplierId(supplierId);
     }
+    public List<Purchase> allPurchasesForManufacturer(Long manufacturerId){
+        return repository.findPurchasesByManufacturerId(manufacturerId);
+    }
 }

@@ -21,7 +21,7 @@ public class PurchasesViewController {
         this.purchaseService = purchaseService;
     }
 
-    public List<Purchase> allPurchases(){
+    public List<Purchase> allPurchases() {
         return purchaseService.allPurchases();
     }
 
@@ -34,16 +34,16 @@ public class PurchasesViewController {
         }
     }
 
-    public void createNewPurchaseForClient(String clientId){
-        if(Objects.isNull(clientId)){
+    public void createNewPurchaseForClient(String clientId) {
+        if (Objects.isNull(clientId)) {
             UI.getCurrent().navigate("new-purchase");
-        }else {
+        } else {
             UI.getCurrent().navigate("new-purchase/" + clientId);
         }
     }
 
     public void deletePurchase(Purchase purchase) {
-        try{
+        try {
             purchaseService.delete(purchase.getId());
         } catch (DataIntegrityViolationException e) {
             Notification.show("Purchase "
@@ -58,7 +58,12 @@ public class PurchasesViewController {
         return purchaseService.clientPurchases(clientId);
     }
 
-    public List<Purchase> purchasesSentToSupplier(Long supplierId){
+    public List<Purchase> purchasesSentToSupplier(Long supplierId) {
         return purchaseService.allPurchaseForSupplier(supplierId);
     }
+
+    public List<Purchase> purchasesSentToManufacturer(Long manufacturerId) {
+        return purchaseService.allPurchasesForManufacturer(manufacturerId);
+    }
 }
+

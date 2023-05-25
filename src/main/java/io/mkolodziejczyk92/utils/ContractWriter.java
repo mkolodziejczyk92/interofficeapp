@@ -21,7 +21,7 @@ public class ContractWriter {
         Document document = new Document();
         try {
             // tutaj zamiast create.pdf damy contract number, będzie tworzyć za każdym razem nowy plik
-            PdfWriter.getInstance(document, new FileOutputStream("D:\\create.pdf"));
+            PdfWriter.getInstance(document, new FileOutputStream("E:\\create.pdf"));
 
             document.open();
 

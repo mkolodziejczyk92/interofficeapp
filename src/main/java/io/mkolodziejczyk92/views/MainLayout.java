@@ -18,6 +18,7 @@ import io.mkolodziejczyk92.views.address.AddressesView;
 import io.mkolodziejczyk92.views.client.ClientsView;
 import io.mkolodziejczyk92.views.contract.ContractsView;
 import io.mkolodziejczyk92.views.invoice.InvoicesView;
+import io.mkolodziejczyk92.views.manufacturer.ManufacturersView;
 import io.mkolodziejczyk92.views.purchase.PurchasesView;
 import io.mkolodziejczyk92.views.supplier.SuppliersView;
 import io.mkolodziejczyk92.views.user.UsersView;
@@ -93,6 +94,9 @@ public class MainLayout extends AppLayout {
         }
         if(accessChecker.hasAccess(SuppliersView.class)){
             nav.addItem(new AppNavItem("Suppliers", SuppliersView.class, LineAwesomeIcon.TRUCK_SOLID.create()));
+        }
+        if(accessChecker.hasAccess(ManufacturersView.class)){
+            nav.addItem(new AppNavItem("Manufacturers", ManufacturersView.class, LineAwesomeIcon.TRUCK_SOLID.create()));
         }
         if (accessChecker.hasAccess(UsersView.class)) {
             nav.addItem(new AppNavItem("Users", UsersView.class, LineAwesomeIcon.USER_CIRCLE_SOLID.create()));

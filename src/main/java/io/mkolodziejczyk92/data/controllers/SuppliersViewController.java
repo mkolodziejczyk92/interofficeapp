@@ -36,7 +36,6 @@ public class SuppliersViewController {
         }
         Notification.show(supplier.getNameOfCompany() + " deleted.");
     }
-
     public void showAllPurchasesForSupplier(Supplier supplier) {
         UI.getCurrent().navigate("purchases/s" + supplier.getId());
     }

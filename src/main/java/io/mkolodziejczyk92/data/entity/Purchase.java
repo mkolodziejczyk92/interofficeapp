@@ -35,5 +35,8 @@ public class Purchase extends AbstractEntity {
     @JoinColumn(name = "supplier_id")
     private Supplier supplier;
 
+    @ManyToOne
+    @JoinColumn(name="manufacturer_id")
+    private Manufacturer manufacturer;
 
 }

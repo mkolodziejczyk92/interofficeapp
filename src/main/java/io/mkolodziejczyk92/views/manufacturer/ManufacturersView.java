@@ -1,4 +1,4 @@
-package io.mkolodziejczyk92.views.supplier;
+package io.mkolodziejczyk92.views.manufacturer;
 
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.UI;
@@ -14,44 +14,46 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.provider.ConfigurableFilterDataProvider;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-import io.mkolodziejczyk92.data.controllers.SuppliersViewController;
+import io.mkolodziejczyk92.data.controllers.ManufacturersViewController;
+import io.mkolodziejczyk92.data.entity.Manufacturer;
 import io.mkolodziejczyk92.data.entity.Supplier;
 import io.mkolodziejczyk92.utils.ComponentFactory;
 import io.mkolodziejczyk92.views.MainLayout;
+import io.mkolodziejczyk92.views.supplier.NewSupplierFormView;
 import jakarta.annotation.security.PermitAll;
 
 import static io.mkolodziejczyk92.utils.ComponentFactory.createStandardButton;
 import static io.mkolodziejczyk92.utils.ComponentFactory.createTextFieldForSearchLayout;
 
-
-@PageTitle("Suppliers")
-@Route(value = "suppliers", layout = MainLayout.class)
+@PageTitle("Manufacturers")
+@Route(value = "manufacturers", layout = MainLayout.class)
 @PermitAll
-public class SuppliersView extends Div {
+public class ManufacturersView extends Div {
 
-    private final SuppliersViewController suppliersViewController;
-    private final SupplierFilter supplierFilter = new SupplierFilter();
-    private final SupplierDataProvider supplierDataProvider = new SupplierDataProvider();
-    private final ConfigurableFilterDataProvider<Supplier, Void, SupplierFilter> filterDataProvider
-            = supplierDataProvider.withConfigurableFilter();
-    private final Button newSupplierButton = createStandardButton("New Supplier");
-    private Grid<Supplier> grid = new Grid<>(Supplier.class, false);
+    private final ManufacturersViewController manufacturersViewController;
+    private final ManufacturerFilter manufacturerFilter = new ManufacturerFilter();
+    private final ManufacturerDataProvider manufacturerDataProvider = new ManufacturerDataProvider();
+    private final ConfigurableFilterDataProvider<Manufacturer, Void, ManufacturerFilter> filterDataProvider
+            = manufacturerDataProvider.withConfigurableFilter();
+    private final Button newManufacturerButton = createStandardButton("New Manufacturer");
+    private Grid<Manufacturer> grid = new Grid<>(Manufacturer.class, false);
 
 
-    public SuppliersView(SuppliersViewController suppliersViewController) {
-        this.suppliersViewController = suppliersViewController;
+    public ManufacturersView(ManufacturersViewController manufacturersViewController) {
+        this.manufacturersViewController = manufacturersViewController;
 
-        grid.addColumn(Supplier::getNameOfCompany).setHeader("Name of company");
-        grid.addColumn(Supplier::getNip).setHeader("NIP");
+
+        grid.addColumn(Manufacturer::getNameOfCompany).setHeader("Name of company");
+        grid.addColumn(Manufacturer::getNip).setHeader("NIP");
         grid.getColumns().forEach(supplierColumn -> supplierColumn.setAutoWidth(true));
         grid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
         grid.setItems(filterDataProvider);
 
 
-        GridContextMenu<Supplier> menu = grid.addContextMenu();
+        GridContextMenu<Manufacturer> menu = grid.addContextMenu();
         menu.addItem("All purchases", event -> {
             if (event.getItem().isPresent()) {
-                suppliersViewController.showAllPurchasesForSupplier(event.getItem().get());
+                manufacturersViewController.showAllPurchasesForManufacturer(event.getItem().get());
             } else {
                 menu.close();
             }
@@ -73,11 +75,10 @@ public class SuppliersView extends Div {
 
     private Component createSearchLayout() {
         HorizontalLayout searchLayout = new HorizontalLayout();
-
         TextField searchField = createTextFieldForSearchLayout("Search");
         searchField.addValueChangeListener(e -> {
-            supplierFilter.setSearchTerm(e.getValue());
-            filterDataProvider.setFilter(supplierFilter);
+            manufacturerFilter.setSearchTerm(e.getValue());
+            filterDataProvider.setFilter(manufacturerFilter);
         });
         searchLayout.add(searchField);
         return searchLayout;
@@ -85,17 +86,17 @@ public class SuppliersView extends Div {
 
     private Component createTopButtonLayout() {
         HorizontalLayout topButtonLayout = ComponentFactory.createTopButtonLayout();
-        topButtonLayout.add(newSupplierButton);
-        newSupplierButton.addClickListener(e -> UI.getCurrent().navigate(NewSupplierFormView.class));
+        topButtonLayout.add(newManufacturerButton);
+        newManufacturerButton.addClickListener(e -> UI.getCurrent().navigate(NewManufacturerFormView.class));
         return topButtonLayout;
     }
 
-    private Dialog createDialogConfirmForDeleteSupplier(Supplier supplier) {
+    private Dialog createDialogConfirmForDeleteSupplier(Manufacturer manufacturer) {
         Dialog dialog = new Dialog();
-        dialog.add(String.format("Are you sure you want to delete this supplier: %s?", supplier.getNameOfCompany()));
+        dialog.add(String.format("Are you sure you want to delete this supplier: %s?", manufacturer.getNameOfCompany()));
         Button deleteButton = new Button("Delete", event ->
         {
-            suppliersViewController.deleteSupplier(supplier);
+            manufacturersViewController.deleteManufacturer(manufacturer);
             dialog.close();
         });
         deleteButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
@@ -107,5 +108,4 @@ public class SuppliersView extends Div {
         dialog.getFooter().add(cancelButton);
         return dialog;
     }
-
 }

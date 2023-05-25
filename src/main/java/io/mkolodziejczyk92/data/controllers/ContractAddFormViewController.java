@@ -5,12 +5,15 @@ import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.data.binder.Binder;
 import io.mkolodziejczyk92.data.entity.Client;
 import io.mkolodziejczyk92.data.entity.Contract;
+import io.mkolodziejczyk92.data.entity.Purchase;
 import io.mkolodziejczyk92.data.service.ClientService;
 import io.mkolodziejczyk92.data.service.ContractService;
+import io.mkolodziejczyk92.data.service.PurchaseService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @Slf4j
@@ -18,12 +21,14 @@ public class ContractAddFormViewController {
 
     private final ContractService contractService;
 
+    private final PurchaseService purchaseService;
     private final ClientService clientService;
 
     private Binder<Contract> binder;
 
-    public ContractAddFormViewController(ContractService contractService, ClientService clientService) {
+    public ContractAddFormViewController(ContractService contractService, PurchaseService purchaseService, ClientService clientService) {
         this.contractService = contractService;
+        this.purchaseService = purchaseService;
         this.clientService = clientService;
     }
 
@@ -61,5 +66,9 @@ public class ContractAddFormViewController {
 
     public String createContractNumber() {
         return contractService.createContractNumber();
+    }
+
+    public Purchase fillFormWithDataFromPurchase(Long purchaseId) {
+        return purchaseService.get(purchaseId).orElseThrow();
     }
 }

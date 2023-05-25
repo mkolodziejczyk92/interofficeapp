@@ -9,6 +9,7 @@ import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.grid.contextmenu.GridContextMenu;
 import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.html.Hr;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -75,6 +76,12 @@ public class PurchasesView extends Div implements HasUrlParameter<String> {
         grid.setItems(filterDataProvider);
 
         GridContextMenu<Purchase> menu = grid.addContextMenu();
+        menu.addItem("Create Contract", event -> {
+            if(event.getItem().isPresent()){
+                purchasesViewController.createNewContractFromPurchase(event.getItem().get().getId());
+            } else menu.close();
+        });
+        menu.add(new Hr());
         menu.addItem("Edit", event -> {
             if(event.getItem().isPresent()){
                 purchasesViewController.editPurchaseInformation(event.getItem().get());

@@ -25,7 +25,8 @@ import jakarta.annotation.security.PermitAll;
 
 import java.util.Objects;
 
-import static io.mkolodziejczyk92.utils.ComponentFactory.*;
+import static io.mkolodziejczyk92.utils.ComponentFactory.createStandardButton;
+import static io.mkolodziejczyk92.utils.ComponentFactory.createTextFieldForSearchLayout;
 
 @PageTitle("Purchases")
 @Route(value = "purchases", layout = MainLayout.class)
@@ -40,8 +41,6 @@ public class PurchasesView extends Div implements HasUrlParameter<String> {
     private final Button newPurchase = createStandardButton("New Purchase");
 
     private final Grid<Purchase> grid = new Grid<>(Purchase.class, false);
-    private  String clientIdFromUrl;
-    private String supplierIdFromUrl;
     private String idFromUrl;
 
     public PurchasesView(PurchasesViewController purchasesViewController) {
@@ -51,13 +50,16 @@ public class PurchasesView extends Div implements HasUrlParameter<String> {
         grid.addColumn(purchase -> purchase.getClient().getFullName()).setHeader("Client");
         grid.addColumn(Purchase::getContractNumber).setHeader("Contract number");
         grid.addColumn(purchase -> purchase.getSupplier().getNameOfCompany()).setHeader("Supplier");
+        grid.addColumn(purchase -> purchase.getManufacturer().getNameOfCompany()).setHeader("Manufacturer");
         grid.addColumn(Purchase::getNetAmount).setHeader("Net amount");
+        grid.addColumn(Purchase::getGrossAmount).setHeader("Gross amount");
+        grid.addColumn(purchase -> purchase.getEVat().getWordForm()).setHeader("VAT");
         grid.addColumn(purchase -> purchase.getCommodityType().getName()).setHeader("Commodity type");
         grid.addColumn(purchase -> purchase.getStatus().getStatusName()).setHeader("Status");
         grid.addColumn(Purchase::getSupplierPurchaseNumber).setHeader("Supplier purchase number");
         grid.addColumn(
                 new ComponentRenderer<>(Button::new, (button, purchase) -> {
-                    if(!Objects.isNull(purchase.getComment()) && !purchase.getComment().isBlank()){
+                    if (!Objects.isNull(purchase.getComment()) && !purchase.getComment().isBlank()) {
                         button.addThemeVariants(ButtonVariant.LUMO_ICON,
                                 ButtonVariant.LUMO_PRIMARY);
                         button.addClickListener(e -> {
@@ -77,18 +79,18 @@ public class PurchasesView extends Div implements HasUrlParameter<String> {
 
         GridContextMenu<Purchase> menu = grid.addContextMenu();
         menu.addItem("Create Contract", event -> {
-            if(event.getItem().isPresent()){
+            if (event.getItem().isPresent()) {
                 purchasesViewController.createNewContractFromPurchase(event.getItem().get().getId());
             } else menu.close();
         });
         menu.add(new Hr());
         menu.addItem("Edit", event -> {
-            if(event.getItem().isPresent()){
+            if (event.getItem().isPresent()) {
                 purchasesViewController.editPurchaseInformation(event.getItem().get());
             } else menu.close();
         });
         menu.addItem("Delete", event -> {
-            if(event.getItem().isPresent()){
+            if (event.getItem().isPresent()) {
                 purchasesViewController.deletePurchase(event.getItem().get());
             } else menu.close();
         });
@@ -114,7 +116,7 @@ public class PurchasesView extends Div implements HasUrlParameter<String> {
     private Component createTopButtonLayout() {
         HorizontalLayout topButtonLayout = ComponentFactory.createTopButtonLayout();
         topButtonLayout.add(newPurchase);
-        newPurchase.addClickListener( e -> purchasesViewController.createNewPurchaseForClient(clientIdFromUrl));
+        newPurchase.addClickListener(e -> purchasesViewController.createNewPurchaseForClient(idFromUrl));
         return topButtonLayout;
     }
 
@@ -136,7 +138,7 @@ public class PurchasesView extends Div implements HasUrlParameter<String> {
 
     @Override
     public void setParameter(BeforeEvent event, @WildcardParameter String urlParameter) {
-        if(!urlParameter.isBlank()){
+        if (!urlParameter.isBlank()) {
             char identificationChar = urlParameter.charAt(0);
             switch (identificationChar) {
                 case 'c' -> {
@@ -148,7 +150,7 @@ public class PurchasesView extends Div implements HasUrlParameter<String> {
                     grid.setItems(purchasesViewController.purchasesSentToSupplier(Long.valueOf(idFromUrl)));
                 }
                 case 'm' -> {
-                   idFromUrl = urlParameter.substring(1);
+                    idFromUrl = urlParameter.substring(1);
                     grid.setItems(purchasesViewController.purchasesSentToManufacturer(Long.valueOf(idFromUrl)));
                 }
             }

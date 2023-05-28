@@ -9,5 +9,5 @@ public enum ERole {
     USER("USER"),
     ADMIN("ADMIN");
 
-    private String type;
+    private final String type;
 }

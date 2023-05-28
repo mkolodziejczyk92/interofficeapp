@@ -2,6 +2,7 @@ package io.mkolodziejczyk92.data.entity;
 
 import io.mkolodziejczyk92.data.enums.ECommodityType;
 import io.mkolodziejczyk92.data.enums.EPurchaseStatus;
+import io.mkolodziejczyk92.data.enums.EVat;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -16,6 +17,7 @@ public class Purchase extends AbstractEntity {
 
 
     private String netAmount;
+    private String grossAmount;
     private String contractNumber;
 
     @ManyToOne
@@ -30,6 +32,9 @@ public class Purchase extends AbstractEntity {
 
     @Enumerated(EnumType.STRING)
     private ECommodityType commodityType;
+
+    @Enumerated(EnumType.STRING)
+    private EVat eVat;
 
     @ManyToOne
     @JoinColumn(name = "supplier_id")

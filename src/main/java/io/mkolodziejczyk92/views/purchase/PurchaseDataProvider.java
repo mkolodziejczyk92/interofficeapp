@@ -6,7 +6,6 @@ import com.vaadin.flow.data.provider.QuerySortOrder;
 import com.vaadin.flow.data.provider.SortDirection;
 import io.mkolodziejczyk92.data.controllers.PurchasesViewController;
 import io.mkolodziejczyk92.data.entity.Purchase;
-import io.mkolodziejczyk92.data.service.PurchaseService;
 import io.mkolodziejczyk92.utils.BeanProvider;
 
 import java.util.Comparator;

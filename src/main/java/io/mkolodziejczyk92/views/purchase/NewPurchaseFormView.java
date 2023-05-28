@@ -3,10 +3,8 @@ package io.mkolodziejczyk92.views.purchase;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
-import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.notification.Notification;
-import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
@@ -61,6 +59,7 @@ public class NewPurchaseFormView extends Div implements HasUrlParameter<String> 
         binder.bindInstanceFields(this);
         add(createBottomButtonLayout());
         purchaseAddFormViewController.clearForm();
+
     }
 
     private Component createTopButtonLayout() {

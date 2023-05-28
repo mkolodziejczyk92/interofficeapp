@@ -6,6 +6,8 @@ import io.mkolodziejczyk92.data.enums.EVoivodeship;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.Set;
+
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -36,6 +38,9 @@ public class Address extends AbstractEntity {
     @ManyToOne
     @JoinColumn(name = "client_id", nullable = false)
     private Client client;
+
+    @ManyToMany(mappedBy = "investmentAndResidenceAddresses")
+    private Set<Contract> contract;
 
 
 }

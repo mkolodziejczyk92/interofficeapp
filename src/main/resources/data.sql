@@ -122,6 +122,94 @@ VALUES('10', 1 , 'Voyagly' ,'5355482834');
 INSERT INTO supplier(id, version, nameOfCompany, nip)
 VALUES('11', 1 , 'Fuxly' ,'9516206456');
 
+INSERT INTO manufacturer(id, version, nameOfCompany, nip)
+VALUES('1', 1 , 'Krispol' ,'5273261280');
+INSERT INTO manufacturer(id, version, nameOfCompany, nip)
+VALUES('2', 1 , 'Parmax' ,'7621978266');
+INSERT INTO manufacturer(id, version, nameOfCompany, nip)
+VALUES('3', 1 , 'Panel-pol' ,'5687471424');
+INSERT INTO manufacturer(id, version, nameOfCompany, nip)
+VALUES('4', 1 , 'Best Windows' ,'8218644836');
+INSERT INTO manufacturer(id, version, nameOfCompany, nip)
+VALUES('5', 1 , 'WindowsPol' ,'8380144151');
+INSERT INTO manufacturer(id, version, nameOfCompany, nip)
+VALUES('6', 1 , 'Doorex' ,'3944533386');
+INSERT INTO manufacturer(id, version, nameOfCompany, nip)
+VALUES('7', 1 , 'drzwi-cal' ,'3775053056');
+INSERT INTO manufacturer(id, version, nameOfCompany, nip)
+VALUES('8', 1 , 'RoletPol' ,'7973059630');
+INSERT INTO manufacturer(id, version, nameOfCompany, nip)
+VALUES('9', 1 , 'Best Shutter' ,'5314794123');
+INSERT INTO manufacturer(id, version, nameOfCompany, nip)
+VALUES('10', 1 , 'Window Shades' ,'3783226057');
+INSERT INTO manufacturer(id, version, nameOfCompany, nip)
+VALUES('11', 1 , 'NiceShades' ,'1544407932');
+INSERT INTO manufacturer(id, version, nameOfCompany, nip)
+VALUES('12', 1 , 'Arrow Company' ,'9481655238');
+INSERT INTO manufacturer(id, version, nameOfCompany, nip)
+VALUES('13', 1 , 'Arrow Company' ,'3815970297');
+INSERT INTO manufacturer(id, version, nameOfCompany, nip)
+VALUES('14', 1 , 'martdom' ,'7626693338');
+INSERT INTO manufacturer(id, version, nameOfCompany, nip)
+VALUES('15', 1 , 'Voster' ,'3780559166');
+INSERT INTO manufacturer(id, version, nameOfCompany, nip)
+VALUES('16', 1 , 'Milewski ' ,'7586917457');
+INSERT INTO manufacturer(id, version, nameOfCompany, nip)
+VALUES('17', 1 , 'Porta ' ,'1235435534');
+INSERT INTO manufacturer(id, version, nameOfCompany, nip)
+VALUES('18', 1 , 'Hörmann' ,'5110850133');
+
+
+INSERT INTO contract(id, version, commodityType, completed, netAmount, number, client_id, manufacturer , signatureDate, plannedImplementationDate )
+VALUES ('1', 0, 'INTERNAL_DOORS' , true, '4700' , '10/05/2023', 1, 1, '2023-05-26', '2023-06-03');
+INSERT INTO contract(id, version, commodityType, completed, netAmount, number, client_id, manufacturer, signatureDate, plannedImplementationDate )
+VALUES ('2', 0, 'INTERNAL_DOORS' , true, '5800' , '11/05/2023', 5, 10, '2023-05-26', '2023-06-05');
+INSERT INTO contract(id, version, commodityType, completed, netAmount, number, client_id, manufacturer, signatureDate, plannedImplementationDate )
+VALUES ('3', 0, 'WINDOWS' , false, '14000' , '12/05/2023', 1, 18, '2023-05-26',  '2023-06-10');
+INSERT INTO contract(id, version, commodityType, completed, netAmount, number, client_id, manufacturer, signatureDate, plannedImplementationDate)
+VALUES ('4', 0, 'EXTERNAL_WINDOWS_BLINDS_TYPE_C' , true, '6800' , '13/05/2023', 10, 2, '2023-05-26', '2023-06-13');
+INSERT INTO contract(id, version, commodityType, completed, netAmount, number, client_id, manufacturer, signatureDate, plannedImplementationDate)
+VALUES ('5', 0, 'EXTERNAL_ROLLER_SHUTTER' , false, '7600' , '14/05/2023', 11 , 9, '2023-05-26', '2023-06-11');
+INSERT INTO contract(id, version, commodityType, completed, netAmount, number, client_id, manufacturer, signatureDate, plannedImplementationDate)
+VALUES ('6', 0, 'WINDOWS' , false, '14300' , '10/06/2023', 18, 15, '2023-05-26', '2023-06-18');
+INSERT INTO contract(id, version, commodityType, completed, netAmount, number, client_id, manufacturer, signatureDate, plannedImplementationDate)
+VALUES ('7', 0, 'INTERIOR_WINDOW_SHADES' , false, '7000' , '11/06/2023', 9, 13, '2023-05-26',  '2023-06-20');
+INSERT INTO contract(id, version, commodityType, completed, netAmount, number, client_id, manufacturer, signatureDate, plannedImplementationDate)
+VALUES ('8', 0, 'EXTERNAL_WINDOWS_BLINDS_TYPE_C' , true, '6870' , '12/06/2023', 7, 10, '2023-05-26',  '2023-06-27');
+INSERT INTO contract(id, version, commodityType, completed, netAmount, number, client_id, manufacturer, signatureDate, plannedImplementationDate)
+VALUES ('9', 0, 'INTERNAL_DOORS' , true, '12000' , '13/06/2023', 22, 4, '2023-05-26', '2023-06-28');
+INSERT INTO contract(id, version, commodityType, completed, netAmount, number, client_id, manufacturer, signatureDate, plannedImplementationDate)
+VALUES ('10', 0, 'EXTERNAL_ROLLER_SHUTTER' , false, '14950' , '14/06/2023', 36, 7, '2023-05-26', '2023-07-02');
+INSERT INTO contract(id, version, commodityType, completed, netAmount, number, client_id, manufacturer, signatureDate, plannedImplementationDate)
+VALUES ('11', 0, 'INTERIOR_WINDOW_SHADES' , false, '2050' , '15/06/2023', 22, 9, '2023-05-26', '2023-06-30');
+INSERT INTO contract(id, version, commodityType, completed, netAmount, number, client_id, manufacturer, signatureDate, plannedImplementationDate)
+VALUES ('12', 0, 'EXTERNAL_DOORS' , false, '6050' , '16/06/2023', 1, 8, '2023-05-26', '2023-07-06');
+INSERT INTO contract(id, version, commodityType, completed, netAmount, number, client_id, manufacturer, signatureDate, plannedImplementationDate)
+VALUES ('13', 0, 'EXTERNAL_WINDOWS_BLINDS_TYPE_Z' , false, '9500' , '17/06/2023', 1 , 6, '2023-05-26',  '2023-07-04');
+INSERT INTO contract(id, version, commodityType, completed, netAmount, number, client_id, manufacturer, signatureDate, plannedImplementationDate)
+VALUES ('14', 0, 'EXTERNAL_ROLLER_SHUTTER' , true, '11500' , '18/06/2023', 8 , 5, '2023-05-26', '2023-07-11');
+INSERT INTO contract(id, version, commodityType, completed, netAmount, number, client_id, manufacturer, signatureDate, plannedImplementationDate)
+VALUES ('15', 0, 'INTERNAL_DOORS' , true, '16000' , '10/07/2023', 24, 14, '2023-05-26',  '2023-07-16');
+INSERT INTO contract(id, version, commodityType, completed, netAmount, number, client_id, manufacturer, signatureDate, plannedImplementationDate)
+VALUES ('16', 0, 'EXTERNAL_WINDOWS_BLINDS_TYPE_C' , false, '7450' , '11/07/2023', 14 , 17, '2023-05-26', '2023-07-18');
+INSERT INTO contract(id, version, commodityType, completed, netAmount, number, client_id, manufacturer, signatureDate, plannedImplementationDate)
+VALUES ('17', 0, 'EXTERNAL_DOORS' , true, '4630' , '12/07/2023', 13, 16, '2023-05-26', '2023-07-24');
+INSERT INTO contract(id, version, commodityType, completed, netAmount, number, client_id, manufacturer, signatureDate, plannedImplementationDate)
+VALUES ('18', 0, 'EXTERNAL_DOORS' , true, '8600' , '13/07/2023', 16, 12, '2023-05-26', '2023-07-25');
+INSERT INTO contract(id, version, commodityType, completed, netAmount, number, client_id, manufacturer, signatureDate, plannedImplementationDate)
+VALUES ('19', 0, 'INTERIOR_WINDOW_SHADES' , false, '4700' , '14/07/2023', 12 , 10, '2023-05-26', '2023-07-31');
+INSERT INTO contract(id, version, commodityType, completed, netAmount, number, client_id, manufacturer, signatureDate, plannedImplementationDate)
+VALUES ('20', 0, 'INTERNAL_DOORS' , false, '8400' , '15/07/2023', 40, 11, '2023-05-26', '2023-08-03');
+INSERT INTO contract(id, version, commodityType, completed, netAmount, number, client_id, manufacturer, signatureDate, plannedImplementationDate)
+VALUES ('21', 0, 'INTERIOR_WINDOW_SHADES' , true, '19000' , '10/08/2023', 41, 1, '2023-05-26', '2023-08-01');
+INSERT INTO contract(id, version, commodityType, completed, netAmount, number, client_id, manufacturer, signatureDate, plannedImplementationDate)
+VALUES ('22', 0, 'WINDOWS' , false, '2500' , '11/08/2023', 27, 3, '2023-05-26', '2023-08-09');
+INSERT INTO contract(id, version, commodityType, completed, netAmount, number, client_id, manufacturer, signatureDate, plannedImplementationDate)
+VALUES ('23', 0, 'WINDOWS' , false, '4600' , '12/08/2023', 13, 2, '2023-05-26', '2023-08-12');
+INSERT INTO contract(id, version, commodityType, completed, netAmount, number, client_id, manufacturer, signatureDate, plannedImplementationDate)
+VALUES ('24', 0, 'EXTERNAL_WINDOWS_BLINDS_TYPE_C' , true, '3500' , '13/08/2023', 16, 18, '2023-05-26', '2023-08-18');
+INSERT INTO contract(id, version, commodityType, completed, netAmount, number, client_id, manufacturer, signatureDate, plannedImplementationDate)
+VALUES ('25', 0, 'WINDOWS' , false, '2000' , '14/08/2023', 18, 1, '2023-05-26', '2023-08-20');
 
 -- INSERT INTO purchase(id, version, commodityType, netAmount, status,
 --                      supplierPurchaseNumber, client_id, supplier_id, comment,)
@@ -187,57 +275,6 @@ VALUES('11', 1 , 'Fuxly' ,'9516206456');
 -- INSERT INTO purchase(id, version, commodityType, netAmount, status,
 --                      supplierPurchaseNumber, client_id, supplier_id)
 -- VALUES ('21',0, 'EXTERNAL_WINDOWS_BLINDS_TYPE_Z', '3000', 'SUPPLIED_FOR_STORAGE', '170' , 28 , 9  );
---
--- INSERT INTO contract(id, version, commodityType, completed, netAmount, number, client_id)
--- VALUES ('1', 0, 'INTERNAL_DOORS' , true, '4700' , '10/05/2023', 1);
--- INSERT INTO contract(id, version, commodityType, completed, netAmount, number, client_id)
--- VALUES ('2', 0, 'INTERNAL_DOORS' , true, '5800' , '11/05/2023', 5);
--- INSERT INTO contract(id, version, commodityType, completed, netAmount, number, client_id)
--- VALUES ('3', 0, 'WINDOWS' , false, '14000' , '12/05/2023', 1);
--- INSERT INTO contract(id, version, commodityType, completed, netAmount, number, client_id)
--- VALUES ('4', 0, 'EXTERNAL_WINDOWS_BLINDS_TYPE_C' , true, '6800' , '13/05/2023', 10);
--- INSERT INTO contract(id, version, commodityType, completed, netAmount, number, client_id)
--- VALUES ('5', 0, 'EXTERNAL_ROLLER_SHUTTER' , false, '7600' , '14/05/2023', 11);
--- INSERT INTO contract(id, version, commodityType, completed, netAmount, number, client_id)
--- VALUES ('6', 0, 'WINDOWS' , false, '14300' , '10/06/2023', 18);
--- INSERT INTO contract(id, version, commodityType, completed, netAmount, number, client_id)
--- VALUES ('7', 0, 'INTERIOR_WINDOW_SHADES' , false, '7000' , '11/06/2023', 9);
--- INSERT INTO contract(id, version, commodityType, completed, netAmount, number, client_id)
--- VALUES ('8', 0, 'EXTERNAL_WINDOWS_BLINDS_TYPE_C' , true, '6870' , '12/06/2023', 7);
--- INSERT INTO contract(id, version, commodityType, completed, netAmount, number, client_id)
--- VALUES ('9', 0, 'INTERNAL_DOORS' , true, '12000' , '13/06/2023', 22);
--- INSERT INTO contract(id, version, commodityType, completed, netAmount, number, client_id)
--- VALUES ('10', 0, 'EXTERNAL_ROLLER_SHUTTER' , false, '14950' , '14/06/2023', 36);
--- INSERT INTO contract(id, version, commodityType, completed, netAmount, number, client_id)
--- VALUES ('11', 0, 'INTERIOR_WINDOW_SHADES' , false, '2050' , '15/06/2023', 22);
--- INSERT INTO contract(id, version, commodityType, completed, netAmount, number, client_id)
--- VALUES ('12', 0, 'EXTERNAL_DOORS' , false, '6050' , '16/06/2023', 1);
--- INSERT INTO contract(id, version, commodityType, completed, netAmount, number, client_id)
--- VALUES ('13', 0, 'EXTERNAL_WINDOWS_BLINDS_TYPE_Z' , false, '9500' , '17/06/2023', 1);
--- INSERT INTO contract(id, version, commodityType, completed, netAmount, number, client_id)
--- VALUES ('14', 0, 'EXTERNAL_ROLLER_SHUTTER' , true, '11500' , '18/06/2023', 8);
--- INSERT INTO contract(id, version, commodityType, completed, netAmount, number, client_id)
--- VALUES ('15', 0, 'INTERNAL_DOORS' , true, '16000' , '10/07/2023', 24);
--- INSERT INTO contract(id, version, commodityType, completed, netAmount, number, client_id)
--- VALUES ('16', 0, 'EXTERNAL_WINDOWS_BLINDS_TYPE_C' , false, '7450' , '11/07/2023', 14);
--- INSERT INTO contract(id, version, commodityType, completed, netAmount, number, client_id)
--- VALUES ('17', 0, 'EXTERNAL_DOORS' , true, '4630' , '12/07/2023', 13);
--- INSERT INTO contract(id, version, commodityType, completed, netAmount, number, client_id)
--- VALUES ('18', 0, 'EXTERNAL_DOORS' , true, '8600' , '13/07/2023', 16);
--- INSERT INTO contract(id, version, commodityType, completed, netAmount, number, client_id)
--- VALUES ('19', 0, 'INTERIOR_WINDOW_SHADES' , false, '4700' , '14/07/2023', 12);
--- INSERT INTO contract(id, version, commodityType, completed, netAmount, number, client_id)
--- VALUES ('20', 0, 'INTERNAL_DOORS' , false, '8400' , '15/07/2023', 40);
--- INSERT INTO contract(id, version, commodityType, completed, netAmount, number, client_id)
--- VALUES ('21', 0, 'INTERIOR_WINDOW_SHADES' , true, '19000' , '10/08/2023', 41);
--- INSERT INTO contract(id, version, commodityType, completed, netAmount, number, client_id)
--- VALUES ('22', 0, 'WINDOWS' , false, '2500' , '11/08/2023', 27);
--- INSERT INTO contract(id, version, commodityType, completed, netAmount, number, client_id)
--- VALUES ('23', 0, 'WINDOWS' , false, '4600' , '12/08/2023', 13);
--- INSERT INTO contract(id, version, commodityType, completed, netAmount, number, client_id)
--- VALUES ('24', 0, 'EXTERNAL_WINDOWS_BLINDS_TYPE_C' , true, '3500' , '13/08/2023', 16);
--- INSERT INTO contract(id, version, commodityType, completed, netAmount, number, client_id)
--- VALUES ('25', 0, 'WINDOWS' , false, '2000' , '14/08/2023', 18);
 
 INSERT INTO address(id, version, addressType, apartmentNumber, city, country, houseNumber,
                     municipality, plotNumber, street, voivodeship, zipCode, client_id)

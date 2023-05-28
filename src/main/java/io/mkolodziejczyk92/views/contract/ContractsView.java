@@ -1,27 +1,36 @@
 package io.mkolodziejczyk92.views.contract;
 
 import com.vaadin.flow.component.Component;
-import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.dependency.Uses;
+import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.grid.ColumnTextAlign;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.grid.contextmenu.GridContextMenu;
 import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.html.Hr;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
+import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
+import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.provider.ConfigurableFilterDataProvider;
 import com.vaadin.flow.router.*;
 import io.mkolodziejczyk92.data.controllers.ContractsViewController;
+import io.mkolodziejczyk92.data.entity.Address;
 import io.mkolodziejczyk92.data.entity.Contract;
-import io.mkolodziejczyk92.utils.ComponentFactory;
+import io.mkolodziejczyk92.data.enums.EAddressType;
 import io.mkolodziejczyk92.views.MainLayout;
 import jakarta.annotation.security.PermitAll;
 
-import static io.mkolodziejczyk92.utils.ComponentFactory.*;
+import java.util.Set;
+
+import static io.mkolodziejczyk92.data.enums.EAddressType.*;
+import static io.mkolodziejczyk92.utils.ComponentFactory.createTextFieldForSearchLayout;
+import static io.mkolodziejczyk92.utils.ComponentFactory.createTopButtonLayout;
 
 @PageTitle("Contracts")
 @Route(value = "contracts", layout = MainLayout.class)
@@ -42,8 +51,6 @@ public class ContractsView extends Div implements HasUrlParameter<String> {
 
         grid.addColumn(contract -> contract.getClient().getFullName()).setHeader("Client");
         grid.addColumn(Contract::getNumber).setHeader("Contract Number");
-        grid.addColumn(Contract::getNetAmount).setHeader("Net Amount");
-        grid.addColumn(Contract::getSignatureDate).setHeader("Signature Date");
         grid.addColumn(Contract::getPlannedImplementationDate).setHeader("Planned Date");
         grid.addComponentColumn(contract -> {
             Icon icon;
@@ -62,8 +69,14 @@ public class ContractsView extends Div implements HasUrlParameter<String> {
         grid.setItems(filterDataProvider);
 
         GridContextMenu<Contract> menu = grid.addContextMenu();
-        menu.addItem("View", event -> {
+        menu.addItem("Details", event -> {
+            if (event.getItem().isPresent()) {
+                Dialog confirmDialog = createDialogWithContractDetails(event.getItem().get());
+                add(confirmDialog);
+                confirmDialog.open();
+            } else menu.close();
         });
+        menu.add(new Hr());
         menu.addItem("Edit", event -> {
             if (event.getItem().isPresent()) {
                 contractsViewController.editContractInformationForm(event.getItem().get().getId());
@@ -75,6 +88,39 @@ public class ContractsView extends Div implements HasUrlParameter<String> {
         add(createTopButtonLayout());
         add(createSearchLayout());
         add(grid);
+    }
+
+    private Dialog createDialogWithContractDetails(Contract contract) {
+        Dialog dialog = new Dialog();
+        dialog.setHeaderTitle(
+                String.format("%s contract number details", contract.getNumber()));
+
+        VerticalLayout dialogLayout = createDialogLayout(contract);;
+        dialog.add(dialogLayout);
+        dialog.setDraggable(true);
+        dialog.setResizable(true);
+
+        Button cancelButton = new Button("Close", event -> dialog.close());
+        cancelButton.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
+        dialog.getFooter().add(cancelButton);
+        return dialog;
+
+    }
+
+    private VerticalLayout createDialogLayout(Contract contract) {
+        Grid<Contract> dialogGrid = new Grid<>(Contract.class, false);
+
+        dialogGrid.addColumn(Contract::getNetAmount).setHeader("Net Amount");
+        dialogGrid.addColumn(Contract::getSignatureDate).setHeader("Signature Date");
+
+        dialogGrid.setItems(contract);
+        VerticalLayout dialogLayout = new VerticalLayout(dialogGrid);
+        dialogLayout.setPadding(false);
+        dialogLayout.setAlignItems(FlexComponent.Alignment.STRETCH);
+        dialogLayout.getStyle().set("min-width", "300px")
+                .set("max-width", "100%").set("height", "50%");
+
+        return dialogLayout;
     }
 
     private Component createSearchLayout() {

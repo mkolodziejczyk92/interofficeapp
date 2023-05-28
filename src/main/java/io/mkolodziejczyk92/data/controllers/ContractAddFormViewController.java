@@ -5,15 +5,16 @@ import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.data.binder.Binder;
 import io.mkolodziejczyk92.data.entity.Client;
 import io.mkolodziejczyk92.data.entity.Contract;
+import io.mkolodziejczyk92.data.entity.Manufacturer;
 import io.mkolodziejczyk92.data.entity.Purchase;
 import io.mkolodziejczyk92.data.service.ClientService;
 import io.mkolodziejczyk92.data.service.ContractService;
+import io.mkolodziejczyk92.data.service.ManufacturerService;
 import io.mkolodziejczyk92.data.service.PurchaseService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 @Slf4j
@@ -24,12 +25,15 @@ public class ContractAddFormViewController {
     private final PurchaseService purchaseService;
     private final ClientService clientService;
 
+    private final ManufacturerService manufacturerService;
+
     private Binder<Contract> binder;
 
-    public ContractAddFormViewController(ContractService contractService, PurchaseService purchaseService, ClientService clientService) {
+    public ContractAddFormViewController(ContractService contractService, PurchaseService purchaseService, ClientService clientService, ManufacturerService manufacturerService) {
         this.contractService = contractService;
         this.purchaseService = purchaseService;
         this.clientService = clientService;
+        this.manufacturerService = manufacturerService;
     }
 
     public void initBinder(Binder<Contract> binder) {
@@ -70,5 +74,9 @@ public class ContractAddFormViewController {
 
     public Purchase fillFormWithDataFromPurchase(Long purchaseId) {
         return purchaseService.get(purchaseId).orElseThrow();
+    }
+
+    public List<Manufacturer> allManufacturers(){
+        return manufacturerService.allManufacturers();
     }
 }

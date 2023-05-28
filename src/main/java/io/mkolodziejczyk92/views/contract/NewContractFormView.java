@@ -11,11 +11,7 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.router.*;
 import io.mkolodziejczyk92.data.controllers.ContractAddFormViewController;
-import io.mkolodziejczyk92.data.entity.Address;
-import io.mkolodziejczyk92.data.entity.Client;
-import io.mkolodziejczyk92.data.entity.Contract;
-import io.mkolodziejczyk92.data.entity.Purchase;
-import io.mkolodziejczyk92.data.enums.EAddressType;
+import io.mkolodziejczyk92.data.entity.*;
 import io.mkolodziejczyk92.data.enums.ECommodityType;
 import io.mkolodziejczyk92.utils.ComponentFactory;
 import io.mkolodziejczyk92.views.MainLayout;
@@ -23,11 +19,12 @@ import jakarta.annotation.security.PermitAll;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static io.mkolodziejczyk92.data.enums.EAddressType.*;
+import static io.mkolodziejczyk92.data.enums.EAddressType.INVESTMENT;
+import static io.mkolodziejczyk92.data.enums.EAddressType.RESIDENCE;
 import static io.mkolodziejczyk92.utils.ComponentFactory.*;
 
 @PageTitle("New Contract")
@@ -40,7 +37,10 @@ public class NewContractFormView extends Div implements HasUrlParameter<String> 
     private final ComboBox<Address>  residenceAddress = new ComboBox<>("Residence Address");
     private final ComboBox<Address> investmentAddress = new ComboBox<>("Investment Address");
 
+    private  Set<Address> investmentAndResidenceAddresses;
+
     private final ComboBox<ECommodityType> commodityType = new ComboBox<>("Commodity Type");
+
 
     private final DatePicker signatureDate = new DatePicker("Signature Day");
 
@@ -105,6 +105,8 @@ public class NewContractFormView extends Div implements HasUrlParameter<String> 
         commodityType.getStyle().set("padding-right", "30px");
 
 
+
+
     }
 
     private Component createBottomButtonLayout() {
@@ -114,10 +116,21 @@ public class NewContractFormView extends Div implements HasUrlParameter<String> 
 
         cancel.addClickListener(e -> contractAddFormController.clearForm());
         save.addClickListener(e -> {
+            investmentAndResidenceAddresses = new HashSet<>();
+            investmentAndResidenceAddresses.add(residenceAddress.getValue());
+            investmentAndResidenceAddresses.add(investmentAddress.getValue());
+            binder.getBean().setInvestmentAndResidenceAddresses(investmentAndResidenceAddresses);
             contractAddFormController.saveNewPurchase(binder.getBean());
         });
 
-        update.addClickListener(e -> contractAddFormController.updateContract(binder.getBean()));
+        update.addClickListener(e ->{
+            investmentAndResidenceAddresses = new HashSet<>();
+            investmentAndResidenceAddresses.add(residenceAddress.getValue());
+            investmentAndResidenceAddresses.add(investmentAddress.getValue());
+            binder.getBean().setInvestmentAndResidenceAddresses(investmentAndResidenceAddresses);
+                    contractAddFormController.updateContract(binder.getBean());
+                });
+
         update.setVisible(false);
         return bottomButtonLayout;
 
@@ -127,30 +140,21 @@ public class NewContractFormView extends Div implements HasUrlParameter<String> 
     public void setParameter(BeforeEvent beforeEvent, @WildcardParameter String urlParameter) {
         if (!urlParameter.isBlank()) {
             LocalDate now = LocalDate.now(ZoneId.systemDefault());
-
+            Set<Address> allAddresses;
             if (urlParameter.charAt(0) == 'p') {
                 String purchaseId = urlParameter.substring(1);
                 Purchase purchase = contractAddFormController.fillFormWithDataFromPurchase(Long.valueOf(purchaseId));
                 Client clientFromPurchase = purchase.getClient();
-                Set<Address> allAddresses = clientFromPurchase.getAllAddresses();
+                allAddresses = clientFromPurchase.getAllAddresses();
                 residenceAddress.setItems(allAddresses
                         .stream()
                         .filter(address -> address.getAddressType().equals(RESIDENCE))
                         .collect(Collectors.toList()));
-                residenceAddress.setItemLabelGenerator
-                        (address -> address.getStreet() + " " + address.getHouseNumber() +
-                                " | City: " + address.getCity() +
-                                " | Zip Code: " + address.getZipCode());
-
                 investmentAddress.setItems(allAddresses
                         .stream()
                         .filter(address -> address.getAddressType().equals(INVESTMENT))
                         .collect(Collectors.toList()));
-                investmentAddress.setItemLabelGenerator
-                        (address -> "Plot Number: " + address.getPlotNumber() +
-                                " | Zip Code: " + address.getZipCode() +
-                                " | Municipality: " + address.getMunicipality());
-
+                signatureDate.setValue(now);
                 client.setValue(clientFromPurchase);
                 netAmount.setValue(purchase.getNetAmount());
                 commodityType.setValue(purchase.getCommodityType());
@@ -159,18 +163,48 @@ public class NewContractFormView extends Div implements HasUrlParameter<String> 
             } else {
                 Contract contract = contractAddFormController.findContractById(Long.valueOf(urlParameter));
                 binder.setBean(contract);
-                client.setValue(contract.getClient());
+                Client clientFromContract = contract.getClient();
+                allAddresses = clientFromContract.getAllAddresses();
+                residenceAddress.setItems(allAddresses
+                        .stream()
+                        .filter(address -> address.getAddressType().equals(RESIDENCE))
+                        .collect(Collectors.toList()));
+                investmentAddress.setItems(allAddresses
+                        .stream()
+                        .filter(address -> address.getAddressType().equals(INVESTMENT))
+                        .collect(Collectors.toList()));
+                investmentAndResidenceAddresses = binder.getBean().getInvestmentAndResidenceAddresses();
+                client.setValue(clientFromContract);
                 number.setValue(contract.getNumber());
                 commodityType.setValue(contract.getCommodityType());
                 netAmount.setValue(contract.getNetAmount());
                 signatureDate.setValue(contract.getSignatureDate());
                 plannedImplementationDate.setValue(contract.getPlannedImplementationDate());
+                if( investmentAndResidenceAddresses != null && !investmentAndResidenceAddresses.isEmpty()){
+                    residenceAddress.setValue
+                            (investmentAndResidenceAddresses.stream()
+                                    .filter(address ->  address.getAddressType().equals(RESIDENCE))
+                                    .findFirst().orElse(new Address()));
+                    investmentAddress.setValue(investmentAndResidenceAddresses.stream()
+                            .filter(address ->  address.getAddressType().equals(INVESTMENT))
+                            .findFirst().orElse(new Address()));
+                }
                 completed.setEnabled(true);
                 cancel.setVisible(false);
                 save.setVisible(false);
                 update.setVisible(true);
             }
-            signatureDate.setValue(now);
+
+
+            residenceAddress.setItemLabelGenerator
+                    (address -> address.getStreet() + " " + address.getHouseNumber() +
+                            " | City: " + address.getCity() +
+                            " | Zip Code: " + address.getZipCode());
+            investmentAddress.setItemLabelGenerator
+                    (address -> "Plot Number: " + address.getPlotNumber() +
+                            " | Zip Code: " + address.getZipCode() +
+                            " | Municipality: " + address.getMunicipality());
+
         }
     }
 }

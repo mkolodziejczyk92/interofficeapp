@@ -40,12 +40,22 @@ public class PurchaseService {
         return repository.findAll(filter, pageable);
     }
 
+    public Purchase purchaseByContractNumber(String contractNumber){
+        return repository.findByContractNumber(contractNumber).orElseThrow();
+    }
+
     public int count() {
         return (int) repository.count();
     }
 
     public List<Purchase> allPurchases() {
         return repository.findAll();
+    }
+
+    public void updateContractNumberAndSave(Long id, String contractNumber){
+        Purchase purchase = get(id).orElseThrow();
+        purchase.setContractNumber(contractNumber);
+        repository.save(purchase);
     }
 
     public void save(Purchase purchase) {

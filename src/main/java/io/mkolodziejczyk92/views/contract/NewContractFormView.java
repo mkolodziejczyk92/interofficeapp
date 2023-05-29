@@ -46,8 +46,6 @@ public class NewContractFormView extends Div implements HasUrlParameter<String> 
 
     private final DatePicker plannedImplementationDate = new DatePicker("Planned Realization Date");
 
-    private final TextField netAmount = new TextField("Net Amount");
-
     private final TextField number = new TextField("Contract Number");
 
     private final Button cancel = createCancelButton();
@@ -61,6 +59,8 @@ public class NewContractFormView extends Div implements HasUrlParameter<String> 
     private final Binder<Contract> binder = new Binder<>(Contract.class);
 
     private final ContractAddFormViewController contractAddFormController;
+
+    private Long purchaseId;
 
     public NewContractFormView(ContractAddFormViewController contractAddFormController) {
         this.contractAddFormController = contractAddFormController;
@@ -90,7 +90,7 @@ public class NewContractFormView extends Div implements HasUrlParameter<String> 
         signatureDate.setReadOnly(true);
 
         return ComponentFactory.createFormLayout(client, commodityType, investmentAddress, residenceAddress,
-                signatureDate, plannedImplementationDate, number, netAmount, completed);
+                signatureDate, plannedImplementationDate, number, completed);
     }
 
     private void createComboBoxes() {
@@ -120,7 +120,8 @@ public class NewContractFormView extends Div implements HasUrlParameter<String> 
             investmentAndResidenceAddresses.add(residenceAddress.getValue());
             investmentAndResidenceAddresses.add(investmentAddress.getValue());
             binder.getBean().setInvestmentAndResidenceAddresses(investmentAndResidenceAddresses);
-            contractAddFormController.saveNewPurchase(binder.getBean());
+            contractAddFormController.saveNewContract(binder.getBean());
+            contractAddFormController.updatePurchase(purchaseId, binder.getBean().getNumber());
         });
 
         update.addClickListener(e ->{
@@ -142,8 +143,8 @@ public class NewContractFormView extends Div implements HasUrlParameter<String> 
             LocalDate now = LocalDate.now(ZoneId.systemDefault());
             Set<Address> allAddresses;
             if (urlParameter.charAt(0) == 'p') {
-                String purchaseId = urlParameter.substring(1);
-                Purchase purchase = contractAddFormController.fillFormWithDataFromPurchase(Long.valueOf(purchaseId));
+                purchaseId = Long.valueOf(urlParameter.substring(1));
+                Purchase purchase = contractAddFormController.fillFormWithDataFromPurchase(purchaseId);
                 Client clientFromPurchase = purchase.getClient();
                 allAddresses = clientFromPurchase.getAllAddresses();
                 residenceAddress.setItems(allAddresses
@@ -156,7 +157,6 @@ public class NewContractFormView extends Div implements HasUrlParameter<String> 
                         .collect(Collectors.toList()));
                 signatureDate.setValue(now);
                 client.setValue(clientFromPurchase);
-                netAmount.setValue(purchase.getNetAmount());
                 commodityType.setValue(purchase.getCommodityType());
                 plannedImplementationDate.setMin(now);
                 number.setValue(contractAddFormController.createContractNumber());
@@ -177,7 +177,6 @@ public class NewContractFormView extends Div implements HasUrlParameter<String> 
                 client.setValue(clientFromContract);
                 number.setValue(contract.getNumber());
                 commodityType.setValue(contract.getCommodityType());
-                netAmount.setValue(contract.getNetAmount());
                 signatureDate.setValue(contract.getSignatureDate());
                 plannedImplementationDate.setValue(contract.getPlannedImplementationDate());
                 if( investmentAndResidenceAddresses != null && !investmentAndResidenceAddresses.isEmpty()){

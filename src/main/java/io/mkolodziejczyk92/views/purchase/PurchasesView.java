@@ -12,6 +12,7 @@ import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.Hr;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
+import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.provider.ConfigurableFilterDataProvider;
@@ -24,6 +25,7 @@ import io.mkolodziejczyk92.views.MainLayout;
 import jakarta.annotation.security.PermitAll;
 
 import java.util.Objects;
+import java.util.Optional;
 
 import static io.mkolodziejczyk92.utils.ComponentFactory.createStandardButton;
 import static io.mkolodziejczyk92.utils.ComponentFactory.createTextFieldForSearchLayout;
@@ -79,9 +81,19 @@ public class PurchasesView extends Div implements HasUrlParameter<String> {
 
         GridContextMenu<Purchase> menu = grid.addContextMenu();
         menu.addItem("Create Contract", event -> {
-            if (event.getItem().isPresent()) {
-                purchasesViewController.createNewContractFromPurchase(event.getItem().get().getId());
-            } else menu.close();
+            Optional<Purchase> item = event.getItem();
+            if (item.isPresent()) {
+                Purchase purchase = item.get();
+                String contractNumber = purchase.getContractNumber();
+                if (contractNumber != null && !contractNumber.isEmpty()) {
+                    Notification.show("Contract already exists.");
+                    menu.close();
+                } else {
+                    purchasesViewController.createNewContractFromPurchase(purchase.getId());
+                }
+            } else {
+                menu.close();
+            }
         });
         menu.add(new Hr());
         menu.addItem("Edit", event -> {

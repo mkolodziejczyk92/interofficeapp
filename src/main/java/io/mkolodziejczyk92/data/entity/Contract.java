@@ -19,7 +19,7 @@ import static jakarta.persistence.FetchType.EAGER;
 public class Contract extends AbstractEntity {
 
     private String number;
-    private String netAmount;
+
     private LocalDate signatureDate;
     private LocalDate plannedImplementationDate;
 
@@ -33,6 +33,8 @@ public class Contract extends AbstractEntity {
     @JoinColumn(name = "client_id")
     private Client client;
 
+
+    private String purchaseId;
 
     @ManyToMany(fetch = EAGER)
     @JoinTable(

@@ -1,10 +1,7 @@
 package io.mkolodziejczyk92.views.contract;
 
 import com.vaadin.flow.component.Component;
-import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.dependency.Uses;
-import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.grid.ColumnTextAlign;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
@@ -13,9 +10,7 @@ import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.Hr;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
-import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
-import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.provider.ConfigurableFilterDataProvider;
 import com.vaadin.flow.router.*;
@@ -35,14 +30,18 @@ public class ContractsView extends Div implements HasUrlParameter<String> {
 
     private final ContractsViewController contractsViewController;
 
+    private final ContractDetailsDialogView dialogView;
+
     private ContractFilter contractFilter = new ContractFilter();
     private ContractDataProvider contractDataProvider = new ContractDataProvider();
     private ConfigurableFilterDataProvider<Contract, Void, ContractFilter> filterDataProvider
             = contractDataProvider.withConfigurableFilter();
     private final Grid<Contract> grid = new Grid<>(Contract.class, false);
 
-    public ContractsView(ContractsViewController contractsViewController) {
+    public ContractsView(ContractsViewController contractsViewController, ContractDetailsDialogView dialogView) {
         this.contractsViewController = contractsViewController;
+        this.dialogView = dialogView;
+
 
         grid.addColumn(contract -> contract.getClient().getFullName()).setHeader("Client");
         grid.addColumn(Contract::getNumber).setHeader("Contract Number");
@@ -66,9 +65,7 @@ public class ContractsView extends Div implements HasUrlParameter<String> {
         GridContextMenu<Contract> menu = grid.addContextMenu();
         menu.addItem("Details", event -> {
             if (event.getItem().isPresent()) {
-//                Dialog confirmDialog = createDialogWithContractDetails(event.getItem().get());
-//                add(confirmDialog);
-//                confirmDialog.open();
+                dialogView.createDialogWithContractDetails(event.getItem().get());
             } else menu.close();
         });
         menu.add(new Hr());

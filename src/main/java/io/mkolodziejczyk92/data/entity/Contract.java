@@ -33,9 +33,6 @@ public class Contract extends AbstractEntity {
     @JoinColumn(name = "client_id")
     private Client client;
 
-
-    private String purchaseId;
-
     @ManyToMany(fetch = EAGER)
     @JoinTable(
             name = "contracts_addresses",

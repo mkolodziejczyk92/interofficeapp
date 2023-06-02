@@ -60,6 +60,22 @@ public class NewClientFormView extends Div implements HasUrlParameter<String> {
         add(createBottomButtonLayout());
 
         binder.bindInstanceFields(this);
+        createFieldsValidation();
+
+        clientFormViewController.clearForm();
+
+        save.setEnabled(false);
+        update.setEnabled(false);
+        createSaveAndUpdateButtonStatus();
+
+        if (loggedUser.get().isPresent() && addedBy.isEmpty()) {
+            addedBy.setItems(getUsersFullNames());
+            addedBy.setValue(loggedUser.get().get().getFullName());
+        }
+    }
+
+
+    private void createFieldsValidation() {
         binder.forField(clientType)
                 .asRequired("Choose client type")
                 .bind(Client::getClientType, Client::setClientType);
@@ -78,20 +94,9 @@ public class NewClientFormView extends Div implements HasUrlParameter<String> {
         binder.forField(email)
                 .withValidator(new EmailValidator("Incorrect email address"))
                 .bind(Client::getEmail, Client::setEmail);
-       binder.forField(nip)
-               .withValidator(new ClientNipValidator())
-               .bind(Client::getNip, Client::setNip);
-
-        clientFormViewController.clearForm();
-
-        save.setEnabled(false);
-        update.setEnabled(false);
-        createSaveAndUpdateButtonStatus();
-
-        if (loggedUser.get().isPresent() && addedBy.isEmpty()) {
-            addedBy.setItems(getUsersFullNames());
-            addedBy.setValue(loggedUser.get().get().getFullName());
-        }
+        binder.forField(nip)
+                .withValidator(new ClientNipValidator())
+                .bind(Client::getNip, Client::setNip);
     }
 
     private Component createFormLayout() {

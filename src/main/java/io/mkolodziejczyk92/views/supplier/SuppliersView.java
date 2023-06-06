@@ -95,7 +95,10 @@ public class SuppliersView extends Div {
         dialog.add(String.format("Are you sure you want to delete this supplier: %s?", supplier.getNameOfCompany()));
         Button deleteButton = new Button("Delete", event ->
         {
-            suppliersViewController.deleteSupplier(supplier);
+            if(suppliersViewController.deleteSupplier(supplier)){
+                supplierDataProvider.removeSupplierFromGrid(supplier);
+                grid.getDataProvider().refreshAll();
+            }
             dialog.close();
         });
         deleteButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
@@ -103,7 +106,7 @@ public class SuppliersView extends Div {
         dialog.getFooter().add(deleteButton);
 
         Button cancelButton = new Button("Cancel", event -> dialog.close());
-        cancelButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+        cancelButton.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
         dialog.getFooter().add(cancelButton);
         return dialog;
     }

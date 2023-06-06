@@ -197,59 +197,61 @@ public class NewContractFormView extends Div implements HasUrlParameter<String> 
         if (!urlParameter.isBlank()) {
             LocalDate now = LocalDate.now(ZoneId.systemDefault());
             Set<Address> allAddresses;
-            if (urlParameter.charAt(0) == 'p') {
-                purchaseId = Long.valueOf(urlParameter.substring(1));
-                Purchase purchase = contractAddFormController.fillFormWithDataFromPurchase(purchaseId);
-                Client clientFromPurchase = purchase.getClient();
-                allAddresses = clientFromPurchase.getAllAddresses();
-                residenceAddress.setItems(allAddresses
-                        .stream()
-                        .filter(address -> address.getAddressType().equals(RESIDENCE))
-                        .toList());
-                investmentAddress.setItems(allAddresses
-                        .stream()
-                        .filter(address -> address.getAddressType().equals(INVESTMENT))
-                        .toList());
-                signatureDate.setValue(now);
-                client.setValue(clientFromPurchase);
-                commodityType.setValue(purchase.getCommodityType());
-                plannedImplementationDate.setMin(now);
-                number.setValue(contractAddFormController.createContractNumber());
-            } else {
-                Contract contract = contractAddFormController.findContractById(Long.valueOf(urlParameter));
-                Client clientFromContract = contract.getClient();
-                allAddresses = clientFromContract.getAllAddresses();
-                residenceAddress.setItems(allAddresses
-                        .stream()
-                        .filter(address -> address.getAddressType().equals(RESIDENCE))
-                        .toList());
-                investmentAddress.setItems(allAddresses
-                        .stream()
-                        .filter(address -> address.getAddressType().equals(INVESTMENT))
-                        .toList());
-                binder.setBean(contract);
-                investmentAndResidenceAddresses = binder.getBean().getInvestmentAndResidenceAddresses();
-                client.setValue(clientFromContract);
-                number.setValue(contract.getNumber());
-                commodityType.setValue(contract.getCommodityType());
-                signatureDate.setValue(contract.getSignatureDate());
-                plannedImplementationDate.setValue(contract.getPlannedImplementationDate());
-                if( investmentAndResidenceAddresses != null && !investmentAndResidenceAddresses.isEmpty()){
-                    residenceAddress.setValue
-                            (investmentAndResidenceAddresses.stream()
-                                    .filter(address ->  address.getAddressType().equals(RESIDENCE))
-                                    .findFirst().orElse(new Address()));
-                    investmentAddress.setValue(investmentAndResidenceAddresses.stream()
-                            .filter(address ->  address.getAddressType().equals(INVESTMENT))
-                            .findFirst().orElse(new Address()));
+            char identificationChar = urlParameter.charAt(0);
+            switch (identificationChar){
+                case 'p' -> {
+                    purchaseId = Long.valueOf(urlParameter.substring(1));
+                    Purchase purchase = contractAddFormController.fillFormWithDataFromPurchase(purchaseId);
+                    Client clientFromPurchase = purchase.getClient();
+                    allAddresses = clientFromPurchase.getAllAddresses();
+                    residenceAddress.setItems(allAddresses
+                            .stream()
+                            .filter(address -> address.getAddressType().equals(RESIDENCE))
+                            .toList());
+                    investmentAddress.setItems(allAddresses
+                            .stream()
+                            .filter(address -> address.getAddressType().equals(INVESTMENT))
+                            .toList());
+                    signatureDate.setValue(now);
+                    client.setValue(clientFromPurchase);
+                    commodityType.setValue(purchase.getCommodityType());
+                    plannedImplementationDate.setMin(now);
+                    number.setValue(contractAddFormController.createContractNumber());
                 }
-                completed.setEnabled(true);
-                cancel.setVisible(false);
-                save.setVisible(false);
-                update.setVisible(true);
+                default -> {
+                    Contract contract = contractAddFormController.findContractById(Long.valueOf(urlParameter));
+                    Client clientFromContract = contract.getClient();
+                    allAddresses = clientFromContract.getAllAddresses();
+                    residenceAddress.setItems(allAddresses
+                            .stream()
+                            .filter(address -> address.getAddressType().equals(RESIDENCE))
+                            .toList());
+                    investmentAddress.setItems(allAddresses
+                            .stream()
+                            .filter(address -> address.getAddressType().equals(INVESTMENT))
+                            .toList());
+                    binder.setBean(contract);
+                    investmentAndResidenceAddresses = binder.getBean().getInvestmentAndResidenceAddresses();
+                    client.setValue(clientFromContract);
+                    number.setValue(contract.getNumber());
+                    commodityType.setValue(contract.getCommodityType());
+                    signatureDate.setValue(contract.getSignatureDate());
+                    plannedImplementationDate.setValue(contract.getPlannedImplementationDate());
+                    if( investmentAndResidenceAddresses != null && !investmentAndResidenceAddresses.isEmpty()){
+                        residenceAddress.setValue
+                                (investmentAndResidenceAddresses.stream()
+                                        .filter(address ->  address.getAddressType().equals(RESIDENCE))
+                                        .findFirst().orElse(new Address()));
+                        investmentAddress.setValue(investmentAndResidenceAddresses.stream()
+                                .filter(address ->  address.getAddressType().equals(INVESTMENT))
+                                .findFirst().orElse(new Address()));
+                    }
+                    completed.setEnabled(true);
+                    cancel.setVisible(false);
+                    save.setVisible(false);
+                    update.setVisible(true);
+                }
             }
-
-
             residenceAddress.setItemLabelGenerator
                     (address -> address.getStreet() + " " + address.getHouseNumber() +
                             " | City: " + address.getCity() +

@@ -67,4 +67,7 @@ public class PurchaseDataProvider extends AbstractBackEndDataProvider<Purchase, 
         }
         return (p1, p2) -> 0;
     }
+    public void removePurchaseFromGrid(Purchase purchase) {
+        allPurchases.remove(purchase);
+    }
 }

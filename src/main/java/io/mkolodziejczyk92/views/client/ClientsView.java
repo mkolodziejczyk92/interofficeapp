@@ -39,12 +39,12 @@ public class ClientsView extends Div {
     private ConfigurableFilterDataProvider<Client, Void, ClientFilter> filterDataProvider = dataProvider
             .withConfigurableFilter();
     private final Button newClientButton = createStandardButton("New Client");
-
+    private final Grid<Client> grid = new Grid<>();
 
     public ClientsView(ClientsViewController clientsViewController) {
         this.clientsViewController = clientsViewController;
 
-        Grid<Client> grid = new Grid<>();
+
         grid.addColumn(Client::getFullName).setHeader("Full Name");
         grid.addColumn(Client::getPhoneNumber).setHeader("Phone number");
         grid.addColumn(Client::getNip).setHeader("NIP");
@@ -137,7 +137,10 @@ public class ClientsView extends Div {
 
         Button deleteButton = new Button("Delete", event ->
         {
-            clientsViewController.deleteClient(client);
+            if(clientsViewController.deleteClient(client)){
+                dataProvider.removeClientFromGrid(client);
+                grid.getDataProvider().refreshAll();
+            }
             dialog.close();
         });
         deleteButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY,

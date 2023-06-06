@@ -42,16 +42,24 @@ public class PurchasesViewController {
         }
     }
 
-    public void deletePurchase(Purchase purchase) {
+    public boolean deletePurchase(Purchase purchase) {
         try {
-            purchaseService.delete(purchase.getId());
+            if(purchase.getContractNumber() == null || purchase.getContractNumber().isBlank()){
+                purchaseService.delete(purchase.getId());
+            }else {
+                Notification.show("Purchase "
+                        + purchase.getId()
+                        + " cannot be deleted because it has connections in the database.");
+                return false;
+            }
         } catch (DataIntegrityViolationException e) {
             Notification.show("Purchase "
                     + purchase.getId()
                     + " cannot be deleted because it has connections in the database.");
-            return;
+            return false;
         }
         Notification.show("Purchase " + purchase.getId() + " deleted.");
+        return true;
     }
 
     public List<Purchase> clientPurchases(Long clientId) {

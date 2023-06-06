@@ -29,16 +29,17 @@ public class ClientsViewController {
         return clientService.get(clientId).orElseThrow();
     }
 
-    public void deleteClient(Client client) {
+    public boolean deleteClient(Client client) {
         try {
             clientService.delete(client.getId());
         } catch (DataIntegrityViolationException e) {
             Notification.show("Client "
                     + client.getFullName()
                     + " cannot be deleted because it has connections in the database.");
-            return;
+            return false;
         }
         Notification.show("Client " + client.getFullName() + " deleted.");
+        return true;
     }
 
     public void editClientInformationForm(Client client) {

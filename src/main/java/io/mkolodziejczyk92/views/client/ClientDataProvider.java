@@ -69,5 +69,9 @@ public class ClientDataProvider extends AbstractBackEndDataProvider<Client, Clie
         }
         return (p1, p2) -> 0;
     }
+
+    public void removeClientFromGrid(Client client) {
+        allClients.remove(client);
+    }
 }
 

@@ -16,10 +16,8 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import io.mkolodziejczyk92.data.controllers.ManufacturersViewController;
 import io.mkolodziejczyk92.data.entity.Manufacturer;
-import io.mkolodziejczyk92.data.entity.Supplier;
 import io.mkolodziejczyk92.utils.ComponentFactory;
 import io.mkolodziejczyk92.views.MainLayout;
-import io.mkolodziejczyk92.views.supplier.NewSupplierFormView;
 import jakarta.annotation.security.PermitAll;
 
 import static io.mkolodziejczyk92.utils.ComponentFactory.createStandardButton;
@@ -96,7 +94,10 @@ public class ManufacturersView extends Div {
         dialog.add(String.format("Are you sure you want to delete this supplier: %s?", manufacturer.getNameOfCompany()));
         Button deleteButton = new Button("Delete", event ->
         {
-            manufacturersViewController.deleteManufacturer(manufacturer);
+            if(manufacturersViewController.deleteManufacturer(manufacturer)){
+                manufacturerDataProvider.removeManufacturerFromGrid(manufacturer);
+                grid.getDataProvider().refreshAll();
+            }
             dialog.close();
         });
         deleteButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
@@ -104,7 +105,7 @@ public class ManufacturersView extends Div {
         dialog.getFooter().add(deleteButton);
 
         Button cancelButton = new Button("Cancel", event -> dialog.close());
-        cancelButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+        cancelButton.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
         dialog.getFooter().add(cancelButton);
         return dialog;
     }

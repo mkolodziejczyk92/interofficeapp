@@ -77,7 +77,7 @@ public class PurchasesView extends Div implements HasUrlParameter<String> {
                 })).setHeader("Comment");
         grid.getColumns().forEach(purchaseColumn -> purchaseColumn.setAutoWidth(true));
         grid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
-        grid.setItems(filterDataProvider);
+
 
         GridContextMenu<Purchase> menu = grid.addContextMenu();
         menu.addItem("Create Contract", event -> {
@@ -103,13 +103,36 @@ public class PurchasesView extends Div implements HasUrlParameter<String> {
         });
         menu.addItem("Delete", event -> {
             if (event.getItem().isPresent()) {
-                purchasesViewController.deletePurchase(event.getItem().get());
+                Dialog confirmDialog = createDialogConfirmForDeletePurchase(event.getItem().get());
+                add(confirmDialog);
+                confirmDialog.open();
             } else menu.close();
         });
 
         add(createTopButtonLayout());
         add(createSearchLayout());
         add(grid);
+    }
+
+    private Dialog createDialogConfirmForDeletePurchase(Purchase purchase) {
+        Dialog dialog = new Dialog();
+        dialog.add(String.format("Are you sure you want to delete %s purchase?", purchase.getClient().getFullName()));
+        Button deleteButton = new Button("Delete", event ->
+        {
+            if(purchasesViewController.deletePurchase(purchase)){
+                purchaseDataProvider.removePurchaseFromGrid(purchase);
+                grid.getDataProvider().refreshAll();
+            }
+            dialog.close();
+        });
+        deleteButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+        deleteButton.getStyle().set("margin-right", "auto");
+        dialog.getFooter().add(deleteButton);
+
+        Button cancelButton = new Button("Cancel", event -> dialog.close());
+        cancelButton.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
+        dialog.getFooter().add(cancelButton);
+        return dialog;
     }
 
     private Component createSearchLayout() {
@@ -154,8 +177,8 @@ public class PurchasesView extends Div implements HasUrlParameter<String> {
             char identificationChar = urlParameter.charAt(0);
             switch (identificationChar) {
                 case 'c' -> {
-                    idFromUrl = urlParameter.substring(1);
-                    grid.setItems(purchasesViewController.clientPurchases(Long.valueOf(idFromUrl)));
+                    idFromUrl = urlParameter;
+                    grid.setItems(purchasesViewController.clientPurchases(Long.valueOf(urlParameter.substring(1))));
                 }
                 case 's' -> {
                     idFromUrl = urlParameter.substring(1);
@@ -166,6 +189,8 @@ public class PurchasesView extends Div implements HasUrlParameter<String> {
                     grid.setItems(purchasesViewController.purchasesSentToManufacturer(Long.valueOf(idFromUrl)));
                 }
             }
+        } else {
+            grid.setItems(filterDataProvider);
         }
     }
 }

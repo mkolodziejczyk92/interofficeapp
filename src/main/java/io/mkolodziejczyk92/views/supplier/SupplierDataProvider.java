@@ -63,4 +63,8 @@ public class SupplierDataProvider extends AbstractBackEndDataProvider<Supplier, 
         }
         return (p1, p2) -> 0;
     }
+
+    public void removeSupplierFromGrid(Supplier supplier) {
+        allSuppliers.remove(supplier);
+    }
 }

@@ -26,15 +26,16 @@ public class SuppliersViewController {
         return supplierService.allSuppliers();
     }
 
-    public void deleteSupplier(Supplier supplier) {
+    public boolean deleteSupplier(Supplier supplier) {
         try {
             supplierService.delete(supplier.getId());
         } catch (DataIntegrityViolationException e) {
             Notification.show(supplier.getNameOfCompany()
                     + " cannot be deleted because it has connections in the database.");
-            return;
+            return false;
         }
         Notification.show(supplier.getNameOfCompany() + " deleted.");
+            return true;
     }
     public void showAllPurchasesForSupplier(Supplier supplier) {
         UI.getCurrent().navigate("purchases/s" + supplier.getId());

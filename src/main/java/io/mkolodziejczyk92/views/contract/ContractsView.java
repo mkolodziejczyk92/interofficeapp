@@ -60,7 +60,7 @@ public class ContractsView extends Div implements HasUrlParameter<String> {
         grid.addColumn(contract -> contract.getCommodityType().getName()).setHeader("Commodity Type");
         grid.getColumns().forEach(contractColumn -> contractColumn.setAutoWidth(true));
         grid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
-        grid.setItems(filterDataProvider);
+
 
         GridContextMenu<Contract> menu = grid.addContextMenu();
         menu.addItem("Details", event -> {
@@ -98,6 +98,8 @@ public class ContractsView extends Div implements HasUrlParameter<String> {
         if(!urlParameter.isBlank()){
             String clientId = urlParameter.substring(1);
             grid.setItems(contractsViewController.clientContracts(Long.valueOf(clientId)));
+        }else {
+            grid.setItems(filterDataProvider);
         }
     }
 }

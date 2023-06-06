@@ -29,14 +29,15 @@ public class ManufacturersViewController {
         UI.getCurrent().navigate("purchases/m" + manufacturer.getId());
     }
 
-    public void deleteManufacturer(Manufacturer manufacturer) {
+    public boolean deleteManufacturer(Manufacturer manufacturer) {
         try {
             manufacturerService.delete(manufacturer.getId());
         } catch (DataIntegrityViolationException e) {
             Notification.show(manufacturer.getNameOfCompany()
                     + " cannot be deleted because it has connections in the database.");
-            return;
+            return false;
         }
         Notification.show(manufacturer.getNameOfCompany() + " deleted.");
+            return true;
     }
 }

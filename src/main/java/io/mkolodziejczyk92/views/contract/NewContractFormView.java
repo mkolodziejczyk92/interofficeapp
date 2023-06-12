@@ -6,6 +6,7 @@ import com.vaadin.flow.component.checkbox.Checkbox;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.html.Div;
+
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
@@ -39,28 +40,17 @@ public class NewContractFormView extends Div implements HasUrlParameter<String> 
 
     private final ComboBox<Address>  residenceAddress = new ComboBox<>("Residence Address");
     private final ComboBox<Address> investmentAddress = new ComboBox<>("Investment Address");
-
     private  Set<Address> investmentAndResidenceAddresses;
-
     private final ComboBox<ECommodityType> commodityType = new ComboBox<>("Commodity Type");
-
-
     private final DatePicker signatureDate = new DatePicker("Signature Day");
-
     private final DatePicker plannedImplementationDate = new DatePicker("Planned Realization Date");
-
     private final TextField number = new TextField("Contract Number");
-
     private final Button cancel = createCancelButton();
     private final Button save = createSaveButton();
     private final Button back = createBackButton();
-
     private final Checkbox completed = new Checkbox("Completed");
-
     private final Button update = createUpdateButton();
-
     private final Binder<Contract> binder = new Binder<>(Contract.class);
-
     private final ContractAddFormViewController contractAddFormController;
 
     private Long purchaseId;
@@ -85,9 +75,7 @@ public class NewContractFormView extends Div implements HasUrlParameter<String> 
 
     private Component createTopButtonLayout() {
         HorizontalLayout topButtonLayout = ComponentFactory.createTopButtonLayout();
-
         back.addClickListener(e -> contractAddFormController.returnToContracts());
-
         topButtonLayout.add(back);
         return topButtonLayout;
     }

@@ -51,6 +51,7 @@
             <version>5.5.13.3</version>
         </dependency>
 
+
         <dependency>
             <groupId>com.vaadin</groupId>
             <!-- Replace artifactId with vaadin-core to use only free components -->

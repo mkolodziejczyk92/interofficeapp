@@ -16,6 +16,7 @@ import com.vaadin.flow.data.provider.ConfigurableFilterDataProvider;
 import com.vaadin.flow.router.*;
 import io.mkolodziejczyk92.data.controllers.ContractsViewController;
 import io.mkolodziejczyk92.data.entity.Contract;
+import io.mkolodziejczyk92.utils.ContractWriter;
 import io.mkolodziejczyk92.views.MainLayout;
 import jakarta.annotation.security.PermitAll;
 
@@ -76,6 +77,10 @@ public class ContractsView extends Div implements HasUrlParameter<String> {
         });
         menu.addItem("Delete", event -> {
         });
+        menu.add(new Hr());
+        menu.addItem("Create PDF contract", event ->
+            ContractWriter.createPdfContract()
+        );
 
         add(createTopButtonLayout());
         add(createSearchLayout());

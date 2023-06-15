@@ -42,5 +42,18 @@ public class Address extends AbstractEntity {
     @ManyToMany(mappedBy = "investmentAndResidenceAddresses")
     private Set<Contract> contract;
 
+    public String investmentAddressToString(){
+        return "Zip-code: " + zipCode + "\nGmina: " + municipality + "\n Numer działki: " + plotNumber
+                + "\n Województwo: " + voivodeship.getNameOfVoivodeship() + "\n Kraj: " + country.getCountry();
+    }
+
+    public String residenceAddressToString(){
+        if(this.apartmentNumber.isBlank()){
+            return "Ulica: " + street + houseNumber + "\n Zip-Code: " + zipCode + "\n Miasto: " + city + "\n Gmina: " + municipality +
+                    "\n Województwo: " + voivodeship.getNameOfVoivodeship() + "\n Kraj: " + country.getCountry();
+        } else return "Ulica: " + street + " " + houseNumber + "/" + apartmentNumber + "\nZip-Code: " + zipCode + "\nMiasto: " + city + "\nGmina: " + municipality +
+                "\nWojewództwo: " + voivodeship.getNameOfVoivodeship() + "\nKraj: " + country.getCountry();
+    }
+
 
 }

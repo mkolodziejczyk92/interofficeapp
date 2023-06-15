@@ -78,9 +78,7 @@ public class ContractsView extends Div implements HasUrlParameter<String> {
         menu.addItem("Delete", event -> {
         });
         menu.add(new Hr());
-        menu.addItem("Create PDF contract", event ->
-            ContractWriter.createPdfContract()
-        );
+        menu.addItem("Create PDF contract", event -> contractsViewController.printContractInPdf(event.getItem().get()));
 
         add(createTopButtonLayout());
         add(createSearchLayout());

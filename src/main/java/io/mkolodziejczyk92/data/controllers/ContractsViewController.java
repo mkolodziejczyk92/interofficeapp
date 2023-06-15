@@ -14,7 +14,6 @@ import java.util.List;
 @Controller
 public class ContractsViewController {
     private final ContractService contractService;
-
     private final PurchaseService purchaseService;
 
     public ContractsViewController(ContractService contractService, PurchaseService purchaseService) {
@@ -36,5 +35,11 @@ public class ContractsViewController {
 
     public Purchase findPurchaseByContractNumber(String contractNumber){
         return purchaseService.purchaseByContractNumber(contractNumber);
+    }
+
+    public void printContractInPdf(Contract contract) {
+        contractService.printPdfContractFromPurchaseAndContractData(findPurchaseByContractNumber(contract.getNumber()), contract);
+
+
     }
 }

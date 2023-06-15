@@ -1,10 +1,7 @@
 package io.mkolodziejczyk92.utils;
 
 import com.itextpdf.text.*;
-import com.itextpdf.text.pdf.BaseFont;
-import com.itextpdf.text.pdf.PdfPCell;
-import com.itextpdf.text.pdf.PdfPTable;
-import com.itextpdf.text.pdf.PdfWriter;
+import com.itextpdf.text.pdf.*;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.swing.*;
@@ -14,36 +11,34 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.time.LocalDate;
 
+
 @Slf4j
-public class ContractWriter{
+public class ContractWriter {
 
+    private ContractWriter() {
+    }
 
-    public static void createPdfContract() {
+    public static void createPdfContract(String clientPhone, String contractNumber, String clientFullName, String clientInvestmentAddress,
+                                         String commodityType, String clientAddress, String plannedImplementationDate, String signatureDate, String netAmount, String wholePartNetAmountInWords, String fractionalPartNetAmountInWords,
+                                         String grossAmount) {
+
 
         LocalDate currentDate = LocalDate.now();
-        String contractNumber = "123456";
-        String clientName = "Jan Kowalski";
-        String clientAddress = "ul. Przykładowa 1, 00-001 Warszawa";
-        String clientPhone = "123456789";
-        String wykonawcaName = "INTERDOM Radosław Nastaj";
-        String wykonawcaAddress = "ul. Husarska 8/36, 20-555 Lublin";
-        String wykonawcaPhone = "502-288-648";
-        String rodzajUslugi = "montaż drzwi";
-        String adresInwestycji = "ul. Budowlana 2, 30-002 Kraków";
-        String kwotaNetto = "1000";
-        String kwotaNettoSlownie = "tysiąc";
-        String wartoscVat = "230";
-        String kwotaBrutto = "1230";
-        String zaliczka = "500";
-        String planowanaDataRealizacji = "2023-06-30";
-
+        String contractorName = "INTERDOM Radosław Nastaj";
+        String contractorAddress = "ul. Husarska 8/36, 20-555 Lublin";
+        String contractorPhone = "502-288-648";
         String fileName = "umowa.pdf";
+
+
+        String wartoscVat = "230";
+        String zaliczka = "500";
+
         try {
             BaseFont baseFont = BaseFont.createFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.EMBEDDED);
             Font boldFont = new Font(baseFont, 12, Font.BOLD);
             Font normalFont = new Font(baseFont, 12, Font.NORMAL);
 
-            Document document = new Document(PageSize.A4, 30, 30 ,30 ,30);
+            Document document = new Document(PageSize.A4, 30, 30, 30, 30);
 
             try {
                 JFileChooser fileChooser = new JFileChooser();
@@ -79,30 +74,36 @@ public class ContractWriter{
             } catch (DocumentException e) {
                 log.error("Document exception");
             }
-            
+
+
+
             PdfWriter.getInstance(document, new FileOutputStream(fileName));
             document.open();
+
+
 
             // Nagłówek
             Paragraph header = new Paragraph("Lublin, " + currentDate, normalFont);
             header.setAlignment(Paragraph.ALIGN_RIGHT);
             document.add(header);
-            document.add(createParagraphWithMiddleBoldText(boldFont, "UMOWA NR " + contractNumber ));
+            document.add(createParagraphWithMiddleBoldText(boldFont, "UMOWA NR " + contractNumber));
             document.add(EMPTY_LINE());
 
             // Strony umowy
-            document.add(new Paragraph("zawarta dnia " + currentDate + " w Lublinie pomiędzy:", normalFont));
-            document.add(new Paragraph(clientName, normalFont));
+            document.add(new Paragraph("zawarta dnia " + signatureDate + " w Lublinie pomiędzy:", normalFont));
+
+            document.add(EMPTY_LINE());
+            document.add(new Paragraph(clientFullName, normalFont));
             document.add(new Paragraph(clientAddress, normalFont));
-            document.add(new Paragraph(clientPhone, normalFont));
+            document.add(new Paragraph("Numer Telefonu: " + clientPhone, normalFont));
 
             document.add(EMPTY_LINE());
             document.add(new Paragraph("a", boldFont));
             document.add(EMPTY_LINE());
 
-            document.add(new Paragraph(wykonawcaName, normalFont));
-            document.add(new Paragraph(wykonawcaAddress, normalFont));
-            document.add(new Paragraph(wykonawcaPhone, normalFont));
+            document.add(new Paragraph(contractorName, normalFont));
+            document.add(new Paragraph(contractorAddress, normalFont));
+            document.add(new Paragraph("Numer Telefonu: " + contractorPhone, normalFont));
 
             document.add(EMPTY_LINE());
 
@@ -113,7 +114,7 @@ public class ContractWriter{
             // §1
 
             document.add(createParagraphWithMiddleBoldText(boldFont, "§1"));
-            document.add(new Paragraph("1. Zamawiający zleca a Wykonawca zobowiązuje się do wykonania usługi budowlanej / remontowo-budowlanej w rozumieniu art. 146 pkt. 1 ppkt 2 lit. a i b ustawy o podatku VAT polegającą na " + rodzajUslugi + " w budynku jednorodzinnym pod adresem: " + adresInwestycji + ". 1.  Rodzaje materiałów jakie zostaną zastosowane przez Wykonawcę, ich parametry użytkowe oraz zakres robót budowlanych przewidzianych do wykonania w ramach niniejszej umowy określa załącznik, w przypadku zmiany zakresu robót zostanie sporządzony aneks do niniejszej umowy wyszczególniający roboty dodatkowe i określający ich wartość.", normalFont));
+            document.add(new Paragraph("1. Zamawiający zleca a Wykonawca zobowiązuje się do wykonania usługi budowlanej / remontowo-budowlanej w rozumieniu art. 146 pkt. 1 ppkt 2 lit. a i b ustawy o podatku VAT polegającą na " + commodityType + " w budynku jednorodzinnym pod adresem: \n\n" + clientInvestmentAddress + ".\n\n 1.  Rodzaje materiałów jakie zostaną zastosowane przez Wykonawcę, ich parametry użytkowe oraz zakres robót budowlanych przewidzianych do wykonania w ramach niniejszej umowy określa załącznik, w przypadku zmiany zakresu robót zostanie sporządzony aneks do niniejszej umowy wyszczególniający roboty dodatkowe i określający ich wartość.", normalFont));
             document.add(new Paragraph("2. Całość usługi zostanie wykonana z materiałów Wykonawcy.", normalFont));
             document.add(new Paragraph("3. Zamawiający zobowiązuje się do przygotowania otworów montażowych wg wytycznych wykonawcy", normalFont));
             document.add(new Paragraph("4. Zamawiający oświadcza, że zapoznał się z załącznikiem (ofertą) jest ona zgodna ze złożonym zamówieniem i akceptuje jej zapisy.", normalFont));
@@ -123,8 +124,8 @@ public class ContractWriter{
 
             // §2
             document.add(createParagraphWithMiddleBoldText(boldFont, "§2"));
-            document.add(new Paragraph("1. Strony ustaliły, że wynagrodzeniem Wykonawcy będzie kwota netto " + kwotaNetto + " (słownie złotych: " + kwotaNettoSlownie + ") powiększona o należny " + wartoscVat + " podatek VAT tj. łącznie " + kwotaBrutto + " brutto.", normalFont));
-            document.add(new Paragraph("2. Wynagrodzenie będzie płatne w następujący sposób: w terminie do 3 dni roboczych od dnia podpisania niniejszej umowy Zamawiający wpłaci zaliczkę na konto Wykonawcy mBank 23 1140 2004 0000 3802 7954 9774 lub gotówką w siedzibie firmy w kwocie równej " + zaliczka + " wraz z należnym podatkiem VAT. Na kwotę zaliczki Wykonawca wystawi fakturę VAT. Pozostała wartość kwoty umownej tj. " + kwotaBrutto + " - zaliczka, pole powinno przeliczać się samo Zamawiający wpłaci w dniu zakończenia robót budowlanych na podstawie faktury VAT.", normalFont));
+            document.add(new Paragraph("1. Strony ustaliły, że wynagrodzeniem Wykonawcy będzie kwota netto " + netAmount + " (słownie złotych: " + wholePartNetAmountInWords + " złotych oraz " + fractionalPartNetAmountInWords + " groszy) powiększona o należny " + wartoscVat + " podatek VAT tj. łącznie " + grossAmount + " brutto.", normalFont));
+            document.add(new Paragraph("2. Wynagrodzenie będzie płatne w następujący sposób: w terminie do 3 dni roboczych od dnia podpisania niniejszej umowy Zamawiający wpłaci zaliczkę na konto Wykonawcy mBank 23 1140 2004 0000 3802 7954 9774 lub gotówką w siedzibie firmy w kwocie równej " + zaliczka + " wraz z należnym podatkiem VAT. Na kwotę zaliczki Wykonawca wystawi fakturę VAT. Pozostała wartość kwoty umownej tj. " + grossAmount + " - zaliczka, pole powinno przeliczać się samo Zamawiający wpłaci w dniu zakończenia robót budowlanych na podstawie faktury VAT.", normalFont));
             document.add(new Paragraph("3. Opóźnienie w dokonaniu płatności może skutkować zmianą terminu wykonania.", normalFont));
             document.add(EMPTY_LINE());
 
@@ -136,7 +137,7 @@ public class ContractWriter{
             // §4
             document.add(createParagraphWithMiddleBoldText(boldFont, "§4"));
             document.add(new Paragraph("1. Wykonawca przystąpi do realizacji umowy w dniu uznania zaliczki na rachunku bankowym.", normalFont));
-            document.add(new Paragraph("2. Termin rozpoczęcia prac budowlanych, określa się na " + planowanaDataRealizacji + ".", normalFont));
+            document.add(new Paragraph("2. Termin rozpoczęcia prac budowlanych, określa się na " + plannedImplementationDate + ".", normalFont));
             document.add(new Paragraph("3. Termin zakończenia prac budowlanych nastąpi w ciągu 14 dni od rozpoczęcia prac budowlanych.", normalFont));
             document.add(new Paragraph("4. Wykonawca zastrzega, że termin montażu może ulec zmianie ze względu na niesprzyjające warunki pogodowe.", normalFont));
             document.add(new Paragraph("5. Termin odbioru końcowego robót budowlanych określi Wykonawca w porozumieniu z Zamawiającym.", normalFont));
@@ -172,22 +173,22 @@ public class ContractWriter{
 
             // Podpisy
             PdfPTable table = new PdfPTable(2);
-            table.setWidthPercentage(100); // Ustawienie szerokości tabeli na 100% szerokości strony
+            table.setWidthPercentage(100);
 
-            PdfPCell zamawiajacyCell = new PdfPCell();
-            zamawiajacyCell.addElement(new Paragraph("ZAMAWIAJĄCY"));
-            zamawiajacyCell.setHorizontalAlignment(Element.ALIGN_LEFT);
-            zamawiajacyCell.setBorder(Rectangle.NO_BORDER);
+            PdfPCell orderingCell = new PdfPCell();
+            orderingCell.addElement(new Paragraph("ZAMAWIAJĄCY"));
+            orderingCell.setHorizontalAlignment(Element.ALIGN_LEFT);
+            orderingCell.setBorder(Rectangle.NO_BORDER);
 
-            PdfPCell wykonawcaCell = new PdfPCell();
+            PdfPCell contractorCell = new PdfPCell();
             Paragraph paragraph = new Paragraph("WYKONAWCA");
             paragraph.setAlignment(Element.ALIGN_RIGHT);
-            wykonawcaCell.addElement(paragraph);
-            wykonawcaCell.setHorizontalAlignment(Element.ALIGN_RIGHT);
-            wykonawcaCell.setBorder(Rectangle.NO_BORDER);
+            contractorCell.addElement(paragraph);
+            contractorCell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+            contractorCell.setBorder(Rectangle.NO_BORDER);
 
-            table.addCell(zamawiajacyCell);
-            table.addCell(wykonawcaCell);
+            table.addCell(orderingCell);
+            table.addCell(contractorCell);
 
             document.add(table);
 
@@ -201,25 +202,47 @@ public class ContractWriter{
         }
     }
 
-    private static PdfPTable createParagraphWithMiddleBoldText(Font font, String text){
-            PdfPTable table = new PdfPTable(1);
-            table.setWidthPercentage(100);
-            table.setHorizontalAlignment(Element.ALIGN_MIDDLE);
-            
+    private static PdfPTable createParagraphWithMiddleBoldText(Font font, String text) {
+        PdfPTable table = new PdfPTable(1);
+        table.setWidthPercentage(100);
+        table.setHorizontalAlignment(Element.ALIGN_MIDDLE);
 
-            Paragraph section = new Paragraph(text, font);
-            section.setAlignment(Element.ALIGN_MIDDLE);
-            
-            PdfPCell cell = new PdfPCell(section);
-            cell.setBorder(Rectangle.NO_BORDER);
-            cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-            cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-            table.addCell(cell);
 
-        return  table;
+        Paragraph section = new Paragraph(text, font);
+        section.setAlignment(Element.ALIGN_MIDDLE);
+
+        PdfPCell cell = new PdfPCell(section);
+        cell.setBorder(Rectangle.NO_BORDER);
+        cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+        table.addCell(cell);
+
+        return table;
 
     }
+
     private static Paragraph EMPTY_LINE() {
         return new Paragraph(" ");
+    }
+
+    static class HeaderFooterPageEvent extends PdfPageEventHelper {
+
+        Font font = new Font(Font.FontFamily.UNDEFINED, 5, Font.ITALIC);
+        @Override
+        public void onStartPage(PdfWriter writer, Document document) {
+            PdfContentByte cb = writer.getDirectContent();
+            Phrase header = new Phrase("this is a header", font);
+            Phrase footer = new Phrase("this is a footer", font);
+            ColumnText.showTextAligned(cb, Element.ALIGN_CENTER,
+                    header,
+                    (document.right() - document.left()) / 2 + document.leftMargin(),
+                    document.top() + 10, 0);
+            ColumnText.showTextAligned(cb, Element.ALIGN_CENTER,
+                    footer,
+                    (document.right() - document.left()) / 2 + document.leftMargin(),
+                    document.bottom() - 10, 0);
+        }
+
+
     }
 }

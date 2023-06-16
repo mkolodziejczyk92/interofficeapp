@@ -23,6 +23,8 @@ public class Contract extends AbstractEntity {
     private LocalDate signatureDate;
     private LocalDate plannedImplementationDate;
 
+    private String advancePayment;
+
     @Builder.Default
     private boolean completed = false;
 

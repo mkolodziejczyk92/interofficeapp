@@ -20,7 +20,7 @@ public class ContractWriter {
 
     public static void createPdfContract(String clientPhone, String contractNumber, String clientFullName, String clientInvestmentAddress,
                                          String commodityType, String clientAddress, String plannedImplementationDate, String signatureDate, String netAmount, String wholePartNetAmountInWords, String fractionalPartNetAmountInWords,
-                                         String grossAmount) {
+                                         String grossAmount, String vatAmount, String advancePayment, String grossAmountMinusAdvancePayment) {
 
 
         LocalDate currentDate = LocalDate.now();
@@ -30,8 +30,6 @@ public class ContractWriter {
         String fileName = "umowa.pdf";
 
 
-        String wartoscVat = "230";
-        String zaliczka = "500";
 
         try {
             BaseFont baseFont = BaseFont.createFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.EMBEDDED);
@@ -124,8 +122,8 @@ public class ContractWriter {
 
             // §2
             document.add(createParagraphWithMiddleBoldText(boldFont, "§2"));
-            document.add(new Paragraph("1. Strony ustaliły, że wynagrodzeniem Wykonawcy będzie kwota netto " + netAmount + " (słownie złotych: " + wholePartNetAmountInWords + " złotych oraz " + fractionalPartNetAmountInWords + " groszy) powiększona o należny " + wartoscVat + " podatek VAT tj. łącznie " + grossAmount + " brutto.", normalFont));
-            document.add(new Paragraph("2. Wynagrodzenie będzie płatne w następujący sposób: w terminie do 3 dni roboczych od dnia podpisania niniejszej umowy Zamawiający wpłaci zaliczkę na konto Wykonawcy mBank 23 1140 2004 0000 3802 7954 9774 lub gotówką w siedzibie firmy w kwocie równej " + zaliczka + " wraz z należnym podatkiem VAT. Na kwotę zaliczki Wykonawca wystawi fakturę VAT. Pozostała wartość kwoty umownej tj. " + grossAmount + " - zaliczka, pole powinno przeliczać się samo Zamawiający wpłaci w dniu zakończenia robót budowlanych na podstawie faktury VAT.", normalFont));
+            document.add(new Paragraph("1. Strony ustaliły, że wynagrodzeniem Wykonawcy będzie kwota netto " + netAmount + " (słownie złotych: " + wholePartNetAmountInWords + " złotych oraz " + fractionalPartNetAmountInWords + " groszy) powiększona o należny " + vatAmount + " podatek VAT tj. łącznie " + grossAmount + "zł brutto.", normalFont));
+            document.add(new Paragraph("2. Wynagrodzenie będzie płatne w następujący sposób: w terminie do 3 dni roboczych od dnia podpisania niniejszej umowy Zamawiający wpłaci zaliczkę na konto Wykonawcy mBank 23 1140 2004 0000 3802 7954 9774 lub gotówką w siedzibie firmy w kwocie równej " + advancePayment + "zł wraz z należnym podatkiem VAT. Na kwotę zaliczki Wykonawca wystawi fakturę VAT. Pozostała wartość kwoty umownej tj. " + grossAmountMinusAdvancePayment + " zamawiający wpłaci w dniu zakończenia robót budowlanych na podstawie faktury VAT.", normalFont));
             document.add(new Paragraph("3. Opóźnienie w dokonaniu płatności może skutkować zmianą terminu wykonania.", normalFont));
             document.add(EMPTY_LINE());
 

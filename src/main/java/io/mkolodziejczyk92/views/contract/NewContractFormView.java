@@ -19,6 +19,7 @@ import io.mkolodziejczyk92.data.entity.Purchase;
 import io.mkolodziejczyk92.data.enums.EAddressType;
 import io.mkolodziejczyk92.data.enums.ECommodityType;
 import io.mkolodziejczyk92.utils.ComponentFactory;
+import io.mkolodziejczyk92.utils.validators.PriceFormatValidator;
 import io.mkolodziejczyk92.views.MainLayout;
 import jakarta.annotation.security.PermitAll;
 
@@ -45,6 +46,8 @@ public class NewContractFormView extends Div implements HasUrlParameter<String> 
     private final DatePicker signatureDate = new DatePicker("Signature Day");
     private final DatePicker plannedImplementationDate = new DatePicker("Planned Realization Date");
     private final TextField number = new TextField("Contract Number");
+
+    private final TextField advancePayment = new TextField("Advance Payment");
     private final Button cancel = createCancelButton();
     private final Button save = createSaveButton();
     private final Button back = createBackButton();
@@ -84,8 +87,7 @@ public class NewContractFormView extends Div implements HasUrlParameter<String> 
         completed.setEnabled(false);
         number.setReadOnly(true);
         signatureDate.setReadOnly(true);
-
-        return ComponentFactory.createFormLayout(client, commodityType, investmentAddress, residenceAddress,
+        return ComponentFactory.createFormLayout(client, commodityType, advancePayment, investmentAddress, residenceAddress,
                 signatureDate, plannedImplementationDate, number, completed);
     }
 
@@ -167,6 +169,10 @@ public class NewContractFormView extends Div implements HasUrlParameter<String> 
         binder.forField(plannedImplementationDate)
                 .asRequired("Please select a date")
                 .bind(Contract::getPlannedImplementationDate, Contract::setPlannedImplementationDate);
+
+        binder.forField(advancePayment)
+                .withValidator(new PriceFormatValidator())
+                .bind(Contract::getAdvancePayment, Contract::setAdvancePayment);
     }
 
     private void createSaveButtonStatus() {

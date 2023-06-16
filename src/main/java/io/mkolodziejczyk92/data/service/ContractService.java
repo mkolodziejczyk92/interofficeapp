@@ -11,6 +11,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.Year;
 import java.util.List;
@@ -57,6 +59,9 @@ public class ContractService {
     }
 
     public void save(Contract contract) {
+        BigDecimal advancePaymentInput = new BigDecimal(contract.getAdvancePayment().replace(',', '.'));
+        BigDecimal netInputAfterScale = advancePaymentInput.setScale(2, RoundingMode.HALF_UP);
+        contract.setAdvancePayment(String.valueOf(netInputAfterScale).replace('.', ','));
         repository.save(contract);
     }
 
@@ -84,7 +89,13 @@ public class ContractService {
                         .equals(RESIDENCE))
                 .findAny().get();
 
-        String netAmount = purchaseByContractNumber.getNetAmount();
+        String netAmount = purchaseByContractNumber.getNetAmount().replace(",",".");
+
+        double advancePayment = Double.parseDouble(contract.getAdvancePayment().replace(",","."));
+        double grossAmountDouble = Double.parseDouble(purchaseByContractNumber.getGrossAmount().replace(",","."));
+        double netAmountDouble = Double.parseDouble(purchaseByContractNumber.getNetAmount().replace(",","."));
+        double vatAmount = grossAmountDouble - netAmountDouble;
+        double grossAmountMinusAdvancePayment = grossAmountDouble  - advancePayment;
 
         long wholePartFromPrice = NumberToWordsConverter.getWholePartFromDouble(Double.parseDouble(netAmount));
         long fractionalPartFromPrice = NumberToWordsConverter.getFractionalPartFromDouble(Double.parseDouble(netAmount));
@@ -92,6 +103,7 @@ public class ContractService {
 
         ContractWriter.createPdfContract(client.getPhoneNumber(), contract.getNumber(), client.getFullName(), investmentAddress.investmentAddressToString(),
                 contract.getCommodityType().getName(), clientAddress.residenceAddressToString(), contract.getPlannedImplementationDate().toString(),
-                contract.getSignatureDate().toString(), netAmount, NumberToWordsConverter.convertNumberToWords(wholePartFromPrice), NumberToWordsConverter.convertNumberToWords(fractionalPartFromPrice) , purchaseByContractNumber.getGrossAmount());
+                contract.getSignatureDate().toString(), netAmount, NumberToWordsConverter.convertNumberToWords(wholePartFromPrice), NumberToWordsConverter.convertNumberToWords(fractionalPartFromPrice),
+                purchaseByContractNumber.getGrossAmount(), String.valueOf(vatAmount), contract.getAdvancePayment(), String.valueOf(grossAmountMinusAdvancePayment));
     }
 }

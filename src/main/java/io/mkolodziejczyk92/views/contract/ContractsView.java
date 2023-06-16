@@ -16,7 +16,6 @@ import com.vaadin.flow.data.provider.ConfigurableFilterDataProvider;
 import com.vaadin.flow.router.*;
 import io.mkolodziejczyk92.data.controllers.ContractsViewController;
 import io.mkolodziejczyk92.data.entity.Contract;
-import io.mkolodziejczyk92.utils.ContractWriter;
 import io.mkolodziejczyk92.views.MainLayout;
 import jakarta.annotation.security.PermitAll;
 
@@ -32,7 +31,6 @@ public class ContractsView extends Div implements HasUrlParameter<String> {
     private final ContractsViewController contractsViewController;
 
     private final ContractDetailsDialogView dialogView;
-
     private ContractFilter contractFilter = new ContractFilter();
     private ContractDataProvider contractDataProvider = new ContractDataProvider();
     private ConfigurableFilterDataProvider<Contract, Void, ContractFilter> filterDataProvider
@@ -59,6 +57,7 @@ public class ContractsView extends Div implements HasUrlParameter<String> {
             return icon;
         }).setHeader("Completed").setTextAlign(ColumnTextAlign.CENTER);
         grid.addColumn(contract -> contract.getCommodityType().getName()).setHeader("Commodity Type");
+        grid.addColumn(Contract::getAdvancePayment).setHeader("Advance Payment");
         grid.getColumns().forEach(contractColumn -> contractColumn.setAutoWidth(true));
         grid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
 

@@ -35,7 +35,6 @@ public class NewInvoiceFormView extends Div implements HasUrlParameter<String> {
     private final ClientsViewController clientsViewController;
     private final TextField number = new TextField("Invoice number");
     private final TextField clientName = new TextField("Client");
-    private final TextField contractNumber = new TextField("Contract number");
     private final IntegerField paymentTime = new IntegerField("Payment time");
     private final DatePicker issueDate = new DatePicker("Issue date");
     private final TextField netAmount = new TextField("Net amount");
@@ -79,10 +78,10 @@ public class NewInvoiceFormView extends Div implements HasUrlParameter<String> {
     private Component createFormLayout() {
         vat.setReadOnly(true);
         clientName.setReadOnly(true);
-        contractNumber.setReadOnly(true);
+
 
         return ComponentFactory.createFormLayout(
-                clientName, contractNumber, number, paymentMethod, paymentTime, issueDate, isPaid, netAmount, vat, invoiceType);
+                clientName,  number, paymentMethod, paymentTime, issueDate, isPaid, netAmount, vat, invoiceType);
     }
 
     private void createComboBoxes() {
@@ -114,7 +113,6 @@ public class NewInvoiceFormView extends Div implements HasUrlParameter<String> {
             inputPurchase = purchasesViewController.getPurchaseById(purchaseId);
             clientId = inputPurchase.getClient().getId();
             clientName.setValue(inputPurchase.getClient().getFullName());
-            contractNumber.setValue(inputPurchase.getContractNumber());
             netAmount.setValue(inputPurchase.getNetAmount());
             vat.setValue((inputPurchase.getEVat().getWordForm()));
         }

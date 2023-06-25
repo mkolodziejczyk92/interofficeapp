@@ -31,7 +31,6 @@ public class ContractsView extends Div implements HasUrlParameter<String> {
     private final ContractsViewController contractsViewController;
 
     private final ContractDetailsDialogView dialogView;
-
     private ContractFilter contractFilter = new ContractFilter();
     private ContractDataProvider contractDataProvider = new ContractDataProvider();
     private ConfigurableFilterDataProvider<Contract, Void, ContractFilter> filterDataProvider
@@ -58,9 +57,10 @@ public class ContractsView extends Div implements HasUrlParameter<String> {
             return icon;
         }).setHeader("Completed").setTextAlign(ColumnTextAlign.CENTER);
         grid.addColumn(contract -> contract.getCommodityType().getName()).setHeader("Commodity Type");
+        grid.addColumn(Contract::getAdvancePayment).setHeader("Advance Payment");
         grid.getColumns().forEach(contractColumn -> contractColumn.setAutoWidth(true));
         grid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
-        grid.setItems(filterDataProvider);
+
 
         GridContextMenu<Contract> menu = grid.addContextMenu();
         menu.addItem("Details", event -> {
@@ -76,6 +76,8 @@ public class ContractsView extends Div implements HasUrlParameter<String> {
         });
         menu.addItem("Delete", event -> {
         });
+        menu.add(new Hr());
+        menu.addItem("Create PDF contract", event -> contractsViewController.printContractInPdf(event.getItem().get()));
 
         add(createTopButtonLayout());
         add(createSearchLayout());
@@ -98,6 +100,8 @@ public class ContractsView extends Div implements HasUrlParameter<String> {
         if(!urlParameter.isBlank()){
             String clientId = urlParameter.substring(1);
             grid.setItems(contractsViewController.clientContracts(Long.valueOf(clientId)));
+        }else {
+            grid.setItems(filterDataProvider);
         }
     }
 }

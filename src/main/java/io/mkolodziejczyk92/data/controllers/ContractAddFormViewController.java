@@ -3,6 +3,7 @@ package io.mkolodziejczyk92.data.controllers;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.data.binder.Binder;
+import com.vaadin.flow.data.binder.ValidationException;
 import io.mkolodziejczyk92.data.entity.Client;
 import io.mkolodziejczyk92.data.entity.Contract;
 import io.mkolodziejczyk92.data.entity.Purchase;
@@ -76,5 +77,20 @@ public class ContractAddFormViewController {
 
     public void updatePurchase(Long purchaseId, String contractNumber) {
         purchaseService.updateContractNumberAndSave(purchaseId, contractNumber);
+    }
+
+    public void validateAndSaveNewContract(Contract contract) {
+        try {
+            binder.writeBean(contract);
+            contractService.save(contract);
+            Notification.show(contract.getNumber() + " stored.");
+            UI.getCurrent().navigate("contracts");
+        } catch (ValidationException ex) {
+            log.error(ex.getMessage(), ex);
+            Notification.show("Validate Error");
+        } catch (Exception e){
+            log.error(e.getMessage(), e);
+            Notification.show("Something went wrong");
+        }
     }
 }

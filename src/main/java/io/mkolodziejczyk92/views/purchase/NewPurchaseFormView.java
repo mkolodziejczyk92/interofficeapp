@@ -17,6 +17,7 @@ import io.mkolodziejczyk92.data.enums.ECommodityType;
 import io.mkolodziejczyk92.data.enums.EPurchaseStatus;
 import io.mkolodziejczyk92.data.enums.EVat;
 import io.mkolodziejczyk92.utils.ComponentFactory;
+import io.mkolodziejczyk92.utils.validators.PriceFormatValidator;
 import io.mkolodziejczyk92.views.MainLayout;
 import jakarta.annotation.security.PermitAll;
 
@@ -52,8 +53,7 @@ public class NewPurchaseFormView extends Div implements HasUrlParameter<String> 
         createFormComboBoxes();
 
         binder.forField(netAmount)
-                .withValidator(value -> value.matches("\\d+(\\,\\d{1,2})?"),
-                        "Enter the correct price format ex. 128,36 or 79")
+                .withValidator(new PriceFormatValidator())
                 .bind(Purchase::getNetAmount, Purchase::setNetAmount);
 
         netAmount.addValueChangeListener(event -> {

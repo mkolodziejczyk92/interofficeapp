@@ -79,7 +79,7 @@ public class UsersView extends Div {
         dialog.getFooter().add(deleteButton);
 
         Button cancelButton = new Button("Cancel", event -> dialog.close());
-        cancelButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+        cancelButton.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
         dialog.getFooter().add(cancelButton);
         return dialog;
     }

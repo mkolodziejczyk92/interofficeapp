@@ -120,7 +120,6 @@ public class NewAddressFormView extends Div implements HasUrlParameter<String> {
     }
 
     private void createSaveAndUpdateButtonStatus() {
-        client.addValueChangeListener(e -> updateSaveAndUpdateButtonStatus(client.isInvalid()));
         zipCode.addValidationStatusChangeListener(e -> updateSaveAndUpdateButtonStatus(zipCode.isInvalid()));
         plotNumber.addValidationStatusChangeListener(e -> updateSaveAndUpdateButtonStatus(plotNumber.isInvalid()));
         municipality.addValidationStatusChangeListener(e -> updateSaveAndUpdateButtonStatus(municipality.isInvalid()));
@@ -263,6 +262,7 @@ public class NewAddressFormView extends Div implements HasUrlParameter<String> {
 
         } else if (!urlWithClientId.isBlank()) {
             String clientId = urlWithClientId.substring(1);
+            client.setReadOnly(true);
             client.setValue(clientsViewController.findClientById(Long.valueOf(clientId)));
         }
 

@@ -47,7 +47,7 @@ public class AddressesView extends Div implements HasUrlParameter<String> {
         grid.addColumn(Address::getPlotNumber).setHeader("Plot number");
         grid.getColumns().forEach(addressColumn -> addressColumn.setAutoWidth(true));
         grid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
-        grid.setItems(filterDataProvider);
+
 
         GridContextMenu<Address> menu = grid.addContextMenu();
         menu.addItem("Edit", event -> {
@@ -87,6 +87,8 @@ public class AddressesView extends Div implements HasUrlParameter<String> {
             String clientId = urlParameter.substring(1);
             clientIdWithParameter = urlParameter;
             grid.setItems(addressesViewController.clientAddresses(Long.valueOf(clientId)));
+        } else {
+            grid.setItems(filterDataProvider);
         }
     }
 }

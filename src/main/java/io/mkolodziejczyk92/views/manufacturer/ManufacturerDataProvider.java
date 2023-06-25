@@ -63,4 +63,8 @@ public class ManufacturerDataProvider extends AbstractBackEndDataProvider<Manufa
         }
         return (p1, p2) -> 0;
     }
+
+    public void removeManufacturerFromGrid(Manufacturer manufacturer) {
+        allManufacturers.remove(manufacturer);
+    }
 }

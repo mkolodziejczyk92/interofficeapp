@@ -37,7 +37,7 @@ public class UsersViewController {
     public void deleteUser(User user) {
         userService.delete(user.getId());
         Notification.show("User " + user.getUserName() + " deleted.");
-        UI.getCurrent().navigate("suppliers");
+        UI.getCurrent().navigate("users");
     }
 
     public void editUserInformation(User user) {

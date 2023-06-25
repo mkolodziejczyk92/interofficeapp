@@ -3,13 +3,12 @@ package io.mkolodziejczyk92.utils.validators;
 import com.vaadin.flow.data.binder.ValidationResult;
 import com.vaadin.flow.data.binder.Validator;
 import com.vaadin.flow.data.binder.ValueContext;
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor
 public class OnlyLettersOfAlphabetValidator implements Validator<String> {
 
     private static final String FIRST_NAME_AND_LAST_NAME_REGEX = "[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ]{1,50}";
-
-    public OnlyLettersOfAlphabetValidator() {
-    }
 
     @Override
     public ValidationResult apply(String value, ValueContext valueContext) {

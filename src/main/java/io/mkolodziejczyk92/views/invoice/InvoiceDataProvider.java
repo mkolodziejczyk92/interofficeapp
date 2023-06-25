@@ -6,6 +6,7 @@ import com.vaadin.flow.data.provider.QuerySortOrder;
 import com.vaadin.flow.data.provider.SortDirection;
 import io.mkolodziejczyk92.data.controllers.InvoicesViewController;
 import io.mkolodziejczyk92.data.entity.Invoice;
+import io.mkolodziejczyk92.data.entity.Purchase;
 import io.mkolodziejczyk92.utils.BeanProvider;
 
 import java.util.Comparator;
@@ -63,5 +64,8 @@ public class InvoiceDataProvider extends AbstractBackEndDataProvider<Invoice, In
             return Comparator.comparing(Invoice::getNumber);
         }
         return (p1, p2) -> 0;
+    }
+    public void removeInvoiceFromGrid(Invoice invoice) {
+        allInvoices.remove(invoice);
     }
 }

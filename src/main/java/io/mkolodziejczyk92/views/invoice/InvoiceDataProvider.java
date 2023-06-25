@@ -6,7 +6,6 @@ import com.vaadin.flow.data.provider.QuerySortOrder;
 import com.vaadin.flow.data.provider.SortDirection;
 import io.mkolodziejczyk92.data.controllers.InvoicesViewController;
 import io.mkolodziejczyk92.data.entity.Invoice;
-import io.mkolodziejczyk92.data.entity.Purchase;
 import io.mkolodziejczyk92.utils.BeanProvider;
 
 import java.util.Comparator;
@@ -16,7 +15,7 @@ import java.util.stream.Stream;
 public class InvoiceDataProvider extends AbstractBackEndDataProvider<Invoice, InvoiceFilter> {
 
 
-    private final List<Invoice> allInvoices;
+    private  List<Invoice> allInvoices;
 
     public InvoiceDataProvider() {
         allInvoices = BeanProvider.getBean(InvoicesViewController.class).allInvoices();
@@ -67,5 +66,11 @@ public class InvoiceDataProvider extends AbstractBackEndDataProvider<Invoice, In
     }
     public void removeInvoiceFromGrid(Invoice invoice) {
         allInvoices.remove(invoice);
+    }
+
+    public List<Invoice> allClientByIdInvoices(Long clientId){
+        allInvoices = BeanProvider.getBean(InvoicesViewController.class).clientInvoices(clientId);
+        return allInvoices;
+
     }
 }

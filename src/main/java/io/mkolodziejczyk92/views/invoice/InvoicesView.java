@@ -41,7 +41,6 @@ public class InvoicesView extends Div implements HasUrlParameter<String> {
     private String idFromUrl;
 
     private final Grid<Invoice> grid = new Grid<>(Invoice.class, false);
-    private final Button emptyButton = createStandardButton("EMPTY");
 
     public InvoicesView(InvoicesViewController invoicesViewController) {
         this.invoicesViewController = invoicesViewController;
@@ -87,7 +86,7 @@ public class InvoicesView extends Div implements HasUrlParameter<String> {
             } else menu.close();
         });
 
-        add(createTopButtonLayout());
+
         add(createSearchLayout());
         add(grid);
     }
@@ -104,11 +103,7 @@ public class InvoicesView extends Div implements HasUrlParameter<String> {
         return searchLayout;
     }
 
-    private Component createTopButtonLayout() {
-        HorizontalLayout topButtonLayout = ComponentFactory.createTopButtonLayout();
-        topButtonLayout.add(emptyButton);
-        return topButtonLayout;
-    }
+
 
     private Dialog createDialogConfirmForChangeInvoiceStatus(Invoice invoice) {
         Dialog dialog = new Dialog();
@@ -161,7 +156,7 @@ public class InvoicesView extends Div implements HasUrlParameter<String> {
                     grid.setItems(invoicesViewController.purchaseInvoices(Long.valueOf(urlParameter.substring(1))));
                 }
                 case 'c' -> {
-                    grid.setItems(invoicesViewController.clientInvoices(Long.valueOf(urlParameter.substring(1))));
+                    grid.setItems(invoiceDataProvider.allClientByIdInvoices(Long.valueOf(urlParameter.substring(1))));
                 }
             }
 

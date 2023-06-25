@@ -4,6 +4,7 @@ import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
@@ -60,7 +61,7 @@ public class NewPurchaseFormView extends Div implements HasUrlParameter<String> 
             binder.validate();
         });
 
-        add(createFormLayout());
+        createFormLayout();
 
         binder.bindInstanceFields(this);
         add(createBottomButtonLayout());
@@ -77,9 +78,19 @@ public class NewPurchaseFormView extends Div implements HasUrlParameter<String> 
         return topButtonLayout;
     }
 
-    private Component createFormLayout() {
-        return ComponentFactory.createFormLayout(client, commodityType, status, supplier, manufacturer, eVat,
-                netAmount, supplierPurchaseNumber, comment);
+    private void createFormLayout() {
+        HorizontalLayout firstLineInFormLayout = new HorizontalLayout();
+        firstLineInFormLayout.setPadding(true);
+        firstLineInFormLayout.addAndExpand(client, commodityType, status, supplier);
+        add(firstLineInFormLayout);
+        HorizontalLayout secondLineInFormLayout = new HorizontalLayout();
+        secondLineInFormLayout.setPadding(true);
+        secondLineInFormLayout.addAndExpand(manufacturer, eVat, netAmount);
+        add(secondLineInFormLayout);
+        HorizontalLayout thirdLineInFormLayout = new HorizontalLayout();
+        thirdLineInFormLayout.addAndExpand(supplierPurchaseNumber,comment);
+        thirdLineInFormLayout.setPadding(true);
+        add(thirdLineInFormLayout);
     }
 
     private Component createBottomButtonLayout() {
@@ -105,20 +116,16 @@ public class NewPurchaseFormView extends Div implements HasUrlParameter<String> 
 
         client.setItems(purchaseAddFormViewController.allClients());
         client.setItemLabelGenerator(Client::getFullName);
-        client.setMaxWidth("300px");
 
         commodityType.setItems(ECommodityType.values());
         commodityType.setItemLabelGenerator(ECommodityType::getName);
-        commodityType.setMaxWidth("350px");
-        commodityType.getStyle().set("padding-right", "30px");
+
 
         status.setItems(EPurchaseStatus.values());
         status.setItemLabelGenerator(EPurchaseStatus::getStatusName);
-        status.setMaxWidth("300px");
 
         supplier.setItems(purchaseAddFormViewController.allSuppliers());
         supplier.setItemLabelGenerator(Supplier::getNameOfCompany);
-        supplier.setMaxWidth("300px");
 
         manufacturer.setItems(purchaseAddFormViewController.allManufacturers());
         manufacturer.setItemLabelGenerator(Manufacturer::getNameOfCompany);

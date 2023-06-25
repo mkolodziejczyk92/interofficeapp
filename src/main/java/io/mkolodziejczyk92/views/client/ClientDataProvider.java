@@ -16,7 +16,7 @@ import java.util.stream.Stream;
 public class ClientDataProvider extends AbstractBackEndDataProvider<Client, ClientFilter> {
 
 
-    final List<Client> allClients;
+    private final List<Client> allClients;
 
     public ClientDataProvider() {
         allClients = BeanProvider.getBean(ClientService.class).allClients();

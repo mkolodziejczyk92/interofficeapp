@@ -15,14 +15,11 @@ import java.util.List;
 @Slf4j
 @Controller
 public class InvoicesViewController {
-    private final InvoiceRepository invoiceRepository;
 
     private final InvoiceService invoiceService;
 
-    public InvoicesViewController(InvoiceService invoiceService,
-                                  InvoiceRepository invoiceRepository) {
+    public InvoicesViewController(InvoiceService invoiceService) {
         this.invoiceService = invoiceService;
-        this.invoiceRepository = invoiceRepository;
     }
 
     public List<Invoice> allInvoices(){

@@ -67,7 +67,7 @@ public class PurchaseService {
         repository.save(purchase);
     }
 
-    private String countGrossValue(String vatValue, String netAmount) {
+    public String countGrossValue(String vatValue, String netAmount) {
         String netInput;
         if (netAmount.contains(",")) {
             netInput = netAmount.replace(",", ".");

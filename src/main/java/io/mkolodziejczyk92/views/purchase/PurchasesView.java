@@ -80,7 +80,7 @@ public class PurchasesView extends Div implements HasUrlParameter<String> {
         grid.setItems(filterDataProvider);
 
         GridContextMenu<Purchase> menu = grid.addContextMenu();
-        menu.addItem("Create Contract", event -> {
+        menu.addItem("Create contract", event -> {
             Optional<Purchase> item = event.getItem();
             if (item.isPresent()) {
                 Purchase purchase = item.get();
@@ -91,6 +91,13 @@ public class PurchasesView extends Div implements HasUrlParameter<String> {
                 } else {
                     purchasesViewController.createNewContractFromPurchase(purchase.getId());
                 }
+            } else {
+                menu.close();
+            }
+        });
+        menu.addItem("Create invoice", event -> {
+            if (event.getItem().isPresent()) {
+                purchasesViewController.createNewInvoiceFromPurchase(event.getItem().get().getId());
             } else {
                 menu.close();
             }
@@ -106,7 +113,6 @@ public class PurchasesView extends Div implements HasUrlParameter<String> {
                 purchasesViewController.deletePurchase(event.getItem().get());
             } else menu.close();
         });
-
         add(createTopButtonLayout());
         add(createSearchLayout());
         add(grid);

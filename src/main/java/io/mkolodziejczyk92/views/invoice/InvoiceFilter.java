@@ -23,9 +23,6 @@ public class InvoiceFilter {
         if (Optional.ofNullable(invoice.getNumber()).isPresent()) {
             matchesInvoiceNumber = matches(invoice.getNumber(), searchTerm);
         }
-        if (Optional.ofNullable(invoice.getContract().getNumber()).isPresent()) {
-            matchesContractNumber = matches(invoice.getContract().getNumber(), searchTerm);
-        }
         return matchesClientFullName || matchesInvoiceNumber || matchesContractNumber;
     }
 

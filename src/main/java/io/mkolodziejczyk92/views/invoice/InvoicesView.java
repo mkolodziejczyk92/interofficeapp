@@ -45,8 +45,9 @@ public class InvoicesView extends Div implements HasUrlParameter<String> {
 
         grid.addColumn(Invoice::getNumber).setHeader("Invoice number");
         grid.addColumn(invoice -> invoice.getClient().getFullName()).setHeader("Client");
-        grid.addColumn(invoice -> invoice.getContract().getNumber()).setHeader("Contract number");
-        grid.addColumn(Invoice::getAmount).setHeader("Amount");
+        grid.addColumn(Invoice::getNetAmount).setHeader("Net amount");
+        grid.addColumn(Invoice::getGrossAmount).setHeader("Gross amount");
+        grid.addColumn(Invoice::getVat).setHeader("VAT");
         grid.addColumn(Invoice::getIssueDate).setHeader("Issue date");
         grid.addColumn(Invoice::getPaymentTime).setHeader("Payment time");
         grid.addComponentColumn(invoice -> {

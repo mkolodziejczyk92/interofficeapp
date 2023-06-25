@@ -5,10 +5,8 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public enum EPaymentMethod {
-    CASH("cash"),
-    BANK_TRANSFER("bank transfer");
-
+public enum EInvoiceType {
+    ADVANCE("advance"),
+    FINAL("final");
     private final String name;
-
 }

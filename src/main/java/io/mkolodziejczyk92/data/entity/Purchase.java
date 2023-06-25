@@ -6,6 +6,8 @@ import io.mkolodziejczyk92.data.enums.EVat;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -43,5 +45,8 @@ public class Purchase extends AbstractEntity {
     @ManyToOne
     @JoinColumn(name="manufacturer_id")
     private Manufacturer manufacturer;
+
+    @OneToMany(mappedBy = "purchase")
+    private List<Invoice> allInvoices;
 
 }

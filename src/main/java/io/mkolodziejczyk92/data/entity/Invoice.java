@@ -1,9 +1,11 @@
 package io.mkolodziejczyk92.data.entity;
 
-import io.mkolodziejczyk92.data.enums.EInvoice;
+import io.mkolodziejczyk92.data.enums.EInvoiceType;
 import io.mkolodziejczyk92.data.enums.EPaymentMethod;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.time.LocalDate;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -15,23 +17,30 @@ import lombok.*;
 public class Invoice extends AbstractEntity {
 
     private String number;
-    private String amount;
 
-    private String issueDate;
-    private String paymentTime;
+    @JoinColumn(name = "net_amount")
+    private String netAmount;
+
+    @JoinColumn(name = "gross_amount")
+    private String grossAmount;
+
+    private String vat;
+
+    private LocalDate issueDate;
+    private Integer paymentTime;
 
     @Builder.Default
     private boolean paid = false;
 
     @Enumerated(EnumType.STRING)
-    private EInvoice type;
+    private EInvoiceType type;
 
     @Enumerated(EnumType.STRING)
     private EPaymentMethod paymentMethod;
 
     @ManyToOne
-    @JoinColumn(name = "contract_id")
-    private Contract contract;
+    @JoinColumn(name = "purchase_id")
+    private Purchase purchase;
     @ManyToOne
     @JoinColumn(name = "client_id")
     private Client client;

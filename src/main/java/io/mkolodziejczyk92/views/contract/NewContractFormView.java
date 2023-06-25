@@ -100,7 +100,6 @@ public class NewContractFormView extends Div implements HasUrlParameter<String> 
         commodityType.setItemLabelGenerator(ECommodityType::getName);
         commodityType.setMaxWidth("350px");
         commodityType.getStyle().set("padding-right", "30px");
-        
 
     }
 
@@ -126,7 +125,6 @@ public class NewContractFormView extends Div implements HasUrlParameter<String> 
             binder.getBean().setInvestmentAndResidenceAddresses(investmentAndResidenceAddresses);
                     contractAddFormController.updateContract(binder.getBean());
                 });
-
         update.setVisible(false);
         return bottomButtonLayout;
 
@@ -254,7 +252,6 @@ public class NewContractFormView extends Div implements HasUrlParameter<String> 
                     (address -> "Plot Number: " + address.getPlotNumber() +
                             " | Zip Code: " + address.getZipCode() +
                             " | Municipality: " + address.getMunicipality());
-
         }
     }
 }

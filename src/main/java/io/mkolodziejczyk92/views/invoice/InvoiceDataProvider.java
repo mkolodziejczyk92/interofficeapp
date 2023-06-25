@@ -61,8 +61,6 @@ public class InvoiceDataProvider extends AbstractBackEndDataProvider<Invoice, In
             return Comparator.comparing(invoice -> invoice.getClient().getFullName());
         } else if (sorted.equals("invoiceNumber")) {
             return Comparator.comparing(Invoice::getNumber);
-        } else if (sorted.equals("contractNumber")) {
-            return Comparator.comparing(invoice -> invoice.getContract().getNumber());
         }
         return (p1, p2) -> 0;
     }

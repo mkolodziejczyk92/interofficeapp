@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Slf4j
 @Controller
@@ -74,9 +75,16 @@ public class PurchasesViewController {
     public void createNewContractFromPurchase(Long purchaseId) {
         UI.getCurrent().navigate("newContract/p" + purchaseId);
     }
+    public void createNewInvoiceFromPurchase(Long purchaseId) {
+        UI.getCurrent().navigate("new-invoice/p" + purchaseId);
+    }
 
     public List<Purchase> purchasesSentToManufacturer(Long manufacturerId) {
         return purchaseService.allPurchasesForManufacturer(manufacturerId);
+    }
+
+    public Purchase getPurchaseById(Long purchaseId){
+        return purchaseService.get(purchaseId).orElseThrow();
     }
 }
 

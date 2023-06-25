@@ -3,7 +3,9 @@ package io.mkolodziejczyk92.views.invoice;
 
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.dependency.Uses;
+import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.grid.ColumnTextAlign;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
@@ -17,6 +19,7 @@ import com.vaadin.flow.data.provider.ConfigurableFilterDataProvider;
 import com.vaadin.flow.router.*;
 import io.mkolodziejczyk92.data.controllers.InvoicesViewController;
 import io.mkolodziejczyk92.data.entity.Invoice;
+import io.mkolodziejczyk92.data.entity.Purchase;
 import io.mkolodziejczyk92.utils.ComponentFactory;
 import io.mkolodziejczyk92.views.MainLayout;
 import jakarta.annotation.security.PermitAll;
@@ -73,6 +76,11 @@ public class InvoicesView extends Div implements HasUrlParameter<String> {
         menu.addItem("Edit", event -> {
         });
         menu.addItem("Delete", event -> {
+            if (event.getItem().isPresent()) {
+                Dialog confirmDialog = createDialogConfirmForDeleteInvoice(event.getItem().get());
+                add(confirmDialog);
+                confirmDialog.open();
+            } else menu.close();
         });
 
         add(createTopButtonLayout());
@@ -96,6 +104,26 @@ public class InvoicesView extends Div implements HasUrlParameter<String> {
         HorizontalLayout topButtonLayout = ComponentFactory.createTopButtonLayout();
         topButtonLayout.add(emptyButton);
         return topButtonLayout;
+    }
+    private Dialog createDialogConfirmForDeleteInvoice(Invoice invoice) {
+        Dialog dialog = new Dialog();
+        dialog.add(String.format("Are you sure you want to delete %s invoice?", invoice.getClient().getFullName()));
+        Button deleteButton = new Button("Delete", event ->
+        {
+            if(invoicesViewController.deleteInvoice(invoice)){
+                invoiceDataProvider.removeInvoiceFromGrid(invoice);
+                grid.getDataProvider().refreshAll();
+            }
+            dialog.close();
+        });
+        deleteButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+        deleteButton.getStyle().set("margin-right", "auto");
+        dialog.getFooter().add(deleteButton);
+
+        Button cancelButton = new Button("Cancel", event -> dialog.close());
+        cancelButton.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
+        dialog.getFooter().add(cancelButton);
+        return dialog;
     }
 
     @Override

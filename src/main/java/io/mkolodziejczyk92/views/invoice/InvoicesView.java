@@ -19,12 +19,12 @@ import com.vaadin.flow.data.provider.ConfigurableFilterDataProvider;
 import com.vaadin.flow.router.*;
 import io.mkolodziejczyk92.data.controllers.InvoicesViewController;
 import io.mkolodziejczyk92.data.entity.Invoice;
-import io.mkolodziejczyk92.data.entity.Purchase;
 import io.mkolodziejczyk92.utils.ComponentFactory;
 import io.mkolodziejczyk92.views.MainLayout;
 import jakarta.annotation.security.PermitAll;
 
-import static io.mkolodziejczyk92.utils.ComponentFactory.*;
+import static io.mkolodziejczyk92.utils.ComponentFactory.createStandardButton;
+import static io.mkolodziejczyk92.utils.ComponentFactory.createTextFieldForSearchLayout;
 
 @PageTitle("Invoices")
 @Route(value = "invoices", layout = MainLayout.class)
@@ -38,6 +38,7 @@ public class InvoicesView extends Div implements HasUrlParameter<String> {
     private final InvoiceDataProvider invoiceDataProvider = new InvoiceDataProvider();
     private final ConfigurableFilterDataProvider<Invoice, Void, InvoiceFilter> filterDataProvider
             = invoiceDataProvider.withConfigurableFilter();
+    private String idFromUrl;
 
     private final Grid<Invoice> grid = new Grid<>(Invoice.class, false);
     private final Button emptyButton = createStandardButton("EMPTY");
@@ -71,9 +72,12 @@ public class InvoicesView extends Div implements HasUrlParameter<String> {
         grid.setItems(filterDataProvider);
 
         GridContextMenu<Invoice> menu = grid.addContextMenu();
-        menu.addItem("View", event -> {
-        });
-        menu.addItem("Edit", event -> {
+        menu.addItem("Change status", event -> {
+            if (event.getItem().isPresent()) {
+                Dialog confirmDialog = createDialogConfirmForChangeInvoiceStatus(event.getItem().get());
+                add(confirmDialog);
+                confirmDialog.open();
+            } else menu.close();
         });
         menu.addItem("Delete", event -> {
             if (event.getItem().isPresent()) {
@@ -105,12 +109,33 @@ public class InvoicesView extends Div implements HasUrlParameter<String> {
         topButtonLayout.add(emptyButton);
         return topButtonLayout;
     }
+
+    private Dialog createDialogConfirmForChangeInvoiceStatus(Invoice invoice) {
+        Dialog dialog = new Dialog();
+        dialog.add(String.format("Are you sure you want to change status invoice %s?", invoice.getNumber()));
+        Button deleteButton = new Button("Change status", event ->
+        {
+            if (invoicesViewController.changeInvoiceStatus(invoice)) {
+                grid.getDataProvider().refreshAll();
+            }
+            dialog.close();
+        });
+        deleteButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+        deleteButton.getStyle().set("margin-right", "auto");
+        dialog.getFooter().add(deleteButton);
+
+        Button cancelButton = new Button("Cancel", event -> dialog.close());
+        cancelButton.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
+        dialog.getFooter().add(cancelButton);
+        return dialog;
+    }
+
     private Dialog createDialogConfirmForDeleteInvoice(Invoice invoice) {
         Dialog dialog = new Dialog();
-        dialog.add(String.format("Are you sure you want to delete %s invoice?", invoice.getClient().getFullName()));
+        dialog.add(String.format("Are you sure you want to delete %s invoice?", invoice.getNumber()));
         Button deleteButton = new Button("Delete", event ->
         {
-            if(invoicesViewController.deleteInvoice(invoice)){
+            if (invoicesViewController.deleteInvoice(invoice)) {
                 invoiceDataProvider.removeInvoiceFromGrid(invoice);
                 grid.getDataProvider().refreshAll();
             }
@@ -128,9 +153,18 @@ public class InvoicesView extends Div implements HasUrlParameter<String> {
 
     @Override
     public void setParameter(BeforeEvent beforeEvent, @WildcardParameter String urlParameter) {
-        if(!urlParameter.isBlank()){
-            String clientId = urlParameter.substring(1);
-            grid.setItems(invoicesViewController.clientInvoices(Long.valueOf(clientId)));
+        if (!urlParameter.isBlank()) {
+            char identificationChar = urlParameter.charAt(0);
+            idFromUrl = urlParameter;
+            switch (identificationChar) {
+                case 'p' -> {
+                    grid.setItems(invoicesViewController.purchaseInvoices(Long.valueOf(urlParameter.substring(1))));
+                }
+                case 'c' -> {
+                    grid.setItems(invoicesViewController.clientInvoices(Long.valueOf(urlParameter.substring(1))));
+                }
+            }
+
         }
     }
 }

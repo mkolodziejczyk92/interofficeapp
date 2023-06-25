@@ -1,5 +1,7 @@
 package io.mkolodziejczyk92.data.controllers;
 
+import com.vaadin.flow.component.UI;
+import com.vaadin.flow.component.charts.model.Navigation;
 import com.vaadin.flow.component.notification.Notification;
 import io.mkolodziejczyk92.data.entity.Invoice;
 import io.mkolodziejczyk92.data.service.InvoiceRepository;
@@ -40,5 +42,21 @@ public class InvoicesViewController {
         }
         Notification.show("Invoice " + invoice.getNumber() + " deleted.");
         return true;
+    }
+
+    public boolean changeInvoiceStatus(Invoice invoice) {
+        try{
+            invoiceService.changeInvoiceStatus(invoice);
+        }catch (DataIntegrityViolationException e){
+            Notification.show("Invoice dose not exist.");
+            return false;
+        }
+        UI.getCurrent().navigate("invoices/p" + invoice.getPurchase().getId());
+        Notification.show("Status changed.");
+        return true;
+    }
+
+    public List<Invoice> purchaseInvoices(Long purchaseId) {
+        return invoiceService.purchaseInvoices(purchaseId);
     }
 }

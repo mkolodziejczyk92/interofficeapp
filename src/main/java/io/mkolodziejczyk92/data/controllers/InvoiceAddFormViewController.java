@@ -4,6 +4,7 @@ import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.data.binder.Binder;
 import io.mkolodziejczyk92.data.entity.Invoice;
+import io.mkolodziejczyk92.data.entity.Purchase;
 import io.mkolodziejczyk92.data.service.InvoiceService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -32,8 +33,8 @@ public class InvoiceAddFormViewController {
         UI.getCurrent().navigate("purchases/c" + clientId);
     }
 
-    public void saveNewInvoice(Invoice invoice, Long clientId) {
-        invoiceService.save(invoice, clientId);
+    public void saveNewInvoice(Invoice invoice, Long clientId, Purchase inputPurchase) {
+        invoiceService.save(invoice, clientId, inputPurchase);
         UI.getCurrent().navigate("invoices");
         Notification.show("Invoice no. " + invoice.getNumber() + " stored");
     }

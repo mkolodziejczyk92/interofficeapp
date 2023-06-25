@@ -39,7 +39,7 @@ public class NewInvoiceFormView extends Div implements HasUrlParameter<String> {
     private final DatePicker issueDate = new DatePicker("Issue date");
     private final TextField netAmount = new TextField("Net amount");
     private final TextField vat = new TextField("VAT");
-    private final Checkbox isPaid = new Checkbox("Paid");
+    private final Checkbox paid = new Checkbox("Paid");
     private final ComboBox<EInvoiceType> invoiceType = new ComboBox<>("Invoice type");
     private final ComboBox<EPaymentMethod> paymentMethod = new ComboBox<>("Payment method");
     private final Button cancel = createCancelButton();
@@ -81,7 +81,7 @@ public class NewInvoiceFormView extends Div implements HasUrlParameter<String> {
 
 
         return ComponentFactory.createFormLayout(
-                clientName,  number, paymentMethod, paymentTime, issueDate, isPaid, netAmount, vat, invoiceType);
+                clientName,  number, paymentMethod, paymentTime, issueDate, paid, netAmount, vat, invoiceType);
     }
 
     private void createComboBoxes() {
@@ -96,7 +96,7 @@ public class NewInvoiceFormView extends Div implements HasUrlParameter<String> {
         HorizontalLayout bottomButtonLayout = ComponentFactory.createBottomButtonLayout();
         bottomButtonLayout.add(cancel, save, update);
         cancel.addClickListener(e -> invoiceAddFormViewController.clearForm());
-        save.addClickListener(e -> invoiceAddFormViewController.saveNewInvoice(binder.getBean(), clientId));
+        save.addClickListener(e -> invoiceAddFormViewController.saveNewInvoice(binder.getBean(), clientId, inputPurchase));
         update.setVisible(false);
         return bottomButtonLayout;
     }

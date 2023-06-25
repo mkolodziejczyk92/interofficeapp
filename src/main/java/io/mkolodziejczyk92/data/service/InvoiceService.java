@@ -1,6 +1,7 @@
 package io.mkolodziejczyk92.data.service;
 
 import io.mkolodziejczyk92.data.entity.Invoice;
+import io.mkolodziejczyk92.data.entity.Purchase;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -14,54 +15,65 @@ import java.util.Optional;
 @Service
 public class InvoiceService {
 
-    private final InvoiceRepository repository;
+    private final InvoiceRepository invoiceRepository;
     private final ClientService clientService;
     private final PurchaseService purchaseService;
 
-    public InvoiceService(InvoiceRepository repository, ClientService clientService, PurchaseService purchaseService) {
-        this.repository = repository;
+    public InvoiceService(InvoiceRepository invoiceRepository, ClientService clientService, PurchaseService purchaseService) {
+        this.invoiceRepository = invoiceRepository;
         this.clientService = clientService;
         this.purchaseService = purchaseService;
     }
 
     public Optional<Invoice> get(Long id) {
-        return repository.findById(id);
+        return invoiceRepository.findById(id);
     }
 
     public Invoice update(Invoice entity) {
-        return repository.save(entity);
+        return invoiceRepository.save(entity);
     }
 
     public void delete(Long id) {
-        repository.deleteById(id);
+        invoiceRepository.deleteById(id);
     }
 
     public Page<Invoice> list(Pageable pageable) {
-        return repository.findAll(pageable);
+        return invoiceRepository.findAll(pageable);
     }
 
     public Page<Invoice> list(Pageable pageable, Specification<Invoice> filter) {
-        return repository.findAll(filter, pageable);
+        return invoiceRepository.findAll(filter, pageable);
     }
 
     public int count() {
-        return (int) repository.count();
+        return (int) invoiceRepository.count();
     }
 
     public List<Invoice> allInvoices() {
-        return repository.findAll();
+        return invoiceRepository.findAll();
     }
 
     public List<Invoice> clientInvoices(Long clientId) {
-        return repository.findInvoiceByClientId(clientId);
+        return invoiceRepository.findInvoiceByClientId(clientId);
     }
 
-    public void save(Invoice invoice, Long clientId) {
+    public void save(Invoice invoice, Long clientId, Purchase inputPurchase) {
         invoice.setGrossAmount(purchaseService.countGrossValue(invoice.getVat().replace("%", ""), invoice.getNetAmount()));
         invoice.setClient(clientService.get(clientId).orElseThrow());
+        invoice.setPurchase(inputPurchase);
         BigDecimal netInput = new BigDecimal(invoice.getNetAmount().replace(',', '.'));
         BigDecimal netInputAfterScale = netInput.setScale(2, RoundingMode.HALF_UP);
         invoice.setNetAmount(String.valueOf(netInputAfterScale).replace('.', ','));
-        repository.save(invoice);
+        invoiceRepository.save(invoice);
+    }
+
+
+    public void changeInvoiceStatus(Invoice invoice) {
+        invoice.setPaid(!invoice.isPaid());
+        invoiceRepository.save(invoice);
+    }
+
+    public List<Invoice> purchaseInvoices(Long purchaseId) {
+        return invoiceRepository.findInvoiceByPurchaseId(purchaseId);
     }
 }

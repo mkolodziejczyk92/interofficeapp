@@ -9,4 +9,5 @@ import java.util.List;
 public interface InvoiceRepository extends JpaRepository<Invoice, Long>, JpaSpecificationExecutor<Invoice> {
 
     List<Invoice> findInvoiceByClientId(Long clientId);
+    List<Invoice> findInvoiceByPurchaseId(Long purchaseId);
 }

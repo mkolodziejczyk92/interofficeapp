@@ -66,12 +66,27 @@ If you don't have environment variables set, you should set it or change applica
 **5.** Open ````http://localhost:8080```` in your browser.
 
 **6.** Use default vaadin users!
-Admin:
- 	`````Login: admin`````
-  	`````Password: password`````
-User:
-	`````Login: user`````
- 	`````Password: password`````
+
+**ADMIN**
+
+Login: 
+````
+admin
+````
+Password:
+````
+password
+````
+**USER**
+
+Login: 
+````
+user
+````
+Password:
+````
+password
+````
 
 
 

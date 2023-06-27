@@ -67,11 +67,11 @@ If you don't have environment variables set, you should set it or change applica
 
 **6.** Use default vaadin users!
 Admin:
- 	Login: admin
-  	Password: password
+ 	`````Login: admin`````
+  	`````Password: password`````
 User:
-	Login: user
- 	Password: password
+	`````Login: user`````
+ 	`````Password: password`````
 
 
 

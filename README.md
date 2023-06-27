@@ -10,7 +10,8 @@
 
 
 # interOfficeAPP
-***
+
+
 ### Introduce
 This project is fully functioning web application that is an CRM designed for a company involved in the sale and installation of doors and windows. The main part is API that allows users:
 - Add/Edit/Delete clients. 

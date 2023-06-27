@@ -22,6 +22,13 @@ This project is fully functioning web application that is an CRM designed for a 
 - Additionally added, fully working validation on the frontend and backend.
 - You can freely search for anything you need in every grid
 - Admin can extra add or delete users
+ 
+***
+
+We worked with a backlog to measure our performance and the progress of the work. The backlog is available at
+````
+https://github.com/users/mkolodziejczyk92/projects/4/views/1?layout=table&filterQuery=
+````
 
 ***
 

@@ -32,7 +32,6 @@ public class NewInvoiceFormView extends Div implements HasUrlParameter<String> {
 
     private final InvoiceAddFormViewController invoiceAddFormViewController;
     private final PurchasesViewController purchasesViewController;
-    private final ClientsViewController clientsViewController;
     private final TextField number = new TextField("Invoice number");
     private final TextField clientName = new TextField("Client");
     private final IntegerField paymentTime = new IntegerField("Payment time");
@@ -53,11 +52,9 @@ public class NewInvoiceFormView extends Div implements HasUrlParameter<String> {
     private final Binder<Invoice> binder = new Binder<>(Invoice.class);
 
     public NewInvoiceFormView(InvoiceAddFormViewController invoiceAddFormViewController,
-                              PurchasesViewController purchasesViewController,
-                              ClientsViewController clientsViewController) {
+                              PurchasesViewController purchasesViewController) {
         this.invoiceAddFormViewController = invoiceAddFormViewController;
         this.purchasesViewController = purchasesViewController;
-        this.clientsViewController = clientsViewController;
         invoiceAddFormViewController.initBinder(binder);
 
         add(createTopButtonLayout());
@@ -79,7 +76,6 @@ public class NewInvoiceFormView extends Div implements HasUrlParameter<String> {
         vat.setReadOnly(true);
         clientName.setReadOnly(true);
 
-
         return ComponentFactory.createFormLayout(
                 clientName,  number, paymentMethod, paymentTime, issueDate, paid, netAmount, vat, invoiceType);
     }
@@ -100,11 +96,6 @@ public class NewInvoiceFormView extends Div implements HasUrlParameter<String> {
         update.setVisible(false);
         return bottomButtonLayout;
     }
-
-
-//    private Dialog createDialogWithFileUpload() {
-//
-//    }
 
     @Override
     public void setParameter(BeforeEvent event, @WildcardParameter String urlParameter) {

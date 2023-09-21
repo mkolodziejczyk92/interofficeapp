@@ -4,7 +4,6 @@ import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.html.Div;
-import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
@@ -62,6 +61,12 @@ public class NewPurchaseFormView extends Div implements HasUrlParameter<String> 
         });
 
         createFormLayout();
+        createFieldsValidation();
+
+
+        save.setEnabled(false);
+        update.setEnabled(false);
+        createSaveAndUpdateButtonStatus();
 
         binder.bindInstanceFields(this);
         add(createBottomButtonLayout());
@@ -97,7 +102,6 @@ public class NewPurchaseFormView extends Div implements HasUrlParameter<String> 
         HorizontalLayout bottomButtonLayout = ComponentFactory.createBottomButtonLayout();
 
         bottomButtonLayout.add(cancel, save, update);
-
         cancel.addClickListener(e -> purchaseAddFormViewController.clearForm());
         save.addClickListener(e -> {
             purchaseAddFormViewController.saveNewPurchase(binder.getBean());
@@ -109,6 +113,48 @@ public class NewPurchaseFormView extends Div implements HasUrlParameter<String> 
         save.addClickShortcut(ENTER);
         update.setVisible(false);
         return bottomButtonLayout;
+
+    }
+
+    private void createFieldsValidation() {
+        binder.forField(client)
+                .asRequired("Choose client")
+                .bind(Purchase::getClient, Purchase::setClient);
+        binder.forField(commodityType)
+                .asRequired("Choose commodity type")
+                .bind(Purchase::getCommodityType, Purchase::setCommodityType );
+        binder.forField(status)
+                .asRequired("Choose purchase status")
+                .bind(Purchase::getStatus, Purchase::setStatus );
+        binder.forField(supplier)
+                .asRequired("Choose supplier")
+                .bind(Purchase::getSupplier, Purchase::setSupplier );
+        binder.forField(manufacturer)
+                .asRequired("Choose manufacturer")
+                .bind(Purchase::getManufacturer, Purchase::setManufacturer);
+        binder.forField(eVat)
+                .asRequired("Choose vat")
+                .bind(Purchase::getEVat,Purchase::setEVat);
+    }
+
+    private void createSaveAndUpdateButtonStatus() {
+        client.addValueChangeListener(e -> updateSaveAndUpdateButtonStatus(client.isInvalid()));
+        commodityType.addValidationStatusChangeListener(e -> updateSaveAndUpdateButtonStatus(commodityType.isInvalid()));
+        status.addValidationStatusChangeListener(e -> updateSaveAndUpdateButtonStatus(status.isInvalid()));
+        supplier.addValidationStatusChangeListener(e -> updateSaveAndUpdateButtonStatus(supplier.isInvalid()));
+        manufacturer.addValidationStatusChangeListener(e -> updateSaveAndUpdateButtonStatus(manufacturer.isInvalid()));
+        eVat.addValidationStatusChangeListener(e -> updateSaveAndUpdateButtonStatus(eVat.isInvalid()));
+        netAmount.addValidationStatusChangeListener(e -> updateSaveAndUpdateButtonStatus(netAmount.isInvalid()));
+        supplierPurchaseNumber.addValidationStatusChangeListener(e -> updateSaveAndUpdateButtonStatus(supplierPurchaseNumber.isInvalid()));
+    }
+
+    private void updateSaveAndUpdateButtonStatus(boolean isInvalid) {
+        save.setEnabled(!isInvalid && !client.isEmpty() && !commodityType.isEmpty() && !status.isEmpty()
+                && !supplier.isEmpty() && !manufacturer.isEmpty() && !eVat.isEmpty() && !netAmount.isEmpty()
+                && !supplierPurchaseNumber.isEmpty());
+        update.setEnabled(!isInvalid && !client.isEmpty() && !commodityType.isEmpty() && !status.isEmpty()
+                && !supplier.isEmpty() && !manufacturer.isEmpty() && !eVat.isEmpty() && !netAmount.isEmpty()
+                && !supplierPurchaseNumber.isEmpty());
 
     }
 
